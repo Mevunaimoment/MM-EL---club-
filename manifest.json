@@ -1,0 +1,17 @@
+{
+  "name": "MM'EL Radio & MMTV — Mevunai Moment Country Club",
+  "short_name": "MM'EL Radio",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#3b050b",
+  "theme_color": "#3b050b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "mmel-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
