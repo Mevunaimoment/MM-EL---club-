@@ -1,14 +1,13 @@
 {
-  "name": "MM'EL Radio & MMTV — Mevunai Moment Country Club",
-  "short_name": "MM'EL Radio",
+  "name": "Mevunai Moment™ Flagship Couture & Atelier",
+  "short_name": "MMCC Atelier",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#3b050b",
-  "theme_color": "#3b050b",
-  "orientation": "portrait",
+  "background_color": "#24040b",
+  "theme_color": "#3a0712",
   "icons": [
     {
-      "src": "mmel-icon.png",
+      "src": "atelier-icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
