@@ -1,29 +1,29 @@
-const CACHE_NAME = 'mmcc-13-depts-top-video-v22-network-first';
-const ASSETS = ['./', './index.html', './manifest.json'];
+const CACHE_NAME = 'mmcc-13-depts-art-gallery-v20-network-first';
+const ASSETS = ['./', './index.html', './manifest.json', './master-icon.png'];
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS).catch(() => {}))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS).catch(() => {}))
   );
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
     fetch(event.request)
-      .then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
-        return res;
+      .then(response => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone)).catch(() => {});
+        return response;
       })
       .catch(() => caches.match(event.request))
   );
