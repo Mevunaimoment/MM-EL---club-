@@ -1,10 +1,10 @@
 {
-  "name": "Mevunai Moment™ Country Club, Inc ®",
+  "name": "Mevunai Moment™ Country Club",
   "short_name": "MM'EL Club",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1e0308",
-  "theme_color": "#3a0710",
+  "background_color": "#24040c",
+  "theme_color": "#3a0714",
   "icons": [
     {
       "src": "master-icon.png",
