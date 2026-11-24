@@ -1,16 +1,15 @@
 {
   "name": "Mevunai Moment™ Country Club, Inc ®",
-  "short_name": "MMCC Sovereign",
-  "start_url": "index.html",
+  "short_name": "MM'EL Club",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1a0207",
-  "theme_color": "#2b040c",
+  "background_color": "#24040b",
+  "theme_color": "#3a0712",
   "icons": [
     {
       "src": "master-icon.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }

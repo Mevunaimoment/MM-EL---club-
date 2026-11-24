@@ -1,7 +1,11 @@
-const CACHE_NAME = 'mmcc-13-depts-valet-hangar-v26-network-first';
+const CACHE_NAME = 'mmcc-13-depts-video-vault-v24-network-first';
+const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).catch(() => {})
+  );
 });
 
 self.addEventListener('activate', (event) => {
@@ -16,10 +20,10 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
     fetch(event.request)
-      .then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        return response;
+      .then((networkRes) => {
+        const clone = networkRes.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
+        return networkRes;
       })
       .catch(() => caches.match(event.request))
   );
