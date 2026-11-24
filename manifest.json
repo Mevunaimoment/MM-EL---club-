@@ -1,13 +1,15 @@
 {
-  "name": "Mevunai Moment™ Country Club — MMEL",
+  "name": "Mevunai Moment\u2122 Country Club, Inc \u00ae",
   "short_name": "MMEL Club",
+  "description": "Mevunai Moment\u2122 Country Club, Inc \u00ae \u2014 All 13 Sovereign Departments & MMEL Sound",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#26030b",
-  "theme_color": "#3a0612",
+  "background_color": "#28040b",
+  "theme_color": "#4a0814",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "mmel-icon.png",
+      "src": "master-icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
