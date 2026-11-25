@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mmcc-13-depts-video-library-v26-network-first';
+const CACHE_NAME = 'mmcc-13-depts-art-gallery-v27-network-first';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (event) => {
