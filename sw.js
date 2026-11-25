@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mmcc-13-depts-art-gallery-v27-network-first';
+const CACHE_NAME = 'mmcc-13-depts-sovereign-suite-v28-network-first';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (event) => {
@@ -20,10 +20,10 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
     fetch(event.request)
-      .then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
-        return response;
+      .then((networkRes) => {
+        const clone = networkRes.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
+        return networkRes;
       })
       .catch(() => caches.match(event.request))
   );

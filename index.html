@@ -2,739 +2,511 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mevunai Moment™ Country Club, Inc ® · Sovereign Portal v27</title>
-  <link rel="manifest" href="manifest.json" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#2b040c" />
+  <title>Mevunai Moment™ Country Club, Inc ® — Sovereign Suite v28</title>
+  <link rel="manifest" href="manifest.json" />
   <style>
     :root {
       --bg-deep: #1a0207;
       --bg-card: #2b040c;
-      --bg-elevated: #380712;
+      --bg-elevated: #380711;
       --gold: #d4af37;
-      --gold-bright: #f5d77f;
-      --gold-soft: rgba(212, 175, 55, 0.26);
-      --text-main: #f9f3e8;
-      --text-muted: #cbbba0;
-      --sidebar-w: 320px;
-    }
-    body.theme-emerald {
-      --bg-deep: #041a12;
-      --bg-card: #082b1e;
-      --bg-elevated: #0d3b2a;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Georgia', 'Times New Roman', serif;
-      background: radial-gradient(circle at top right, var(--bg-card), var(--bg-deep) 72%);
-      color: var(--text-main);
-      min-height: 100vh;
+      --gold-light: #f5df96;
+      --gold-dim: rgba(212, 175, 55, 0.25);
+      --gold-glow: rgba(212, 175, 55, 0.35);
+      --text-main: #fdf7ec;
+      --text-muted: #cbb994;
+      --sidebar-w: 330px;
+      --radius: 16px;
     }
 
-    /* === 7.5s CINEMATIC SPLASH INTRO === */
-    #splash-intro {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      background: radial-gradient(circle at center, #380712 0%, #140105 85%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
+    body.theme-emerald {
+      --bg-deep: #031711;
+      --bg-card: #06261d;
+      --bg-elevated: #0b3629;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg-deep);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* SPLASH INTRO */
+    #splash-screen {
+      position: fixed; inset: 0; z-index: 99999;
+      background: radial-gradient(circle at center, #3b0612 0%, #140105 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
-    #splash-intro.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    #splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
     #splash-video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.45;
-      display: none;
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      opacity: 0.55; display: none;
     }
     .splash-crest {
-      position: relative;
-      z-index: 2;
-      width: 124px;
-      height: 124px;
-      margin-bottom: 18px;
-      animation: pulseGold 3.5s infinite ease-in-out;
+      position: relative; z-index: 2; max-width: 520px; width: 100%;
+      animation: floatCrest 3s ease-in-out infinite alternate;
     }
-    @keyframes pulseGold {
-      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 12px rgba(212,175,55,0.45)); }
-      50% { transform: scale(1.06); filter: drop-shadow(0 0 28px rgba(245,215,127,0.85)); }
+    @keyframes floatCrest {
+      from { transform: translateY(0px); }
+      to { transform: translateY(-8px); }
     }
+    .pyramid-svg { width: 140px; height: 140px; margin: 0 auto 18px; filter: drop-shadow(0 0 22px rgba(212,175,55,0.6)); }
     .splash-title {
-      position: relative;
-      z-index: 2;
-      font-size: clamp(1.3rem, 3.2vw, 2.2rem);
-      letter-spacing: 0.22em;
-      color: var(--gold-bright);
-      text-transform: uppercase;
-      margin: 0 0 8px;
+      font-size: clamp(1.3rem, 3vw, 2rem); letter-spacing: 0.2em; color: var(--gold-light);
+      font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
     }
     .splash-sub {
-      position: relative;
-      z-index: 2;
-      font-size: 0.85rem;
-      letter-spacing: 0.32em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 26px;
+      font-size: 0.85rem; letter-spacing: 0.28em; color: var(--gold); text-transform: uppercase; margin-bottom: 24px;
     }
     .splash-bar-wrap {
-      position: relative;
-      z-index: 2;
-      width: min(380px, 80vw);
-      height: 4px;
-      background: rgba(212, 175, 55, 0.2);
-      border-radius: 99px;
-      overflow: hidden;
-      margin-bottom: 22px;
+      width: 100%; max-width: 340px; height: 3px; background: rgba(212,175,55,0.2);
+      border-radius: 99px; overflow: hidden; margin: 0 auto 20px;
     }
-    .splash-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+    .splash-bar {
+      height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold), var(--gold-light));
       transition: width linear;
     }
-    .splash-controls {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      gap: 10px;
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37, #b38b22);
+      color: #1a0207; border: none; border-radius: 999px; padding: 10px 20px;
+      font-weight: 700; font-size: 0.82rem; letter-spacing: 0.08em; cursor: pointer;
+      text-transform: uppercase; transition: transform 0.15s, box-shadow 0.2s;
     }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 18px var(--gold-glow); }
+    .btn-outline {
+      background: rgba(212,175,55,0.08); color: var(--gold-light);
+      border: 1px solid var(--gold-dim); border-radius: 999px; padding: 8px 16px;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); background: rgba(212,175,55,0.18); }
 
-    /* === LAYOUT SHELL === */
-    .app-shell {
-      display: grid;
-      grid-template-columns: 1fr;
-      min-height: 100vh;
+    /* LAYOUT SHELL */
+    .app-shell { display: flex; min-height: 100vh; }
+    #sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+      border-right: 1px solid var(--gold-dim);
+      padding: 20px 16px 90px;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 16px;
+      transition: margin-left 0.3s ease;
     }
-    @media (min-width: 960px) {
-      .app-shell {
-        grid-template-columns: var(--sidebar-w) 1fr;
-      }
-      .app-shell.collapsed {
-        grid-template-columns: 0px 1fr;
-      }
-      .app-shell.collapsed .sidebar {
-        transform: translateX(-100%);
-        opacity: 0;
-        pointer-events: none;
-      }
-    }
+    body.sidebar-collapsed #sidebar { margin-left: calc(-1 * var(--sidebar-w)); }
+    #main-content { flex: 1; padding: 24px 32px 100px; max-width: 1360px; margin: 0 auto; width: 100%; }
 
-    /* === SIDEBAR === */
-    .sidebar {
-      background: linear-gradient(180deg, var(--bg-card), var(--bg-deep));
-      border-right: 1px solid var(--gold-soft);
-      padding: 20px 16px 84px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      transition: transform 0.3s ease, opacity 0.25s ease;
-    }
-    @media (min-width: 960px) {
-      .sidebar {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        overflow-y: auto;
-        padding-bottom: 24px;
-      }
-    }
     .brand-box {
-      border: 1px solid var(--gold-soft);
-      border-radius: 14px;
-      padding: 14px;
-      background: rgba(0,0,0,0.22);
-      text-align: center;
+      border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      padding: 14px; background: rgba(0,0,0,0.22); text-align: center;
     }
-    .brand-box h1 {
-      margin: 0;
-      font-size: 1rem;
-      letter-spacing: 0.14em;
-      color: var(--gold-bright);
-    }
-    .brand-box p {
-      margin: 4px 0 0;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      color: var(--text-muted);
-    }
+    .brand-box h1 { font-size: 0.95rem; letter-spacing: 0.14em; color: var(--gold-light); }
+    .brand-box p { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.12em; margin-top: 4px; }
 
-    .mini-cinema {
-      border: 1px solid var(--gold-soft);
-      border-radius: 14px;
-      padding: 12px;
-      background: rgba(0,0,0,0.28);
+    /* MINI CINEMA */
+    .cinema-card {
+      border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      background: #0d0104; padding: 12px;
     }
-    .mini-cinema-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      color: var(--gold);
-      margin-bottom: 8px;
+    .cinema-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.75rem; color: var(--gold); letter-spacing: 0.08em; }
+    #sidebar-video {
+      width: 100%; height: 175px; background: #000; border-radius: 10px;
+      object-fit: cover; border: 1px solid var(--gold-dim); display: block;
     }
-    .mini-cinema video, .mini-cinema canvas {
-      width: 100%;
-      height: 175px;
-      object-fit: cover;
-      border-radius: 10px;
-      background: #0d0103;
-      border: 1px solid var(--gold-soft);
-      display: block;
-    }
-    .cinema-controls {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-top: 8px;
-    }
+    .cinema-controls { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .cinema-controls button { flex: 1; padding: 6px 8px; font-size: 0.72rem; }
 
-    .nav-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    /* AMBIENT LOUNGE */
+    .lounge-card {
+      border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      background: rgba(255,255,255,0.03); padding: 12px;
     }
+    .lounge-title { font-size: 0.78rem; color: var(--gold-light); letter-spacing: 0.08em; margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .lounge-track { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px; }
+
+    /* NAV */
+    .side-nav { display: flex; flex-direction: column; gap: 6px; }
     .nav-btn {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--gold-soft);
-      color: var(--text-main);
-      padding: 11px 14px;
-      border-radius: 11px;
-      text-align: left;
-      font-family: inherit;
-      font-size: 0.88rem;
-      letter-spacing: 0.06em;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      width: 100%; text-align: left; padding: 11px 14px; border-radius: 12px;
+      background: rgba(255,255,255,0.03); border: 1px solid transparent;
+      color: var(--text-main); font-size: 0.86rem; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 10px; transition: all 0.2s;
     }
     .nav-btn:hover, .nav-btn.active {
-      background: rgba(212, 175, 55, 0.16);
-      border-color: var(--gold);
-      color: var(--gold-bright);
+      background: rgba(212,175,55,0.16); border-color: var(--gold); color: var(--gold-light);
     }
 
-    /* === BUTTONS & INPUTS === */
-    .btn {
-      background: rgba(212, 175, 55, 0.14);
-      border: 1px solid var(--gold-soft);
-      color: var(--gold-bright);
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.78rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn:hover {
-      border-color: var(--gold);
-      background: rgba(212, 175, 55, 0.26);
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #d4af37, #b38b22);
-      color: #1a0207;
-      font-weight: bold;
-      border: none;
-    }
-    .input, select {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--gold-soft);
-      color: var(--text-main);
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.85rem;
-    }
-
-    /* === MAIN STAGE === */
-    .main-stage {
-      padding: 22px 24px 90px;
-      max-width: 1320px;
-      width: 100%;
-      margin: 0 auto;
-    }
+    /* TOP BAR */
     .topbar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--gold-soft);
-      margin-bottom: 22px;
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      gap: 12px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--gold-dim);
     }
-    .panel { display: none; }
-    .panel.active { display: block; }
+    .topbar-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
-    /* === 13 DEPARTMENTS GRID === */
-    .dept-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 14px;
-    }
-    .card {
-      background: linear-gradient(160deg, var(--bg-elevated), var(--bg-card));
-      border: 1px solid var(--gold-soft);
-      border-radius: 14px;
-      padding: 16px;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-      border-color: var(--gold);
-    }
-    .dept-num {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-    }
-    .card h3 {
-      margin: 6px 0;
-      font-size: 1rem;
-      color: var(--gold-bright);
-    }
-    .card p {
-      margin: 0;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
+    /* SECTIONS */
+    .view-section { display: none; animation: fadeIn 0.25s ease; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* === DROPZONE & MEDIA GRIDS === */
+    .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .section-head h2 { font-size: 1.35rem; color: var(--gold-light); letter-spacing: 0.08em; }
+
+    /* 13 DEPARTMENTS GRID */
+    .dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .dept-card {
+      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      padding: 18px; cursor: pointer; transition: all 0.2s; position: relative;
+    }
+    .dept-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .dept-num { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.16em; font-weight: 700; }
+    .dept-name { font-size: 1.02rem; color: var(--text-main); font-weight: 700; margin: 6px 0; }
+    .dept-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* DROPZONES & GRIDS */
     .dropzone {
-      border: 2px dashed var(--gold-soft);
-      border-radius: 16px;
-      padding: 26px 18px;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.22);
-      cursor: pointer;
-      margin-bottom: 18px;
-      transition: border-color 0.2s ease, background 0.2s ease;
+      border: 2px dashed var(--gold-dim); border-radius: var(--radius); padding: 26px;
+      text-align: center; background: rgba(212,175,55,0.04); cursor: pointer; margin-bottom: 20px;
+      transition: border-color 0.2s, background 0.2s;
     }
-    .dropzone:hover, .dropzone.dragover {
-      border-color: var(--gold);
-      background: rgba(212, 175, 55, 0.08);
-    }
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-      align-items: center;
-    }
-    .media-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-    }
+    .dropzone:hover { border-color: var(--gold); background: rgba(212,175,55,0.1); }
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
     .media-card {
-      background: var(--bg-card);
-      border: 1px solid var(--gold-soft);
-      border-radius: 14px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      overflow: hidden; display: flex; flex-direction: column;
     }
-    .media-thumb {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      background: #100104;
-      cursor: pointer;
+    .media-thumb { width: 100%; height: 160px; object-fit: cover; background: #090103; cursor: pointer; }
+    .media-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .media-title { font-size: 0.88rem; font-weight: 700; color: var(--gold-light); }
+    .media-meta { font-size: 0.74rem; color: var(--text-muted); }
+    .media-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+    .media-actions button { padding: 5px 9px; font-size: 0.72rem; }
+
+    /* MUSEUM FRAMES */
+    .frame-gold { border: 10px ridge #d4af37 !important; box-shadow: 0 12px 35px rgba(0,0,0,0.8); }
+    .frame-obsidian { border: 10px solid #111 !important; box-shadow: 0 0 0 2px #d4af37, 0 12px 35px rgba(0,0,0,0.85); }
+    .frame-mat { border: 14px solid #f7f3e8 !important; box-shadow: 0 12px 35px rgba(0,0,0,0.75); }
+
+    /* FORMS & VIP PASS */
+    .panel-box {
+      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 20px;
     }
-    .media-body {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
+    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    input, select, textarea {
+      width: 100%; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid var(--gold-dim); background: rgba(0,0,0,0.35);
+      color: var(--text-main); font-size: 0.85rem;
     }
-    .media-title {
-      font-size: 0.92rem;
-      color: var(--gold-bright);
-      font-weight: bold;
-    }
-    .media-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-    .media-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: auto;
+    .vip-preview {
+      max-width: 440px; border-radius: 20px; padding: 24px;
+      background: linear-gradient(135deg, #3c0713 0%, #180207 60%, #4d380a 100%);
+      border: 2px solid var(--gold); box-shadow: 0 12px 32px rgba(0,0,0,0.6);
     }
 
-    /* === MODAL / LIGHTBOX === */
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 9500;
-      background: rgba(10, 1, 3, 0.92);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999;
+      display: none; align-items: center; justify-content: center; padding: 20px;
     }
-    .modal.open { display: flex; }
+    .modal-backdrop.open { display: flex; }
     .modal-box {
-      background: var(--bg-card);
-      border: 1px solid var(--gold);
-      border-radius: 16px;
-      max-width: 920px;
-      width: 100%;
-      max-height: 92vh;
-      overflow-y: auto;
-      padding: 20px;
+      background: var(--bg-card); border: 1px solid var(--gold); border-radius: 20px;
+      max-width: 760px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px;
     }
-    .modal-box img, .modal-box video {
-      width: 100%;
-      max-height: 60vh;
-      object-fit: contain;
-      border-radius: 10px;
-      background: #000;
+
+    /* MOBILE BOTTOM NAV */
+    .mobile-nav {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: var(--bg-card); border-top: 1px solid var(--gold-dim);
+      padding: 8px; justify-content: space-around;
+    }
+    @media (max-width: 900px) {
+      #sidebar { display: none; }
+      body.mobile-drawer-open #sidebar {
+        display: flex; position: fixed; left: 0; top: 0; bottom: 0; z-index: 9500; margin-left: 0;
+      }
+      #main-content { padding: 18px 16px 90px; }
+      .mobile-nav { display: flex; }
     }
   </style>
 </head>
 <body>
 
-  <!-- === 7.5s CINEMATIC SPLASH INTRO === -->
-  <div id="splash-intro">
+  <!-- CINEMATIC SPLASH INTRO -->
+  <div id="splash-screen">
     <video id="splash-video" muted playsinline></video>
-    <svg class="splash-crest" viewBox="0 0 120 120" fill="none">
-      <polygon points="60,10 112,102 8,102" stroke="#f5d77f" stroke-width="2.5" fill="rgba(212,175,55,0.12)" />
-      <polygon points="60,26 96,92 24,92" stroke="#d4af37" stroke-width="1.4" fill="none" />
-      <ellipse cx="60" cy="64" rx="18" ry="10" stroke="#f5d77f" stroke-width="2" />
-      <circle cx="60" cy="64" r="4.5" fill="#f5d77f" />
-    </svg>
-    <h2 class="splash-title">Mevunai Moment™ Country Club, Inc ®</h2>
-    <div class="splash-sub">Sovereign Private Sanctuary · 13 Departments · v27</div>
-    <div class="splash-bar-wrap">
-      <div class="splash-bar-fill" id="splash-bar"></div>
-    </div>
-    <div class="splash-controls">
-      <button class="btn" onclick="playGoldChime()">🔊 Gold Chime</button>
-      <button class="btn btn-primary" onclick="closeSplash()">Enter Sovereign Portal ➔</button>
+    <div class="splash-crest">
+      <svg class="pyramid-svg" viewBox="0 0 120 120" fill="none">
+        <polygon points="60,10 112,102 8,102" stroke="#d4af37" stroke-width="3" fill="rgba(212,175,55,0.08)"/>
+        <polygon points="60,28 96,92 24,92" stroke="#f5df96" stroke-width="1.5" fill="none"/>
+        <ellipse cx="60" cy="66" rx="18" ry="10" stroke="#d4af37" stroke-width="2.2"/>
+        <circle cx="60" cy="66" r="5" fill="#f5df96"/>
+      </svg>
+      <div class="splash-title">Mevunai Moment™ Country Club</div>
+      <div class="splash-sub">Sovereign Suite v28 · Private Access</div>
+      <div class="splash-bar-wrap"><div class="splash-bar" id="splash-bar"></div></div>
+      <button class="btn-gold" onclick="closeSplash()">Enter Sovereign Portal</button>
     </div>
   </div>
 
-  <div class="app-shell" id="app-shell">
-    <!-- === LEFT SIDEBAR === -->
-    <aside class="sidebar">
+  <div class="app-shell">
+    <!-- LEFT SIDEBAR -->
+    <aside id="sidebar">
       <div class="brand-box">
         <h1>MMCC SOVEREIGN</h1>
-        <p>MEVUNAI MOMENT™ · EST. 24K</p>
+        <p>MEVUNAI MOMENT™ INC ®</p>
       </div>
 
-      <!-- Mini Cinema Player -->
-      <div class="mini-cinema">
-        <div class="mini-cinema-header">
-          <span id="now-playing-label">RA 109 GOLD MOTION</span>
-          <span id="reel-counter">0 / 0</span>
+      <!-- SIDEBAR VIDEO CINEMA -->
+      <div class="cinema-card">
+        <div class="cinema-header">
+          <span>🎬 REEL CINEMA</span>
+          <span id="cinema-label">Vault Ready</span>
         </div>
-        <canvas id="visualizer-canvas" width="280" height="175"></canvas>
-        <video id="sidebar-video" style="display:none;" playsinline controls></video>
+        <video id="sidebar-video" controls playsinline loop></video>
         <div class="cinema-controls">
-          <button class="btn" onclick="prevReel()" title="Previous">⏮</button>
-          <button class="btn" onclick="nextReel()" title="Next">⏭</button>
-          <button class="btn" id="loop-btn" onclick="toggleLoop()">🔁 Loop</button>
-          <button class="btn" onclick="openTheatre()">⛶ Full</button>
+          <button class="btn-outline" onclick="prevVideo()">⏮ Prev</button>
+          <button class="btn-outline" onclick="nextVideo()">Next ⏭</button>
+          <button class="btn-outline" onclick="openTheatre()">⛶ Theatre</button>
         </div>
       </div>
 
-      <!-- Primary Navigation -->
-      <nav class="nav-list">
-        <button class="nav-btn active" data-tab="depts" onclick="switchTab('depts', this)">🏛 13 Sovereign Departments</button>
-        <button class="nav-btn" data-tab="art" onclick="switchTab('art', this)">🎨 Private Art Gallery</button>
-        <button class="nav-btn" data-tab="videos" onclick="switchTab('videos', this)">🎬 Video Library Vault</button>
-        <button class="nav-btn" data-tab="valet" onclick="switchTab('valet', this)">🚁 Valet & Private Hangar</button>
-        <button class="nav-btn" data-tab="vip" onclick="switchTab('vip', this)">👑 Founder's VIP Key</button>
-      </nav>
-
-      <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
-        <button class="btn" onclick="toggleTheme()">🌿 Toggle Silk / Emerald</button>
-        <button class="btn" onclick="launchSplash()">✨ Replay Cinema Intro</button>
+      <!-- AMBIENT LOUNGE AUDIO -->
+      <div class="lounge-card">
+        <div class="lounge-title">
+          <span>🎵 AMBIENT LOUNGE</span>
+          <span id="lounge-status">Standby</span>
+        </div>
+        <div class="lounge-track" id="lounge-track-name">24K Velvet Ambient Synth</div>
+        <audio id="lounge-audio" style="display:none;"></audio>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="btn-gold" style="flex:1; padding:6px 10px; font-size:0.74rem;" onclick="toggleLounge()">▶ Play / Pause</button>
+          <label class="btn-outline" style="padding:6px 10px; font-size:0.74rem; cursor:pointer;">
+            + MP3
+            <input type="file" accept="audio/*" style="display:none;" onchange="handleAudioUpload(event)" />
+          </label>
+        </div>
       </div>
+
+      <!-- NAVIGATION -->
+      <nav class="side-nav">
+        <button class="nav-btn active" data-tab="depts" onclick="switchTab('depts', this)">🏛 13 Sovereign Departments</button>
+        <button class="nav-btn" data-tab="videos" onclick="switchTab('videos', this)">🎞 Offline Video Library</button>
+        <button class="nav-btn" data-tab="gallery" onclick="switchTab('gallery', this)">🎨 Private Art Gallery</button>
+        <button class="nav-btn" data-tab="valet" onclick="switchTab('valet', this)">🚁 Valet & Jet Hangar</button>
+        <button class="nav-btn" data-tab="vip" onclick="switchTab('vip', this)">👑 VIP & Guest Pass Studio</button>
+      </nav>
     </aside>
 
-    <!-- === MAIN STAGE === -->
-    <main class="main-stage">
+    <!-- MAIN STAGE -->
+    <main id="main-content">
       <div class="topbar">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <button class="btn" onclick="document.getElementById('app-shell').classList.toggle('collapsed')">☰ Sidebar</button>
-          <strong style="letter-spacing:0.12em; color:var(--gold-bright);">SOVEREIGN CONCIERGE DESK</strong>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn-outline" onclick="toggleSidebar()">☰ Sidebar</button>
+          <button class="btn-outline" onclick="toggleTheme()">💎 Silk / Emerald</button>
+          <button class="btn-outline" onclick="replaySplash()">✨ Replay Intro</button>
         </div>
-        <div style="font-size:0.8rem; color:var(--text-muted);">Offline IndexedDB Vault Active · v27</div>
+        <div class="topbar-actions">
+          <button class="btn-outline" onclick="exportVaultBackup()">📦 Export .MMCC Backup</button>
+          <label class="btn-outline" style="cursor:pointer;">
+            📥 Restore Backup
+            <input type="file" accept=".mmcc,.json" style="display:none;" onchange="importVaultBackup(event)" />
+          </label>
+        </div>
       </div>
 
-      <!-- TAB 1: 13 DEPARTMENTS -->
-      <section id="tab-depts" class="panel active">
-        <h2 style="color:var(--gold-bright); margin-top:0;">🏛 The 13 Sovereign Departments</h2>
+      <!-- 1. 13 DEPARTMENTS -->
+      <section id="tab-depts" class="view-section active">
+        <div class="section-head">
+          <h2>13 Sovereign Departments</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Tap any suite to open Executive Brief, Pin Media & Log Notes</span>
+        </div>
         <div class="dept-grid" id="dept-grid"></div>
       </section>
 
-      <!-- TAB 2: SELF-UPLOAD PRIVATE ART GALLERY -->
-      <section id="tab-art" class="panel">
-        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px;">
-          <h2 style="color:var(--gold-bright); margin:0;">🎨 Private Art & Couture Gallery</h2>
-          <button class="btn btn-primary" onclick="startSlideshow()">▶ Start Gallery Slideshow</button>
-        </div>
-
-        <div class="dropzone" id="art-dropzone" onclick="document.getElementById('art-input').click()">
-          <div style="font-size:1.5rem; margin-bottom:6px;">🖼️</div>
-          <strong style="color:var(--gold-bright);">Tap or Drag & Drop Artworks & Couture Photos Here</strong>
-          <p style="margin:6px 0 0; font-size:0.8rem; color:var(--text-muted);">Supports JPG, PNG, WEBP, GIF · Stored privately offline on your device</p>
-          <input type="file" id="art-input" accept="image/*" multiple hidden onchange="handleArtUpload(this.files)" />
-        </div>
-
-        <div class="toolbar">
-          <input type="text" id="art-search" class="input" placeholder="Search title or artist..." oninput="renderArtGallery()" />
-          <select id="art-filter" onchange="renderArtGallery()">
-            <option value="ALL">All Collections</option>
-            <option value="FAV">★ Favorites Only</option>
-            <option value="Couture & Fashion">Couture & Fashion</option>
-            <option value="Fine Art & Oil">Fine Art & Oil</option>
-            <option value="24K Jewelry & Objects">24K Jewelry & Objects</option>
-            <option value="Architecture & Estates">Architecture & Estates</option>
-            <option value="Private Archive">Private Archive</option>
-          </select>
-          <select id="art-upload-cat" title="Default collection for new uploads">
-            <option value="Couture & Fashion">Upload to: Couture & Fashion</option>
-            <option value="Fine Art & Oil">Upload to: Fine Art & Oil</option>
-            <option value="24K Jewelry & Objects">Upload to: 24K Jewelry & Objects</option>
-            <option value="Architecture & Estates">Upload to: Architecture & Estates</option>
-            <option value="Private Archive">Upload to: Private Archive</option>
-          </select>
-        </div>
-
-        <div class="media-grid" id="art-grid"></div>
-      </section>
-
-      <!-- TAB 3: VIDEO LIBRARY VAULT -->
-      <section id="tab-videos" class="panel">
-        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px;">
-          <h2 style="color:var(--gold-bright); margin:0;">🎬 Sovereign Video Library Vault</h2>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <label style="font-size:0.8rem; color:var(--text-muted);">Intro Length:</label>
-            <select id="intro-duration-select" onchange="saveIntroDuration(this.value)">
-              <option value="5000">5.0 Seconds</option>
-              <option value="7500" selected>7.5 Seconds (Default)</option>
-              <option value="10000">10.0 Seconds</option>
+      <!-- 2. VIDEO LIBRARY -->
+      <section id="tab-videos" class="view-section">
+        <div class="section-head">
+          <h2>Offline Video Library Vault</h2>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <label style="font-size:0.78rem; color:var(--text-muted);">Intro Duration:</label>
+            <select id="intro-duration-select" style="width:auto;" onchange="saveIntroDuration(this.value)">
+              <option value="5000">5.0s</option>
+              <option value="7500" selected>7.5s</option>
+              <option value="10000">10.0s</option>
             </select>
           </div>
         </div>
-
-        <div class="dropzone" id="video-dropzone" onclick="document.getElementById('video-input').click()">
-          <div style="font-size:1.5rem; margin-bottom:6px;">🎞️</div>
-          <strong style="color:var(--gold-bright);">Tap or Drag & Drop Reels (.MP4, .WEBM, .MOV)</strong>
-          <p style="margin:6px 0 0; font-size:0.8rem; color:var(--text-muted);">Saves offline to your Vault · Set any reel as your Custom Launch Intro</p>
-          <input type="file" id="video-input" accept="video/*" multiple hidden onchange="handleVideoUpload(this.files)" />
-        </div>
-
-        <div class="toolbar">
-          <input type="text" id="video-search" class="input" placeholder="Search video library..." oninput="renderVideoLibrary()" />
-          <select id="video-filter" onchange="renderVideoLibrary()">
-            <option value="ALL">All Reels</option>
-            <option value="FAV">★ Favorites</option>
-            <option value="Cinema Reels">Cinema Reels</option>
-            <option value="Art & Couture">Art & Couture</option>
-            <option value="Valet & Jets">Valet & Jets</option>
-            <option value="VIP Events">VIP Events</option>
-          </select>
-          <select id="video-upload-cat">
-            <option value="Cinema Reels">Upload to: Cinema Reels</option>
-            <option value="Art & Couture">Upload to: Art & Couture</option>
-            <option value="Valet & Jets">Upload to: Valet & Jets</option>
-            <option value="VIP Events">Upload to: VIP Events</option>
-          </select>
-        </div>
-
+        <label class="dropzone" style="display:block;">
+          <strong style="color:var(--gold-light);">+ Upload .MP4 / .WebM / .MOV Reels to Offline Vault</strong>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px;">Saved locally in IndexedDB · Set any video as your custom launch intro</p>
+          <input type="file" accept="video/*" multiple style="display:none;" onchange="handleVideoUpload(event)" />
+        </label>
         <div class="media-grid" id="video-grid"></div>
       </section>
 
-      <!-- TAB 4: VALET & HANGAR -->
-      <section id="tab-valet" class="panel">
-        <h2 style="color:var(--gold-bright); margin-top:0;">🚁 Valet Garage & Private Tarmac Hangar</h2>
-        <div class="toolbar">
-          <input type="text" id="fleet-name" class="input" placeholder="Aircraft Tail # or Coach Model..." />
-          <select id="fleet-type">
-            <option value="Private Jet">✈️ Private Jet</option>
-            <option value="Chauffeur Coach">🚘 Chauffeur Coach</option>
-            <option value="Yacht Tender">🛥️ Yacht Tender</option>
-          </select>
-          <button class="btn btn-primary" onclick="addFleetLog()">+ Log Arrival</button>
+      <!-- 3. ART GALLERY -->
+      <section id="tab-gallery" class="view-section">
+        <div class="section-head">
+          <h2>Private Art & Couture Gallery</h2>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <select id="gallery-frame-select" style="width:auto;" onchange="updateGalleryFrame(this.value)">
+              <option value="frame-gold">Frame: 24K Carved Gold</option>
+              <option value="frame-obsidian">Frame: Obsidian Lacquer</option>
+              <option value="frame-mat">Frame: Gallery White Mat</option>
+              <option value="">Frame: Frameless</option>
+            </select>
+            <button class="btn-gold" onclick="startExhibition()">🖼 Exhibition Slideshow</button>
+          </div>
         </div>
-        <div class="dept-grid" id="fleet-list"></div>
+        <label class="dropzone" style="display:block;">
+          <strong style="color:var(--gold-light);">+ Self-Upload Artworks & Couture Photos (.JPG, .PNG, .WEBP)</strong>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px;">Stored offline in your private vault with custom framing & curator notes</p>
+          <input type="file" accept="image/*" multiple style="display:none;" onchange="handleArtUpload(event)" />
+        </label>
+        <div class="media-grid" id="art-grid"></div>
       </section>
 
-      <!-- TAB 5: VIP PASS -->
-      <section id="tab-vip" class="panel">
-        <h2 style="color:var(--gold-bright); margin-top:0;">👑 Founder's Sovereign Key</h2>
-        <div class="card" style="max-width:460px; border:1px solid var(--gold); background:linear-gradient(135deg,#3a0712,#160105);">
-          <div class="dept-num">MEVUNAI MOMENT™ COUNTRY CLUB, INC ®</div>
-          <h3 style="font-size:1.3rem; margin:10px 0;">SOVEREIGN FOUNDER PASS</h3>
-          <p id="vip-holder-display" style="color:var(--gold-bright); font-size:1rem; margin-bottom:12px;">MEMBER: FOUNDER · TIER INFINITE</p>
-          <input type="text" id="vip-name-input" class="input" style="width:100%; margin-bottom:10px;" placeholder="Customize Member Name..." oninput="document.getElementById('vip-holder-display').textContent = 'MEMBER: ' + (this.value.toUpperCase() || 'FOUNDER · TIER INFINITE')" />
-          <div style="font-size:0.75rem; color:var(--text-muted);">ALL-ACCESS CLEARANCE · 13 SUITES · PRIVATE TARMAC · ART VAULT</div>
+      <!-- 4. VALET & HANGAR -->
+      <section id="tab-valet" class="view-section">
+        <div class="section-head">
+          <h2>Valet Garage & Private Jet Hangar</h2>
+        </div>
+        <div class="panel-box">
+          <div class="form-row">
+            <input id="valet-type" placeholder="Type (e.g., Maybach S680 / Gulfstream G700)" />
+            <input id="valet-tag" placeholder="Plate / Tail Number (e.g., N109MM)" />
+            <input id="valet-bay" placeholder="Bay / Hangar Slot (e.g., Sovereign Bay 01)" />
+          </div>
+          <button class="btn-gold" onclick="addValetEntry()">+ Register Arrival</button>
+        </div>
+        <div class="dept-grid" id="valet-list"></div>
+      </section>
+
+      <!-- 5. VIP & GUEST PASS STUDIO -->
+      <section id="tab-vip" class="view-section">
+        <div class="section-head">
+          <h2>24K VIP & Guest Day-Pass Studio</h2>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:24px; align-items:start;">
+          <div class="panel-box">
+            <div class="form-row">
+              <input id="vip-name" value="FOUNDER · SOVEREIGN MEMBER" oninput="renderVipCard()" placeholder="Member or Guest Name" />
+              <select id="vip-tier" onchange="renderVipCard()">
+                <option value="FOUNDER'S SOVEREIGN KEY">Founder's Sovereign Key</option>
+                <option value="GUEST DAY-PASS · ALL SUITES">Guest Day-Pass · All Suites</option>
+                <option value="PRIVATE TARMAC & HANGAR ACCESS">Private Tarmac & Hangar Access</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <input id="vip-code" value="MMCC-001-24K" oninput="renderVipCard()" placeholder="Pass / Valet Code" />
+              <input id="vip-date" value="PERPETUAL ACCESS" oninput="renderVipCard()" placeholder="Valid Date" />
+            </div>
+            <button class="btn-gold" onclick="downloadVipPng()">⬇ Download Pass as PNG</button>
+          </div>
+
+          <div class="vip-preview" id="vip-card-visual">
+            <div style="font-size:0.72rem; letter-spacing:0.2em; color:var(--gold);">MEVUNAI MOMENT™ COUNTRY CLUB</div>
+            <div id="card-tier-display" style="font-size:1.15rem; font-weight:700; color:var(--gold-light); margin:12px 0 6px;">FOUNDER'S SOVEREIGN KEY</div>
+            <div id="card-name-display" style="font-size:1rem; letter-spacing:0.08em; margin-bottom:18px;">FOUNDER · SOVEREIGN MEMBER</div>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); border-top:1px solid var(--gold-dim); padding-top:12px;">
+              <span id="card-code-display">ID: MMCC-001-24K</span>
+              <span id="card-date-display">PERPETUAL ACCESS</span>
+            </div>
+          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- === ART LIGHTBOX MODAL === -->
-  <div class="modal" id="art-modal">
-    <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <strong style="color:var(--gold-bright);" id="modal-art-header">Artwork Curator View</strong>
-        <div style="display:flex; gap:8px;">
-          <button class="btn" onclick="stepLightbox(-1)">◀ Prev</button>
-          <button class="btn" onclick="stepLightbox(1)">Next ▶</button>
-          <button class="btn" onclick="closeArtModal()">✕ Close</button>
-        </div>
-      </div>
-      <img id="modal-art-img" src="" alt="Artwork" />
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;">
-        <input type="text" id="edit-art-title" class="input" placeholder="Artwork Title" />
-        <input type="text" id="edit-art-artist" class="input" placeholder="Artist / Fashion House" />
-        <select id="edit-art-cat">
-          <option value="Couture & Fashion">Couture & Fashion</option>
-          <option value="Fine Art & Oil">Fine Art & Oil</option>
-          <option value="24K Jewelry & Objects">24K Jewelry & Objects</option>
-          <option value="Architecture & Estates">Architecture & Estates</option>
-          <option value="Private Archive">Private Archive</option>
-        </select>
-        <input type="text" id="edit-art-notes" class="input" placeholder="Curator notes or provenance..." />
-      </div>
-      <div style="display:flex; gap:10px; margin-top:12px;">
-        <button class="btn btn-primary" onclick="saveArtMetadata()">💾 Save Curator Details</button>
-        <a id="download-art-link" class="btn" download="artwork.png">⬇ Download Copy</a>
-      </div>
-    </div>
+  <!-- MOBILE BOTTOM BAR -->
+  <div class="mobile-nav">
+    <button class="btn-outline" onclick="switchTab('depts')">🏛 Suites</button>
+    <button class="btn-outline" onclick="switchTab('videos')">🎬 Videos</button>
+    <button class="btn-outline" onclick="switchTab('gallery')">🎨 Art</button>
+    <button class="btn-outline" onclick="switchTab('vip')">👑 VIP</button>
   </div>
 
-  <!-- === THEATRE MODAL === -->
-  <div class="modal" id="theatre-modal">
-    <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <strong style="color:var(--gold-bright);" id="theatre-title">Sovereign Cinema Theatre</strong>
-        <button class="btn" onclick="closeTheatre()">✕ Exit Theatre</button>
-      </div>
-      <video id="theatre-video" controls playsinline></video>
-    </div>
+  <!-- UNIVERSAL MODAL -->
+  <div class="modal-backdrop" id="universal-modal" onclick="if(event.target===this) closeModal()">
+    <div class="modal-box" id="modal-content"></div>
   </div>
 
   <script>
-    /* === 13 DEPARTMENTS DATA === */
     const DEPARTMENTS = [
-      ["01", "Sovereign Reception & Concierge", "24/7 diplomatic arrival desk, private itinerary curation, and member clearance."],
-      ["02", "Haute Couture & Atelier Salon", "Bespoke tailoring, archival runway fittings, and private trunk showings."],
-      ["03", "Fine Art & Antiquities Vault", "Museum-grade climate-controlled gallery and private acquisition advisory."],
-      ["04", "Private Aviation & Helipad", "Direct tarmac transfers, Gulfstream charter dispatch, and customs clearance."],
-      ["05", "Grand Horology & 24K Jewels", "Rare timepiece restoration, high-jewelry commissions, and vault custody."],
-      ["06", "Gastronomy & Vintage Cellar", "Michelin-caliber tasting rooms and rare pre-phylloxera wine holdings."],
-      ["07", "Wellness, Spa & Longevity", "Thermal hydrotherapy suites, cellular recovery, and holistic sanctuaries."],
-      ["08", "Equestrian & Polo Grounds", "Championship stables, private thoroughbred boarding, and seasonal matches."],
-      ["09", "Yachting & Marina Club", "Deep-water superyacht berths, Mediterranean tenders, and maritime provisioning."],
-      ["10", "Cinema & Acoustic Screening", "Private 35mm/4K Dolby screening room and live chamber performances."],
-      ["11", "Sovereign Library & Archives", "First-edition manuscripts, quiet study rotundas, and diplomatic salons."],
-      ["12", "Estate & Philanthropy Office", "Family office governance, global foundation grants, and legacy planning."],
-      ["13", "Midnight Cigar & Cognac Lounge", "Hand-rolled private reserves, rare cognac decanters, and rooftop terrace."]
+      { id: 1, name: "01 · Sovereign Executive Concierge", desc: "24/7 global diplomatic travel, private charters & bespoke lifestyle command." },
+      { id: 2, name: "02 · Haute Couture & Atelier", desc: "Private runway archives, custom tailoring & seasonal maison lookbooks." },
+      { id: 3, name: "03 · Fine Art & Antiquités", desc: "Curated museum acquisitions, private auctions & vault exhibitions." },
+      { id: 4, name: "04 · Aviation & Private Hangar", desc: "Gulfstream & rotorcraft dispatch, FBO clearances & tarmac telemetry." },
+      { id: 5, name: "05 · Motorcar & Coachbuilt Fleet", desc: "Bespoke hypercars, armored chauffeur fleet & subterranean valet bays." },
+      { id: 6, name: "06 · Yachting & Maritime Club", desc: "Superyacht berths, Mediterranean tenders & oceanic expeditions." },
+      { id: 7, name: "07 · Culinary & Grand Cellar", desc: "Michelin private dining, rare vintages & sommelier tastings." },
+      { id: 8, name: "08 · Horology & High Jewelry", desc: "24K bespoke commissions, tourbillon vaults & gemological provenance." },
+      { id: 9, name: "09 · Wellness, Longevity & Spa", desc: "Regenerative therapies, thermal sanctuaries & private performance suites." },
+      { id: 10, name: "10 · Estates & Architectural Sanctuaries", desc: "Global penthouses, private islands & architectural blueprints." },
+      { id: 11, name: "11 · Sovereign Cinema & Acoustics", desc: "Private screening rooms, master reels & audiophile lounge sessions." },
+      { id: 12, name: "12 · Philanthropy & Legacy Foundation", desc: "Cultural patronage, endowments & global sovereign initiatives." },
+      { id: 13, name: "13 · Private Treasury & Member Keys", desc: "Credential issuance, guest day-passes & encrypted vault backups." }
     ];
 
-    document.getElementById('dept-grid').innerHTML = DEPARTMENTS.map(([num, title, desc]) => `
-      <div class="card">
-        <div class="dept-num">SUITE ${num}</div>
-        <h3>${title}</h3>
-        <p>${desc}</p>
-      </div>
-    `).join('');
-
-    /* === INDEXEDDB SETUP (VIDEOS + ARTWORK) === */
     let db;
-    const DB_NAME = 'MMCC_Sovereign_Vault_v27';
-    const request = indexedDB.open(DB_NAME, 1);
-    request.onupgradeneeded = (e) => {
-      const database = e.target.result;
-      if (!database.objectStoreNames.contains('videos')) {
-        database.createObjectStore('videos', { keyPath: 'id', autoIncrement: true });
-      }
-      if (!database.objectStoreNames.contains('artworks')) {
-        database.createObjectStore('artworks', { keyPath: 'id', autoIncrement: true });
-      }
-    };
-    request.onsuccess = (e) => {
-      db = e.target.result;
-      renderVideoLibrary();
-      renderArtGallery();
-      launchSplash();
+    let state = {
+      videos: [],
+      art: [],
+      audio: [],
+      valet: JSON.parse(localStorage.getItem('mmcc_valet_v28') || '[]'),
+      deptNotes: JSON.parse(localStorage.getItem('mmcc_dept_notes_v28') || '{}'),
+      introVideoId: localStorage.getItem('mmcc_intro_vid_v28') || null,
+      introDuration: parseInt(localStorage.getItem('mmcc_intro_dur_v28') || '7500', 10),
+      galleryFrame: localStorage.getItem('mmcc_gallery_frame_v28') || 'frame-gold',
+      currentVideoIdx: 0
     };
 
-    /* === 7.5s CINEMATIC SPLASH INTRO === */
-    let splashTimer = null;
-    function getIntroDuration() {
-      return parseInt(localStorage.getItem('mmcc_intro_duration') || '7500', 10);
-    }
-    function saveIntroDuration(val) {
-      localStorage.setItem('mmcc_intro_duration', val);
-    }
-    const savedDur = localStorage.getItem('mmcc_intro_duration');
-    if (savedDur) document.getElementById('intro-duration-select').value = savedDur;
-
-    function launchSplash() {
-      const splash = document.getElementById('splash-intro');
-      const bar = document.getElementById('splash-bar');
-      const dur = getIntroDuration();
-      splash.classList.remove('hidden');
-      bar.style.transition = 'none';
-      bar.style.width = '0%';
-
-      const customIntroId = localStorage.getItem('mmcc_custom_intro_id');
-      const splashVid = document.getElementById('splash-video');
-      if (customIntroId && db) {
-        const tx = db.transaction('videos', 'readonly');
-        tx.objectStore('videos').get(Number(customIntroId)).onsuccess = (ev) => {
-          const item = ev.target.result;
-          if (item && item.blob) {
-            splashVid.src = URL.createObjectURL(item.blob);
-            splashVid.style.display = 'block';
-            splashVid.play().catch(() => {});
-          }
+    /* INDEXEDDB SETUP */
+    function initDB() {
+      return new Promise((resolve) => {
+        const req = indexedDB.open('MMCC_Sovereign_Suite_v28', 1);
+        req.onupgradeneeded = (e) => {
+          const d = e.target.result;
+          if (!d.objectStoreNames.contains('videos')) d.createObjectStore('videos', { keyPath: 'id' });
+          if (!d.objectStoreNames.contains('art')) d.createObjectStore('art', { keyPath: 'id' });
+          if (!d.objectStoreNames.contains('audio')) d.createObjectStore('audio', { keyPath: 'id' });
         };
-      } else {
-        splashVid.style.display = 'none';
-      }
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          bar.style.transition = `width ${dur}ms linear`;
-          bar.style.width = '100%';
-        });
+        req.onsuccess = (e) => { db = e.target.result; resolve(); };
       });
-
-      clearTimeout(splashTimer);
-      splashTimer = setTimeout(closeSplash, dur);
     }
 
-    function closeSplash() {
-      clearTimeout(splashTimer);
-      document.getElementById('splash-intro').classList.add('hidden');
-      const splashVid = document.getElementById('splash-video');
-      splashVid.pause();
+    function dbGetAll(store) {
+      return new Promise((res) => {
+        const tx = db.transaction(store, 'readonly');
+        const req = tx.objectStore(store).getAll();
+        req.onsuccess = () => res(req.result || []);
+      });
     }
 
+    function dbPut(store, item) {
+      return new Promise((res) => {
+        const tx = db.transaction(store, 'readwrite');
+        tx.objectStore(store).put(item);
+        tx.oncomplete = () => res();
+      });
+    }
+
+    function dbDelete(store, id) {
+      return new Promise((res) => {
+        const tx = db.transaction(store, 'readwrite');
+        tx.objectStore(store).delete(id);
+        tx.oncomplete = () => res();
+      });
+    }
+
+    /* SPLASH & GOLD CHIME */
+    let splashTimer;
     function playGoldChime() {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -743,349 +515,440 @@
           const gain = ctx.createGain();
           osc.type = 'sine';
           osc.frequency.value = freq;
-          gain.gain.setValueAtTime(0.001, ctx.currentTime + i * 0.14);
-          gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + i * 0.14 + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.14 + 1.8);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + i * 0.14);
-          osc.stop(ctx.currentTime + i * 0.14 + 1.9);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.05, ctx.currentTime + 0.2 + i * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 2.4);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(); osc.stop(ctx.currentTime + 2.5);
         });
       } catch (e) {}
     }
 
-    /* === GOLD MOTION VISUALIZER === */
-    const canvas = document.getElementById('visualizer-canvas');
-    const cctx = canvas.getContext('2d');
-    let phase = 0;
-    function drawVisualizer() {
-      phase += 0.025;
-      cctx.fillStyle = '#120104';
-      cctx.fillRect(0, 0, canvas.width, canvas.height);
-      cctx.strokeStyle = 'rgba(212, 175, 55, 0.55)';
-      cctx.lineWidth = 1.5;
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2 + 8;
-      for (let i = 0; i < 4; i++) {
-        const s = 32 + i * 14 + Math.sin(phase + i) * 4;
-        cctx.beginPath();
-        cctx.moveTo(cx, cy - s);
-        cctx.lineTo(cx + s * 1.15, cy + s * 0.7);
-        cctx.lineTo(cx - s * 1.15, cy + s * 0.7);
-        cctx.closePath();
-        cctx.stroke();
-      }
-      requestAnimationFrame(drawVisualizer);
-    }
-    drawVisualizer();
+    function startSplash() {
+      const splash = document.getElementById('splash-screen');
+      const bar = document.getElementById('splash-bar');
+      const vidEl = document.getElementById('splash-video');
+      splash.classList.remove('hidden');
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
 
-    /* === NAVIGATION & THEME === */
-    function switchTab(tabId, btn) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('tab-' + tabId).classList.add('active');
+      const customIntro = state.videos.find(v => v.id === state.introVideoId);
+      if (customIntro && customIntro.blob) {
+        vidEl.src = URL.createObjectURL(customIntro.blob);
+        vidEl.style.display = 'block';
+        vidEl.play().catch(() => {});
+      } else {
+        vidEl.style.display = 'none';
+      }
+
+      requestAnimationFrame(() => {
+        bar.style.transition = `width ${state.introDuration}ms linear`;
+        bar.style.width = '100%';
+      });
+      clearTimeout(splashTimer);
+      splashTimer = setTimeout(closeSplash, state.introDuration);
+    }
+
+    function closeSplash() {
+      clearTimeout(splashTimer);
+      document.getElementById('splash-screen').classList.add('hidden');
+      const vidEl = document.getElementById('splash-video');
+      vidEl.pause();
+    }
+
+    function replaySplash() {
+      playGoldChime();
+      startSplash();
+    }
+
+    function saveIntroDuration(ms) {
+      state.introDuration = parseInt(ms, 10);
+      localStorage.setItem('mmcc_intro_dur_v28', ms);
+    }
+
+    /* NAVIGATION & THEME */
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
+      document.body.classList.remove('mobile-drawer-open');
     }
+
+    function toggleSidebar() {
+      if (window.innerWidth <= 900) {
+        document.body.classList.toggle('mobile-drawer-open');
+      } else {
+        document.body.classList.toggle('sidebar-collapsed');
+      }
+    }
+
     function toggleTheme() {
       document.body.classList.toggle('theme-emerald');
     }
 
-    /* === ART GALLERY FUNCTIONS === */
-    let cachedArtworks = [];
-    let activeLightboxIndex = 0;
-    let slideshowInterval = null;
-
-    function handleArtUpload(files) {
-      if (!files || !files.length || !db) return;
-      const category = document.getElementById('art-upload-cat').value;
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const tx = db.transaction('artworks', 'readwrite');
-          tx.objectStore('artworks').add({
-            title: file.name.replace(/\.[^/.]+$/, ''),
-            artist: 'Private Collection',
-            category,
-            notes: '',
-            favorite: false,
-            dataUrl: reader.result,
-            createdAt: Date.now()
-          });
-          tx.oncomplete = () => renderArtGallery();
-        };
-        reader.readAsDataURL(file);
-      });
+    /* 13 DEPARTMENTS */
+    function renderDepartments() {
+      const grid = document.getElementById('dept-grid');
+      grid.innerHTML = DEPARTMENTS.map(d => {
+        const note = state.deptNotes[d.id] || {};
+        return `
+          <div class="dept-card" onclick="openDeptModal(${d.id})">
+            <div class="dept-num">SUITE ${String(d.id).padStart(2, '0')}</div>
+            <div class="dept-name">${d.name.replace(/^\d+\s·\s/, '')}</div>
+            <div class="dept-desc">${d.desc}</div>
+            ${note.memo ? `<div style="margin-top:10px; font-size:0.74rem; color:var(--gold-light);">📌 ${note.memo.slice(0, 48)}...</div>` : ''}
+          </div>
+        `;
+      }).join('');
     }
 
-    function renderArtGallery() {
-      if (!db) return;
-      const search = document.getElementById('art-search').value.toLowerCase();
-      const filter = document.getElementById('art-filter').value;
-      const tx = db.transaction('artworks', 'readonly');
-      tx.objectStore('artworks').getAll().onsuccess = (e) => {
-        let items = e.target.result || [];
-        items.sort((a, b) => b.createdAt - a.createdAt);
-        items = items.filter(item => {
-          const matchText = item.title.toLowerCase().includes(search) || item.artist.toLowerCase().includes(search);
-          if (!matchText) return false;
-          if (filter === 'ALL') return true;
-          if (filter === 'FAV') return item.favorite;
-          return item.category === filter;
-        });
-        cachedArtworks = items;
-        const grid = document.getElementById('art-grid');
-        if (!items.length) {
-          grid.innerHTML = `<div class="card" style="grid-column:1/-1; text-align:center;">No artworks in this view yet. Upload photos above to curate your private gallery.</div>`;
-          return;
-        }
-        grid.innerHTML = items.map((item, idx) => `
+    function openDeptModal(id) {
+      const d = DEPARTMENTS.find(x => x.id === id);
+      const saved = state.deptNotes[id] || { memo: '', pinnedVideo: '', pinnedArt: '' };
+      const vidOptions = state.videos.map(v => `<option value="${v.id}" ${saved.pinnedVideo===v.id?'selected':''}>${v.name}</option>`).join('');
+      const artOptions = state.art.map(a => `<option value="${a.id}" ${saved.pinnedArt===a.id?'selected':''}>${a.name}</option>`).join('');
+
+      document.getElementById('modal-content').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h3 style="color:var(--gold-light);">${d.name}</h3>
+          <button class="btn-outline" onclick="closeModal()">✕ Close</button>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:16px;">${d.desc}</p>
+        <label style="font-size:0.78rem; color:var(--gold);">Pin Vault Reel to Suite:</label>
+        <select id="dept-pin-vid" style="margin:6px 0 12px;"><option value="">— None —</option>${vidOptions}</select>
+        <label style="font-size:0.78rem; color:var(--gold);">Pin Gallery Artwork to Suite:</label>
+        <select id="dept-pin-art" style="margin:6px 0 12px;"><option value="">— None —</option>${artOptions}</select>
+        <label style="font-size:0.78rem; color:var(--gold);">Suite Concierge Notes:</label>
+        <textarea id="dept-memo" rows="3" style="margin:6px 0 14px;" placeholder="Enter private directives, guest preferences, or itinerary notes...">${saved.memo || ''}</textarea>
+        <button class="btn-gold" onclick="saveDeptNote(${id})">Save Suite Brief</button>
+      `;
+      document.getElementById('universal-modal').classList.add('open');
+    }
+
+    function saveDeptNote(id) {
+      state.deptNotes[id] = {
+        pinnedVideo: document.getElementById('dept-pin-vid').value,
+        pinnedArt: document.getElementById('dept-pin-art').value,
+        memo: document.getElementById('dept-memo').value
+      };
+      localStorage.setItem('mmcc_dept_notes_v28', JSON.stringify(state.deptNotes));
+      renderDepartments();
+      closeModal();
+    }
+
+    /* VIDEO LIBRARY */
+    async function handleVideoUpload(e) {
+      const files = Array.from(e.target.files || []);
+      for (const f of files) {
+        const item = { id: 'vid_' + Date.now() + '_' + Math.random().toString(36).slice(2,6), name: f.name, blob: f };
+        await dbPut('videos', item);
+      }
+      state.videos = await dbGetAll('videos');
+      renderVideos();
+      if (state.videos.length && !document.getElementById('sidebar-video').src) playVideoAt(0);
+    }
+
+    function renderVideos() {
+      const grid = document.getElementById('video-grid');
+      if (!state.videos.length) {
+        grid.innerHTML = `<p style="color:var(--text-muted); font-size:0.86rem;">No videos uploaded yet. Drop .mp4 reels above to populate your offline vault.</p>`;
+        return;
+      }
+      grid.innerHTML = state.videos.map((v, idx) => {
+        const url = URL.createObjectURL(v.blob);
+        const isIntro = state.introVideoId === v.id;
+        return `
           <div class="media-card">
-            <img class="media-thumb" src="${item.dataUrl}" alt="${item.title}" onclick="openArtModal(${idx})" />
+            <video class="media-thumb" src="${url}" muted preload="metadata" onclick="playVideoAt(${idx})"></video>
             <div class="media-body">
-              <div class="media-title">${item.title}</div>
-              <div class="media-meta">${item.artist} · ${item.category}</div>
+              <div class="media-title">${v.name}</div>
+              <div class="media-meta">${(v.blob.size / (1024*1024)).toFixed(1)} MB ${isIntro ? '· ★ Launch Intro' : ''}</div>
               <div class="media-actions">
-                <button class="btn" onclick="openArtModal(${idx})">🔍 Inspect</button>
-                <button class="btn" onclick="toggleArtFav(${item.id})">${item.favorite ? '★' : '☆'}</button>
-                <button class="btn" onclick="deleteArt(${item.id})">🗑</button>
+                <button class="btn-gold" onclick="playVideoAt(${idx})">▶ Play</button>
+                <button class="btn-outline" onclick="setAsIntro('${v.id}')">✨ Intro</button>
+                <button class="btn-outline" onclick="deleteVideo('${v.id}')">🗑</button>
               </div>
             </div>
           </div>
-        `).join('');
-      };
+        `;
+      }).join('');
     }
 
-    function toggleArtFav(id) {
-      const tx = db.transaction('artworks', 'readwrite');
-      const store = tx.objectStore('artworks');
-      store.get(id).onsuccess = (e) => {
-        const item = e.target.result;
-        if (item) {
-          item.favorite = !item.favorite;
-          store.put(item);
-        }
-      };
-      tx.oncomplete = () => renderArtGallery();
+    function playVideoAt(idx) {
+      if (!state.videos.length) return;
+      state.currentVideoIdx = (idx + state.videos.length) % state.videos.length;
+      const v = state.videos[state.currentVideoIdx];
+      const player = document.getElementById('sidebar-video');
+      player.src = URL.createObjectURL(v.blob);
+      player.play().catch(() => {});
+      document.getElementById('cinema-label').textContent = v.name.slice(0, 18);
+      // Auto-duck lounge audio
+      const lounge = document.getElementById('lounge-audio');
+      if (!lounge.paused) lounge.volume = 0.15;
     }
 
-    function deleteArt(id) {
-      const tx = db.transaction('artworks', 'readwrite');
-      tx.objectStore('artworks').delete(id);
-      tx.oncomplete = () => renderArtGallery();
+    function prevVideo() { playVideoAt(state.currentVideoIdx - 1); }
+    function nextVideo() { playVideoAt(state.currentVideoIdx + 1); }
+
+    function setAsIntro(id) {
+      state.introVideoId = id;
+      localStorage.setItem('mmcc_intro_vid_v28', id);
+      renderVideos();
     }
 
-    function openArtModal(idx) {
-      if (!cachedArtworks.length) return;
-      activeLightboxIndex = (idx + cachedArtworks.length) % cachedArtworks.length;
-      const item = cachedArtworks[activeLightboxIndex];
-      document.getElementById('modal-art-img').src = item.dataUrl;
-      document.getElementById('modal-art-header').textContent = `${item.title} (${activeLightboxIndex + 1} of ${cachedArtworks.length})`;
-      document.getElementById('edit-art-title').value = item.title;
-      document.getElementById('edit-art-artist').value = item.artist;
-      document.getElementById('edit-art-cat').value = item.category;
-      document.getElementById('edit-art-notes').value = item.notes || '';
-      document.getElementById('download-art-link').href = item.dataUrl;
-      document.getElementById('download-art-link').download = `${item.title}.png`;
-      document.getElementById('art-modal').classList.add('open');
-    }
-
-    function stepLightbox(dir) {
-      openArtModal(activeLightboxIndex + dir);
-    }
-
-    function closeArtModal() {
-      clearInterval(slideshowInterval);
-      document.getElementById('art-modal').classList.remove('open');
-    }
-
-    function startSlideshow() {
-      if (!cachedArtworks.length) return;
-      openArtModal(0);
-      clearInterval(slideshowInterval);
-      slideshowInterval = setInterval(() => stepLightbox(1), 4500);
-    }
-
-    function saveArtMetadata() {
-      const item = cachedArtworks[activeLightboxIndex];
-      if (!item) return;
-      item.title = document.getElementById('edit-art-title').value || item.title;
-      item.artist = document.getElementById('edit-art-artist').value || 'Private Collection';
-      item.category = document.getElementById('edit-art-cat').value;
-      item.notes = document.getElementById('edit-art-notes').value;
-      const tx = db.transaction('artworks', 'readwrite');
-      tx.objectStore('artworks').put(item);
-      tx.oncomplete = () => {
-        renderArtGallery();
-        openArtModal(activeLightboxIndex);
-      };
-    }
-
-    /* === VIDEO LIBRARY VAULT === */
-    let cachedVideos = [];
-    let currentReelIdx = 0;
-    let isLooping = false;
-
-    function handleVideoUpload(files) {
-      if (!files || !files.length || !db) return;
-      const category = document.getElementById('video-upload-cat').value;
-      Array.from(files).forEach(file => {
-        const tx = db.transaction('videos', 'readwrite');
-        tx.objectStore('videos').add({
-          title: file.name.replace(/\.[^/.]+$/, ''),
-          category,
-          favorite: false,
-          sizeMB: (file.size / (1024 * 1024)).toFixed(1),
-          blob: file,
-          createdAt: Date.now()
-        });
-        tx.oncomplete = () => renderVideoLibrary();
-      });
-    }
-
-    function renderVideoLibrary() {
-      if (!db) return;
-      const search = document.getElementById('video-search').value.toLowerCase();
-      const filter = document.getElementById('video-filter').value;
-      const tx = db.transaction('videos', 'readonly');
-      tx.objectStore('videos').getAll().onsuccess = (e) => {
-        let items = e.target.result || [];
-        items.sort((a, b) => b.createdAt - a.createdAt);
-        items = items.filter(v => {
-          if (!v.title.toLowerCase().includes(search)) return false;
-          if (filter === 'ALL') return true;
-          if (filter === 'FAV') return v.favorite;
-          return v.category === filter;
-        });
-        cachedVideos = items;
-        document.getElementById('reel-counter').textContent = `${items.length ? currentReelIdx + 1 : 0} / ${items.length}`;
-        const grid = document.getElementById('video-grid');
-        const introId = localStorage.getItem('mmcc_custom_intro_id');
-        if (!items.length) {
-          grid.innerHTML = `<div class="card" style="grid-column:1/-1; text-align:center;">Your Video Library Vault is empty. Upload .MP4 or .WEBM reels above.</div>`;
-          return;
-        }
-        grid.innerHTML = items.map((v, idx) => {
-          const url = URL.createObjectURL(v.blob);
-          const isIntro = String(v.id) === String(introId);
-          return `
-            <div class="media-card">
-              <video class="media-thumb" src="${url}" muted preload="metadata" onclick="playReel(${idx})"></video>
-              <div class="media-body">
-                <div class="media-title">${v.title}</div>
-                <div class="media-meta">${v.category} · ${v.sizeMB} MB</div>
-                <div class="media-actions">
-                  <button class="btn btn-primary" onclick="playReel(${idx})">▶ Play</button>
-                  <button class="btn" onclick="setCustomIntro(${v.id})">${isIntro ? '✨ Active Intro' : '✨ Intro'}</button>
-                  <button class="btn" onclick="toggleVideoFav(${v.id})">${v.favorite ? '★' : '☆'}</button>
-                  <button class="btn" onclick="deleteVideo(${v.id})">🗑</button>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      };
-    }
-
-    function playReel(idx) {
-      if (!cachedVideos.length) return;
-      currentReelIdx = (idx + cachedVideos.length) % cachedVideos.length;
-      const v = cachedVideos[currentReelIdx];
-      const sv = document.getElementById('sidebar-video');
-      sv.src = URL.createObjectURL(v.blob);
-      sv.style.display = 'block';
-      sv.loop = isLooping;
-      sv.play().catch(() => {});
-      document.getElementById('visualizer-canvas').style.display = 'none';
-      document.getElementById('now-playing-label').textContent = v.title.toUpperCase();
-      document.getElementById('reel-counter').textContent = `${currentReelIdx + 1} / ${cachedVideos.length}`;
-    }
-
-    function prevReel() { playReel(currentReelIdx - 1); }
-    function nextReel() { playReel(currentReelIdx + 1); }
-    function toggleLoop() {
-      isLooping = !isLooping;
-      document.getElementById('sidebar-video').loop = isLooping;
-      document.getElementById('loop-btn').style.borderColor = isLooping ? 'var(--gold)' : '';
+    async function deleteVideo(id) {
+      await dbDelete('videos', id);
+      state.videos = await dbGetAll('videos');
+      renderVideos();
     }
 
     function openTheatre() {
-      if (!cachedVideos.length) return;
-      const v = cachedVideos[currentReelIdx];
-      const tv = document.getElementById('theatre-video');
-      tv.src = URL.createObjectURL(v.blob);
-      document.getElementById('theatre-title').textContent = v.title;
-      document.getElementById('theatre-modal').classList.add('open');
-      tv.play().catch(() => {});
-    }
-    function closeTheatre() {
-      const tv = document.getElementById('theatre-video');
-      tv.pause();
-      document.getElementById('theatre-modal').classList.remove('open');
+      const player = document.getElementById('sidebar-video');
+      if (!player.src) return;
+      document.getElementById('modal-content').innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+          <h3 style="color:var(--gold-light);">Sovereign Theatre Mode</h3>
+          <button class="btn-outline" onclick="closeModal()">✕ Close</button>
+        </div>
+        <video src="${player.src}" controls autoplay style="width:100%; border-radius:14px; border:1px solid var(--gold);"></video>
+      `;
+      document.getElementById('universal-modal').classList.add('open');
     }
 
-    function setCustomIntro(id) {
-      const current = localStorage.getItem('mmcc_custom_intro_id');
-      if (String(current) === String(id)) {
-        localStorage.removeItem('mmcc_custom_intro_id');
-      } else {
-        localStorage.setItem('mmcc_custom_intro_id', String(id));
+    /* ART GALLERY */
+    async function handleArtUpload(e) {
+      const files = Array.from(e.target.files || []);
+      for (const f of files) {
+        const item = { id: 'art_' + Date.now() + '_' + Math.random().toString(36).slice(2,6), name: f.name.replace(/\.[^/.]+$/, ''), blob: f };
+        await dbPut('art', item);
       }
-      renderVideoLibrary();
+      state.art = await dbGetAll('art');
+      renderArt();
     }
 
-    function toggleVideoFav(id) {
-      const tx = db.transaction('videos', 'readwrite');
-      const store = tx.objectStore('videos');
-      store.get(id).onsuccess = (e) => {
-        const item = e.target.result;
-        if (item) { item.favorite = !item.favorite; store.put(item); }
-      };
-      tx.oncomplete = () => renderVideoLibrary();
+    function updateGalleryFrame(val) {
+      state.galleryFrame = val;
+      localStorage.setItem('mmcc_gallery_frame_v28', val);
+      renderArt();
     }
 
-    function deleteVideo(id) {
-      const tx = db.transaction('videos', 'readwrite');
-      tx.objectStore('videos').delete(id);
-      tx.oncomplete = () => renderVideoLibrary();
+    function renderArt() {
+      const grid = document.getElementById('art-grid');
+      if (!state.art.length) {
+        grid.innerHTML = `<p style="color:var(--text-muted); font-size:0.86rem;">Your private gallery is empty. Upload artworks or couture photography above.</p>`;
+        return;
+      }
+      grid.innerHTML = state.art.map((a, idx) => {
+        const url = URL.createObjectURL(a.blob);
+        return `
+          <div class="media-card">
+            <img class="media-thumb ${state.galleryFrame}" src="${url}" onclick="openArtLightbox(${idx})" />
+            <div class="media-body">
+              <div class="media-title">${a.name}</div>
+              <div class="media-actions">
+                <button class="btn-gold" onclick="openArtLightbox(${idx})">🔍 Inspect</button>
+                <button class="btn-outline" onclick="deleteArt('${a.id}')">🗑</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    /* === VALET & FLEET LOG === */
-    let fleetLogs = JSON.parse(localStorage.getItem('mmcc_fleet_logs') || '[{"name":"Gulfstream G700 · N109MM","type":"Private Jet","status":"Cleared · Hangar A"},{"name":"Rolls-Royce Phantom VIII","type":"Chauffeur Coach","status":"Staged · Porte-Cochère"}]');
-    function renderFleet() {
-      document.getElementById('fleet-list').innerHTML = fleetLogs.map((f, i) => `
-        <div class="card">
-          <div class="dept-num">${f.type.toUpperCase()}</div>
-          <h3>${f.name}</h3>
-          <p>${f.status}</p>
-          <button class="btn" style="margin-top:10px;" onclick="fleetLogs.splice(${i},1);localStorage.setItem('mmcc_fleet_logs',JSON.stringify(fleetLogs));renderFleet();">Release</button>
+    function openArtLightbox(idx) {
+      const a = state.art[idx];
+      if (!a) return;
+      const url = URL.createObjectURL(a.blob);
+      document.getElementById('modal-content').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h3 style="color:var(--gold-light);">${a.name}</h3>
+          <button class="btn-outline" onclick="closeModal()">✕ Close</button>
+        </div>
+        <div style="text-align:center;">
+          <img src="${url}" class="${state.galleryFrame}" style="max-width:100%; max-height:68vh; border-radius:8px;" />
+        </div>
+      `;
+      document.getElementById('universal-modal').classList.add('open');
+    }
+
+    let exhibitionTimer;
+    function startExhibition() {
+      if (!state.art.length) return;
+      let idx = 0;
+      openArtLightbox(idx);
+      clearInterval(exhibitionTimer);
+      exhibitionTimer = setInterval(() => {
+        if (!document.getElementById('universal-modal').classList.contains('open')) {
+          clearInterval(exhibitionTimer);
+          return;
+        }
+        idx = (idx + 1) % state.art.length;
+        openArtLightbox(idx);
+      }, 4500);
+    }
+
+    async function deleteArt(id) {
+      await dbDelete('art', id);
+      state.art = await dbGetAll('art');
+      renderArt();
+    }
+
+    /* AMBIENT LOUNGE AUDIO */
+    let synthPlaying = false;
+    let synthCtx, synthOsc;
+    async function handleAudioUpload(e) {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      const item = { id: 'aud_' + Date.now(), name: f.name, blob: f };
+      await dbPut('audio', item);
+      state.audio = await dbGetAll('audio');
+      const aud = document.getElementById('lounge-audio');
+      aud.src = URL.createObjectURL(f);
+      aud.loop = true;
+      aud.play();
+      document.getElementById('lounge-track-name').textContent = f.name;
+      document.getElementById('lounge-status').textContent = 'Playing';
+    }
+
+    function toggleLounge() {
+      const aud = document.getElementById('lounge-audio');
+      if (aud.src) {
+        if (aud.paused) { aud.volume = 0.6; aud.play(); document.getElementById('lounge-status').textContent = 'Playing'; }
+        else { aud.pause(); document.getElementById('lounge-status').textContent = 'Paused'; }
+        return;
+      }
+      if (!synthPlaying) {
+        synthCtx = new (window.AudioContext || window.webkitAudioContext)();
+        synthOsc = synthCtx.createOscillator();
+        const gain = synthCtx.createGain();
+        synthOsc.type = 'triangle';
+        synthOsc.frequency.value = 130.81;
+        gain.gain.value = 0.03;
+        synthOsc.connect(gain); gain.connect(synthCtx.destination);
+        synthOsc.start();
+        synthPlaying = true;
+        document.getElementById('lounge-status').textContent = 'Synth Active';
+      } else {
+        synthOsc.stop();
+        synthPlaying = false;
+        document.getElementById('lounge-status').textContent = 'Standby';
+      }
+    }
+
+    /* VALET & HANGAR */
+    function addValetEntry() {
+      const type = document.getElementById('valet-type').value.trim();
+      const tag = document.getElementById('valet-tag').value.trim();
+      const bay = document.getElementById('valet-bay').value.trim();
+      if (!type) return;
+      state.valet.unshift({ id: Date.now(), type, tag: tag || 'VIP-TAG', bay: bay || 'Bay 01' });
+      localStorage.setItem('mmcc_valet_v28', JSON.stringify(state.valet));
+      document.getElementById('valet-type').value = '';
+      document.getElementById('valet-tag').value = '';
+      document.getElementById('valet-bay').value = '';
+      renderValet();
+    }
+
+    function renderValet() {
+      document.getElementById('valet-list').innerHTML = state.valet.map(v => `
+        <div class="dept-card">
+          <div class="dept-num">${v.bay}</div>
+          <div class="dept-name">${v.type}</div>
+          <div class="dept-desc">Registry: ${v.tag}</div>
         </div>
       `).join('');
     }
-    function addFleetLog() {
-      const name = document.getElementById('fleet-name').value.trim();
-      if (!name) return;
-      fleetLogs.unshift({ name, type: document.getElementById('fleet-type').value, status: 'Active · Sovereign Tarmac' });
-      localStorage.setItem('mmcc_fleet_logs', JSON.stringify(fleetLogs));
-      document.getElementById('fleet-name').value = '';
-      renderFleet();
-    }
-    renderFleet();
 
-    /* === DRAG & DROP BINDINGS === */
-    [['art-dropzone', handleArtUpload], ['video-dropzone', handleVideoUpload]].forEach(([id, fn]) => {
-      const el = document.getElementById(id);
-      el.addEventListener('dragover', (e) => { e.preventDefault(); el.classList.add('dragover'); });
-      el.addEventListener('dragleave', () => el.classList.remove('dragover'));
-      el.addEventListener('drop', (e) => {
-        e.preventDefault();
-        el.classList.remove('dragover');
-        fn(e.dataTransfer.files);
-      });
+    /* VIP PASS & PNG EXPORT */
+    function renderVipCard() {
+      document.getElementById('card-name-display').textContent = document.getElementById('vip-name').value || 'SOVEREIGN MEMBER';
+      document.getElementById('card-tier-display').textContent = document.getElementById('vip-tier').value;
+      document.getElementById('card-code-display').textContent = 'ID: ' + (document.getElementById('vip-code').value || 'MMCC-001');
+      document.getElementById('card-date-display').textContent = document.getElementById('vip-date').value || 'PERPETUAL';
+    }
+
+    function downloadVipPng() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 900; canvas.height = 540;
+      const ctx = canvas.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 900, 540);
+      grad.addColorStop(0, '#3c0713'); grad.addColorStop(0.6, '#180207'); grad.addColorStop(1, '#4d380a');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 900, 540);
+      ctx.strokeStyle = '#d4af37'; ctx.lineWidth = 8;
+      ctx.strokeRect(20, 20, 860, 500);
+
+      ctx.fillStyle = '#d4af37'; ctx.font = 'bold 22px Georgia';
+      ctx.fillText('MEVUNAI MOMENT™ COUNTRY CLUB, INC ®', 56, 85);
+      ctx.fillStyle = '#f5df96'; ctx.font = 'bold 34px Georgia';
+      ctx.fillText(document.getElementById('vip-tier').value, 56, 175);
+      ctx.fillStyle = '#fdf7ec'; ctx.font = '28px Georgia';
+      ctx.fillText(document.getElementById('vip-name').value, 56, 240);
+      ctx.fillStyle = '#cbb994'; ctx.font = '22px monospace';
+      ctx.fillText('ID: ' + document.getElementById('vip-code').value, 56, 455);
+      ctx.fillText(document.getElementById('vip-date').value, 560, 455);
+
+      const link = document.createElement('a');
+      link.download = 'MMCC-Sovereign-Pass.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    /* VAULT BACKUP & RESTORE */
+    function exportVaultBackup() {
+      const payload = {
+        version: 'v28',
+        exportedAt: new Date().toISOString(),
+        valet: state.valet,
+        deptNotes: state.deptNotes,
+        introDuration: state.introDuration,
+        galleryFrame: state.galleryFrame
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'MMCC-Sovereign-Vault-v28.mmcc';
+      a.click();
+    }
+
+    function importVaultBackup(e) {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          if (data.valet) { state.valet = data.valet; localStorage.setItem('mmcc_valet_v28', JSON.stringify(state.valet)); }
+          if (data.deptNotes) { state.deptNotes = data.deptNotes; localStorage.setItem('mmcc_dept_notes_v28', JSON.stringify(state.deptNotes)); }
+          renderDepartments(); renderValet();
+          alert('Sovereign Vault backup restored.');
+        } catch (err) { alert('Invalid backup file.'); }
+      };
+      reader.readAsText(f);
+    }
+
+    function closeModal() {
+      clearInterval(exhibitionTimer);
+      document.getElementById('universal-modal').classList.remove('open');
+    }
+
+    /* BOOT */
+    window.addEventListener('DOMContentLoaded', async () => {
+      if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+      await initDB();
+      state.videos = await dbGetAll('videos');
+      state.art = await dbGetAll('art');
+      state.audio = await dbGetAll('audio');
+      document.getElementById('intro-duration-select').value = String(state.introDuration);
+      document.getElementById('gallery-frame-select').value = state.galleryFrame;
+      renderDepartments();
+      renderVideos();
+      renderArt();
+      renderValet();
+      renderVipCard();
+      startSplash();
     });
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    }
   </script>
 </body>
 </html>
