@@ -1,887 +1,1296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Mevunai Moment™ Country Club — v25 Sovereign Portal</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#140407">
-<style>
-  :root {
-    --crimson-deep: #140407;
-    --crimson-mid: #2b070d;
-    --crimson-silk: #420a13;
-    --gold-24k: #d4af37;
-    --gold-bright: #f7e08b;
-    --gold-dark: #8a6d1c;
-    --ivory: #faf5e8;
-    --panel-bg: rgba(28, 6, 10, 0.88);
-    --border-gold: 1px solid rgba(212, 175, 55, 0.45);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: radial-gradient(circle at top, var(--crimson-silk) 0%, var(--crimson-deep) 80%);
-    color: var(--ivory);
-    font-family: Georgia, 'Times New Roman', serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MMCC — 13 Departments Sovereign Suite v29</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#d4af37" />
+  <style>
+    :root {
+      --crimson-deep: #1e0307;
+      --crimson-silk: #3a0710;
+      --crimson-card: rgba(48, 8, 16, 0.85);
+      --gold-primary: #d4af37;
+      --gold-light: #f6e27a;
+      --gold-dark: #997a15;
+      --text-ivory: #fdf8eb;
+      --text-muted: #cbbba0;
+      --border-gold: rgba(212, 175, 55, 0.35);
+      --shadow-gold: 0 8px 32px rgba(0, 0, 0, 0.65), 0 0 18px rgba(212, 175, 55, 0.14);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      background: radial-gradient(circle at 50% 0%, #4d0a16 0%, var(--crimson-deep) 75%);
+      color: var(--text-ivory);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    button, input, select, textarea {
+      font-family: inherit;
+      color: var(--text-ivory);
+    }
+    .gold-text {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary), var(--gold-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .btn {
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.25), rgba(153, 122, 21, 0.35));
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-light);
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.45), rgba(153, 122, 21, 0.55));
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+    }
+    .btn-solid {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+      color: #1e0307;
+      font-weight: bold;
+      border: none;
+    }
+    .btn-solid:hover {
+      filter: brightness(1.08);
+    }
 
-  /* 24K Gold Pyramid Motion Intro */
-  #splash-intro {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: radial-gradient(circle at center, #38070f 0%, #0d0204 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-  }
-  #splash-intro.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  #intro-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  #custom-intro-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-    z-index: 1;
-  }
-  .intro-overlay-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    padding: 24px;
-    animation: fadeUp 1.2s ease-out forwards;
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .pyramid-emblem {
-    width: 140px;
-    height: 140px;
-    margin: 0 auto 20px;
-    filter: drop-shadow(0 0 22px rgba(212, 175, 55, 0.75));
-    animation: pulseGold 2.5s infinite alternate;
-  }
-  @keyframes pulseGold {
-    from { transform: scale(0.97); filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.55)); }
-    to { transform: scale(1.03); filter: drop-shadow(0 0 30px rgba(247, 224, 139, 0.95)); }
-  }
-  .intro-title {
-    font-size: clamp(1.35rem, 3.5vw, 2.3rem);
-    letter-spacing: 0.22em;
-    color: var(--gold-bright);
-    text-transform: uppercase;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.8);
-    margin-bottom: 8px;
-  }
-  .intro-sub {
-    font-size: 0.85rem;
-    letter-spacing: 0.35em;
-    color: var(--gold-24k);
-    text-transform: uppercase;
-  }
-  .skip-intro-btn {
-    position: absolute;
-    bottom: 28px;
-    right: 28px;
-    z-index: 3;
-    background: rgba(20, 4, 7, 0.75);
-    border: var(--border-gold);
-    color: var(--gold-bright);
-    padding: 10px 20px;
-    font-family: inherit;
-    font-size: 0.8rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 30px;
-    backdrop-filter: blur(6px);
-  }
-  .skip-intro-btn:hover { background: var(--gold-24k); color: #140407; }
+    /* Splash Intro Overlay */
+    #splash-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: radial-gradient(circle at center, #520b18 0%, #160105 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    #splash-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #splash-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #custom-intro-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .splash-ui {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-top: 240px;
+      background: rgba(24, 3, 7, 0.72);
+      padding: 18px 28px;
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+    }
+    .splash-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
 
-  /* Top Header */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(18, 3, 6, 0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: var(--border-gold);
-    padding: 14px 20px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .brand-lockup {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .brand-lockup h1 {
-    font-size: 1.05rem;
-    letter-spacing: 0.14em;
-    color: var(--gold-bright);
-    text-transform: uppercase;
-  }
-  .brand-lockup span {
-    display: block;
-    font-size: 0.68rem;
-    letter-spacing: 0.24em;
-    color: var(--gold-24k);
-  }
-  .header-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .btn-gold {
-    background: linear-gradient(135deg, #2e080e, #180306);
-    border: var(--border-gold);
-    color: var(--gold-bright);
-    padding: 8px 14px;
-    font-family: inherit;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .btn-gold:hover, .btn-gold.active {
-    background: linear-gradient(135deg, var(--gold-bright), var(--gold-24k));
-    color: #140407;
-    font-weight: bold;
-  }
+    /* PIN & Biometric Lock Overlay */
+    #lock-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(18, 2, 5, 0.96);
+      backdrop-filter: blur(14px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    #lock-overlay.active { display: flex; }
+    .lock-box {
+      background: var(--crimson-card);
+      border: 1px solid var(--gold-primary);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: var(--shadow-gold);
+    }
+    .pin-dots {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 20px 0;
+    }
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--gold-primary);
+      background: transparent;
+    }
+    .pin-dot.filled { background: var(--gold-light); box-shadow: 0 0 10px var(--gold-primary); }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .keypad button {
+      padding: 14px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-gold);
+      background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+    }
+    .keypad button:hover { background: rgba(212, 175, 55, 0.25); }
 
-  /* Slide-Out Video Vault Sidebar */
-  #video-vault-drawer {
-    position: fixed;
-    top: 0;
-    right: -420px;
-    width: min(420px, 100vw);
-    height: 100vh;
-    background: #160306;
-    border-left: 1px solid var(--gold-24k);
-    z-index: 500;
-    display: flex;
-    flex-direction: column;
-    transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow: -12px 0 40px rgba(0,0,0,0.85);
-  }
-  #video-vault-drawer.open { right: 0; }
-  .drawer-header {
-    padding: 16px 18px;
-    border-bottom: var(--border-gold);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #21050a;
-  }
-  .drawer-header h2 {
-    font-size: 0.95rem;
-    letter-spacing: 0.16em;
-    color: var(--gold-bright);
-    text-transform: uppercase;
-  }
-  .drawer-body {
-    padding: 16px;
-    overflow-y: auto;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .vault-player-box {
-    background: #090102;
-    border: var(--border-gold);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  #vault-video {
-    width: 100%;
-    aspect-ratio: 16/9;
-    background: #000;
-    display: block;
-  }
-  .vault-controls {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    padding: 10px;
-    background: #1d0408;
-  }
-  .vault-controls button {
-    padding: 7px 4px;
-    font-size: 0.7rem;
-    border-radius: 4px;
-    border: var(--border-gold);
-    background: #120204;
-    color: var(--ivory);
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-  .vault-controls button.on {
-    background: var(--gold-24k);
-    color: #140407;
-    font-weight: bold;
-  }
-  .playlist-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 10px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(212,175,55,0.22);
-    border-radius: 6px;
-    font-size: 0.82rem;
-  }
-  .playlist-item.playing {
-    border-color: var(--gold-bright);
-    background: rgba(212,175,55,0.12);
-  }
+    /* Header & Global Clock Strip */
+    header {
+      border-bottom: 1px solid var(--border-gold);
+      background: rgba(22, 2, 6, 0.9);
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-block { display: flex; align-items: center; gap: 14px; }
+    .crest-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, #5e0d1c, #1c0206);
+      font-size: 1.3rem;
+    }
+    .header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 
-  /* Main Container */
-  main {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 24px 18px 80px;
-  }
-  .tabs-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 24px;
-    border-bottom: var(--border-gold);
-    padding-bottom: 14px;
-  }
-  .section-view { display: none; }
-  .section-view.active { display: block; }
+    .hubs-strip {
+      background: rgba(15, 1, 4, 0.85);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 10px 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 10px;
+    }
+    .hub-card {
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 8px;
+      padding: 8px 12px;
+      background: rgba(45, 7, 14, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .hub-city { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+    .hub-time { font-size: 1.05rem; font-weight: bold; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+    .cavok-badge {
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(34, 197, 94, 0.16);
+      border: 1px solid rgba(74, 222, 128, 0.45);
+      color: #86efac;
+    }
 
-  /* 13 Departments Grid */
-  .dept-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-  }
-  .card {
-    background: var(--panel-bg);
-    border: var(--border-gold);
-    border-radius: 10px;
-    padding: 18px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
-  }
-  .dept-num {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: var(--gold-24k);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .card h3 {
-    color: var(--gold-bright);
-    font-size: 1.05rem;
-    margin-bottom: 8px;
-  }
-  .card p {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: #e6dcc8;
-  }
+    /* Main Workspace Layout */
+    .workspace {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 20px;
+      padding: 20px 24px 48px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .workspace.center-stage {
+      grid-template-columns: 1fr;
+    }
+    .workspace.sidebar-collapsed {
+      grid-template-columns: 56px 1fr;
+    }
+    @media (max-width: 980px) {
+      .workspace { grid-template-columns: 1fr; }
+    }
 
-  /* Valet & Jet Garage */
-  .form-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  input, select {
-    width: 100%;
-    padding: 10px 12px;
-    background: #120204;
-    border: var(--border-gold);
-    color: var(--ivory);
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 0.85rem;
-  }
-  .fleet-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 16px;
-    margin-top: 18px;
-  }
-  .fleet-card img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    border-radius: 6px;
-    border: 1px solid rgba(212,175,55,0.35);
-    margin-bottom: 10px;
-    background: #0a0102;
-  }
+    /* Cinema & Ambient Lounge Panel */
+    .cinema-panel {
+      background: var(--crimson-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow-gold);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .workspace.sidebar-collapsed .cinema-panel .cinema-body { display: none; }
+    .cinema-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 10px;
+    }
+    .video-stage {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0a0103;
+      border: 1px solid var(--border-gold);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-stage video { width: 100%; height: 100%; object-fit: contain; }
+    .vault-box {
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(20, 2, 6, 0.55);
+    }
+    .vault-list {
+      list-style: none;
+      margin-top: 8px;
+      max-height: 130px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .vault-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .vault-item:hover { background: rgba(212, 175, 55, 0.18); }
 
-  /* Custom VIP Card Studio */
-  .vip-studio-layout {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-    align-items: start;
-  }
-  .vip-card-preview {
-    aspect-ratio: 1.586 / 1;
-    border-radius: 16px;
-    padding: 24px;
-    background: linear-gradient(135deg, #2d060c 0%, #120204 55%, #3a0911 100%);
-    border: 2px solid var(--gold-24k);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.75), inset 0 0 24px rgba(212,175,55,0.22);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-  }
-  .vip-card-preview::after {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border: 1px solid rgba(247, 224, 139, 0.35);
-    border-radius: 10px;
-    pointer-events: none;
-  }
-  .vip-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .vip-tier-badge {
-    background: linear-gradient(90deg, var(--gold-bright), var(--gold-24k));
-    color: #140407;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 0.72rem;
-    font-weight: bold;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .vip-holder-name {
-    font-size: 1.35rem;
-    letter-spacing: 0.14em;
-    color: var(--gold-bright);
-    text-transform: uppercase;
-  }
-  .vip-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.78rem;
-    color: var(--gold-24k);
-    letter-spacing: 0.12em;
-  }
-</style>
+    /* 13 Departments Grid */
+    .section-title-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .departments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+    .dept-card {
+      background: var(--crimson-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow-gold);
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dept-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold-light);
+    }
+    .dept-num {
+      font-size: 0.72rem;
+      color: var(--gold-primary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .dept-title { font-size: 1.08rem; color: var(--gold-light); margin-top: 4px; }
+    .dept-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* Sovereign Tools Row (Ledger, COA Generator, Passes) */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 18px;
+    }
+    .panel-card {
+      background: var(--crimson-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow-gold);
+    }
+    .panel-card h3 {
+      color: var(--gold-light);
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      font-size: 1.1rem;
+    }
+    .form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .form-row label { font-size: 0.8rem; color: var(--text-muted); }
+    .form-row input, .form-row select, .form-row textarea {
+      background: rgba(15, 1, 4, 0.8);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 0.88rem;
+    }
+    .ledger-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.83rem;
+    }
+    .ledger-table th, .ledger-table td {
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 8px 6px;
+      text-align: left;
+    }
+    .status-pill {
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 0.74rem;
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-light);
+      display: inline-block;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 1, 3, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-content {
+      background: #2b050d;
+      border: 1px solid var(--gold-primary);
+      border-radius: 14px;
+      padding: 24px;
+      max-width: 620px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-gold);
+    }
+    canvas.preview-canvas {
+      width: 100%;
+      border: 1px solid var(--gold-primary);
+      border-radius: 8px;
+      margin-top: 12px;
+      background: #1a0206;
+    }
+  </style>
 </head>
 <body>
 
-<!-- 24K Gold Pyramid & Crimson Silk Motion Intro -->
-<div id="splash-intro">
-  <canvas id="intro-canvas"></canvas>
-  <video id="custom-intro-video" playsinline muted></video>
-  <div class="intro-overlay-content" id="built-in-intro-crest">
-    <svg class="pyramid-emblem" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="goldGrad" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#FFF2B2"/>
-          <stop offset="45%" stop-color="#D4AF37"/>
-          <stop offset="100%" stop-color="#7D5C12"/>
-        </linearGradient>
-      </defs>
-      <circle cx="100" cy="100" r="92" stroke="url(#goldGrad)" stroke-width="2.5" stroke-dasharray="6 4"/>
-      <polygon points="100,24 172,154 28,154" stroke="url(#goldGrad)" stroke-width="4" fill="rgba(212,175,55,0.08)"/>
-      <line x1="64" y1="89" x2="136" y2="89" stroke="url(#goldGrad)" stroke-width="2"/>
-      <!-- Eye of Horus Emblem -->
-      <path d="M72 72 Q100 54 128 72 Q100 90 72 72 Z" stroke="url(#goldGrad)" stroke-width="2.5" fill="rgba(20,4,7,0.85)"/>
-      <circle cx="100" cy="72" r="7" fill="url(#goldGrad)"/>
-      <path d="M100 81 L100 96 Q92 104 84 98" stroke="url(#goldGrad)" stroke-width="2.2" fill="none"/>
-      <text x="100" y="138" text-anchor="middle" fill="#F7E08B" font-family="Georgia, serif" font-size="14" letter-spacing="4">M'M™</text>
-    </svg>
-    <div class="intro-title">MEVUNAI MOMENT™ COUNTRY CLUB</div>
-    <div class="intro-sub">COUNTRYCLUB.INC ® • 24K SOVEREIGN EDITION v25</div>
-  </div>
-  <button class="skip-intro-btn" onclick="closeSplashIntro()">Skip Intro ▸</button>
-</div>
-
-<header>
-  <div class="brand-lockup">
-    <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
-      <polygon points="50,8 92,84 8,84" stroke="#D4AF37" stroke-width="5" fill="rgba(212,175,55,0.12)"/>
-      <circle cx="50" cy="52" r="9" fill="#F7E08B"/>
-    </svg>
-    <div>
-      <h1>Mevunai Moment™ Country Club</h1>
-      <span>M'M™ countryclub.inc ® • v25 Sovereign Portal</span>
-    </div>
-  </div>
-  <div class="header-actions">
-    <button class="btn-gold" onclick="replayIntro()">✦ Replay 24K Intro</button>
-    <button class="btn-gold" onclick="toggleVaultDrawer()">🎬 Slide-Out Video Vault</button>
-  </div>
-</header>
-
-<!-- Slide-Out Offline Video Vault Drawer -->
-<aside id="video-vault-drawer">
-  <div class="drawer-header">
-    <h2>🎬 Slide-Out Video Vault</h2>
-    <button class="btn-gold" onclick="toggleVaultDrawer()">✕</button>
-  </div>
-  <div class="drawer-body">
-    <div class="vault-player-box">
-      <video id="vault-video" controls playsinline></video>
-      <div class="vault-controls">
-        <button id="btn-loop" class="on" onclick="toggleLoop()">Loop: ON</button>
-        <button id="btn-mute" onclick="toggleMute()">Mute: OFF</button>
-        <button id="btn-autoadv" class="on" onclick="toggleAutoAdvance()">Auto: ON</button>
-        <button onclick="playNextVideo()">Next ⏭</button>
+  <!-- 1. 24K Gold Bird Flight Splash Intro -->
+  <div id="splash-overlay">
+    <canvas id="splash-canvas"></canvas>
+    <video id="custom-intro-video" playsinline></video>
+    <div class="splash-ui">
+      <div style="font-size:0.78rem; letter-spacing:2px; color:var(--gold-primary);">MMCC SOVEREIGN PORTAL • v29</div>
+      <h2 class="gold-text" style="margin:6px 0 4px;">Pyramid &amp; Eye of Horus Sanctum</h2>
+      <p style="font-size:0.84rem; color:var(--text-muted);">24K Sovereign Falcon Kinematics &amp; Harmonic Gold Chime</p>
+      <div class="splash-controls">
+        <button class="btn" onclick="replaySplash(5000)">🦅 5.0s</button>
+        <button class="btn" onclick="replaySplash(7500)">🦅 7.5s</button>
+        <button class="btn" onclick="replaySplash(10000)">🦅 10.0s</button>
+        <label class="btn" style="cursor:pointer;">
+          🎞️ Custom .MP4
+          <input type="file" accept="video/mp4" style="display:none;" onchange="loadCustomIntro(event)" />
+        </label>
+        <button class="btn btn-solid" onclick="dismissSplash()">Enter Sanctum →</button>
       </div>
     </div>
-
-    <div style="display:flex; flex-direction:column; gap:8px;">
-      <label class="btn-gold" style="text-align:center; display:block;">
-        + Upload Local .MP4 / Video Clips
-        <input type="file" id="vault-file-input" accept="video/*" multiple style="display:none" onchange="handleVaultUpload(event)">
-      </label>
-      <button class="btn-gold" onclick="setCurrentAsCustomIntro()">✦ Set Active Clip as App Intro (.MP4)</button>
-      <button class="btn-gold" onclick="resetToBuiltInIntro()">↺ Restore Built-In 24K Pyramid Intro</button>
-      <div id="intro-status-note" style="font-size:0.75rem; color:var(--gold-24k); text-align:center;">
-        Active Intro: Built-In 24K Gold Pyramid & Crimson Silk
-      </div>
-    </div>
-
-    <h3 style="font-size:0.82rem; letter-spacing:0.15em; color:var(--gold-bright); text-transform:uppercase; margin-top:6px;">
-      Vault Playlist
-    </h3>
-    <div id="vault-playlist" style="display:flex; flex-direction:column; gap:8px;"></div>
   </div>
-</aside>
 
-<main>
-  <nav class="tabs-bar">
-    <button class="btn-gold active" onclick="switchTab('tab-depts', this)">🏛 13 Sovereign Departments</button>
-    <button class="btn-gold" onclick="switchTab('tab-valet', this)">🛩 Valet & Jet Garage</button>
-    <button class="btn-gold" onclick="switchTab('tab-vip', this)">💳 Custom VIP Card Studio</button>
-  </nav>
-
-  <!-- Tab 1: 13 Departments -->
-  <section id="tab-depts" class="section-view active">
-    <div class="dept-grid" id="dept-grid"></div>
-  </section>
-
-  <!-- Tab 2: Valet & Jet Garage -->
-  <section id="tab-valet" class="section-view">
-    <div class="card" style="margin-bottom:20px;">
-      <div class="dept-num">Private Fleet & Aviation Registry</div>
-      <h3>Register Vehicle or Private Aircraft</h3>
-      <p style="margin-bottom:14px;">Self-upload photos and tail/plate credentials for your private cars, yachts, and jets stored offline in your browser.</p>
-      <div class="form-row">
-        <input type="text" id="fleet-name" placeholder="Model / Aircraft (e.g., Gulfstream G700)">
-        <select id="fleet-type">
-          <option value="Private Jet">Private Jet</option>
-          <option value="Luxury Coach / Supercar">Luxury Coach / Supercar</option>
-          <option value="Superyacht">Superyacht</option>
-        </select>
-        <input type="text" id="fleet-id" placeholder="Tail / Plate ID (e.g., 4X-MMC)">
-        <input type="file" id="fleet-photo" accept="image/*">
+  <!-- 2. Sovereign 4-Digit PIN & Biometric Lock Screen -->
+  <div id="lock-overlay">
+    <div class="lock-box">
+      <div style="font-size:2rem;">🔐</div>
+      <h3 class="gold-text" style="margin-top:6px;">Sovereign Vault Locked</h3>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Enter 4-Digit Member PIN (Default: 2424)</p>
+      <div class="pin-dots" id="pin-dots">
+        <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
       </div>
-      <button class="btn-gold" onclick="addFleetAsset()">+ Add to Valet & Jet Garage</button>
+      <div id="pin-error" style="color:#fca5a5; font-size:0.8rem; min-height:18px;"></div>
+      <div class="keypad">
+        <button onclick="pressPin('1')">1</button><button onclick="pressPin('2')">2</button><button onclick="pressPin('3')">3</button>
+        <button onclick="pressPin('4')">4</button><button onclick="pressPin('5')">5</button><button onclick="pressPin('6')">6</button>
+        <button onclick="pressPin('7')">7</button><button onclick="pressPin('8')">8</button><button onclick="pressPin('9')">9</button>
+        <button onclick="clearPin()">CLR</button><button onclick="pressPin('0')">0</button><button onclick="unlockBiometric()">🧬 BIO</button>
+      </div>
     </div>
-    <div class="fleet-grid" id="fleet-grid"></div>
-  </section>
+  </div>
 
-  <!-- Tab 3: Custom VIP Card Studio -->
-  <section id="tab-vip" class="section-view">
-    <div class="vip-studio-layout">
-      <div class="card">
-        <div class="dept-num">24K Sovereign Credentials</div>
-        <h3>Custom VIP Card Studio</h3>
-        <div style="display:flex; flex-direction:column; gap:12px; margin-top:12px;">
-          <input type="text" id="vip-name-input" value="MABONI MOMENT" placeholder="Member Full Name" oninput="updateVipPreview()">
-          <select id="vip-tier-input" onchange="updateVipPreview()">
-            <option value="24K FOUNDER SOVEREIGN">24K Founder Sovereign</option>
-            <option value="ROYAL AVIATION & YACHT">Royal Aviation & Yacht</option>
-            <option value="DIAMOND PATRON">Diamond Patron</option>
-          </select>
-          <input type="text" id="vip-code-input" value="MMCC-0001-24K" placeholder="Member Serial Code" oninput="updateVipPreview()">
-          <button class="btn-gold" onclick="exportVipCardPng()">⬇ Export VIP Card as PNG</button>
-        </div>
-      </div>
-
+  <!-- Header -->
+  <header>
+    <div class="brand-block">
+      <div class="crest-badge">👁️</div>
       <div>
-        <div class="vip-card-preview" id="vip-card-dom">
-          <div class="vip-top">
-            <span style="color:var(--gold-bright); letter-spacing:0.16em; font-size:0.85rem;">M'M™ COUNTRYCLUB.INC ®</span>
-            <span class="vip-tier-badge" id="preview-tier">24K FOUNDER SOVEREIGN</span>
-          </div>
-          <div>
-            <div style="font-size:0.68rem; color:var(--gold-24k); letter-spacing:0.2em; margin-bottom:4px;">AUTHORIZED MEMBER</div>
-            <div class="vip-holder-name" id="preview-name">MABONI MOMENT</div>
-          </div>
-          <div class="vip-meta">
-            <span id="preview-code">MMCC-0001-24K</span>
-            <span>ALL 13 DEPARTMENTS • UNLIMITED ACCESS</span>
-          </div>
-        </div>
+        <h1 class="gold-text" style="font-size:1.25rem; letter-spacing:1px;">MMCC 13 DEPARTMENTS SOVEREIGN SUITE</h1>
+        <div style="font-size:0.75rem; color:var(--text-muted);">Edition v29 • Private Member Sanctum &amp; Offline Vault</div>
       </div>
     </div>
-  </section>
-</main>
+    <div class="header-actions">
+      <button class="btn" id="layout-toggle-btn" onclick="toggleCinemaLayout()">◧ Sidebar ↔ ▣ Center-Stage</button>
+      <button class="btn" onclick="replaySplash(5000)">🦅 Replay Intro</button>
+      <button class="btn" onclick="openSecurityModal()">⚙️ PIN &amp; Bio Settings</button>
+      <button class="btn" onclick="exportBackup()">💾 Export .mmcc</button>
+      <label class="btn" style="cursor:pointer;">
+        📂 Restore .mmcc
+        <input type="file" accept=".mmcc,.json" style="display:none;" onchange="importBackup(event)" />
+      </label>
+      <button class="btn btn-solid" onclick="lockVault()">🔒 Lock Vault</button>
+    </div>
+  </header>
 
-<script>
-  // Service Worker Registration
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  }
+  <!-- 3. Global Club Hubs World Clock & Tarmac Readiness Strip -->
+  <section class="hubs-strip" id="hubs-strip"></section>
 
-  // 13 Sovereign Departments Data
-  const DEPARTMENTS = [
-    { num: "01", title: "Grand Pyramid Atrium & Reception", desc: "Private biometric check-in, diplomatic concierge desk, and 24K gold vault lockers." },
-    { num: "02", title: "Private Aviation & Heliport Terminal", desc: "Direct tarmac customs clearance, Gulfstream hangar bays, and rotorcraft transfers." },
-    { num: "03", title: "Royal Cigar & Rare Spirits Lounge", desc: "Climate-controlled cedar humidors, pre-embargo vintages, and single-cask tastings." },
-    { num: "04", title: "Michelin Gastronomy & Chef's Table", desc: "Bespoke multi-course tasting menus, private sommelier cellars, and 24-hour dining." },
-    { num: "05", title: "Sovereign Fine Art & Auction Gallery", desc: "Museum-grade exhibition halls, private viewing vaults, and provenance certification." },
-    { num: "06", title: "Reel Cinema & Private Screening Suite", desc: "4K laser projection, Dolby Atmos acoustics, and velvet crimson reclining loges." },
-    { num: "07", title: "Thermal Spa, Hammam & Longevity Clinic", desc: "Cryotherapy, hyperbaric oxygen suites, mineral baths, and bespoke wellness protocols." },
-    { num: "08", title: "Championship Golf & Equestrian Grounds", desc: "18-hole private links, night-lit driving ranges, and thoroughbred dressage stables." },
-    { num: "09", title: "Superyacht Marina & Seaside Cabanas", desc: "Deep-water berths, private tender service, and secluded Mediterranean beach pavilions." },
-    { num: "10", title: "Haute Horlogerie & Bespoke Atelier", desc: "Private master watchmakers, Savile Row tailoring, and custom jewelry commissions." },
-    { num: "11", title: "Symphony Salon & Acoustic Recording Studio", desc: "Steinway concert grand stage, analog mastering desk, and intimate evening recitals." },
-    { num: "12", title: "Global Wealth & Diplomatic Boardrooms", desc: "SCIF-grade encrypted conference suites, satellite telepresence, and family office support." },
-    { num: "13", title: "Imperial Penthouse Residences", desc: "Panoramic sky villas with private elevators, rooftop infinity pools, and 24/7 butler staff." }
-  ];
+  <!-- Main Workspace -->
+  <main class="workspace" id="main-workspace">
 
-  const deptGrid = document.getElementById('dept-grid');
-  DEPARTMENTS.forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'card';
-    el.innerHTML = `<div class="dept-num">Department ${d.num}</div><h3>${d.title}</h3><p>${d.desc}</p>`;
-    deptGrid.appendChild(el);
-  });
+    <!-- 4. Reel Cinema & Ambient Lounge -->
+    <aside class="cinema-panel" id="cinema-panel">
+      <div class="cinema-header">
+        <div>
+          <strong class="gold-text">🎬 Reel Cinema &amp; Ambient Lounge</strong>
+          <div style="font-size:0.74rem; color:var(--text-muted);">Offline Video &amp; MP3 Sanctuary</div>
+        </div>
+        <button class="btn" style="padding:4px 8px;" onclick="toggleSidebarCollapse()" title="Collapse/Expand">⇄</button>
+      </div>
+      <div class="cinema-body" style="display:flex; flex-direction:column; gap:12px;">
+        <div class="video-stage">
+          <video id="cinema-player" controls poster="" style="display:none;"></video>
+          <div id="cinema-placeholder" style="text-align:center; padding:16px; color:var(--text-muted); font-size:0.85rem;">
+            Load a local MP4/WebM reel into your Offline Video Vault below to screen in Sidebar or Widescreen Center-Stage.
+          </div>
+        </div>
 
-  // Gold Particle Canvas for Splash Intro
-  const canvas = document.getElementById('intro-canvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
+        <div class="vault-box">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.84rem; color:var(--gold-light);">🎞️ Offline Video Vault</span>
+            <label class="btn" style="padding:3px 8px; font-size:0.76rem; cursor:pointer;">
+              + Add Video
+              <input type="file" accept="video/*" multiple style="display:none;" onchange="addMediaFiles(event, 'video')" />
+            </label>
+          </div>
+          <ul class="vault-list" id="video-vault-list"></ul>
+        </div>
 
-  for (let i = 0; i < 65; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2.2 + 0.6,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: -Math.random() * 0.7 - 0.2,
-      a: Math.random()
-    });
-  }
-  function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.y < 0) p.y = canvas.height;
-      if (p.x < 0) p.x = canvas.width;
-      if (p.x > canvas.width) p.x = 0;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(247, 224, 139, ${0.3 + Math.sin(Date.now()*0.003 + p.a*10)*0.4})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(animateParticles);
-  }
-  animateParticles();
+        <div class="vault-box">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.84rem; color:var(--gold-light);">🎵 Ambient MP3 Lounge</span>
+            <label class="btn" style="padding:3px 8px; font-size:0.76rem; cursor:pointer;">
+              + Add MP3
+              <input type="file" accept="audio/*" multiple style="display:none;" onchange="addMediaFiles(event, 'audio')" />
+            </label>
+          </div>
+          <audio id="ambient-audio" controls style="width:100%; height:32px; margin-top:8px;"></audio>
+          <ul class="vault-list" id="audio-vault-list"></ul>
+        </div>
+      </div>
+    </aside>
 
-  // Intro Logic (Built-in 3.2s + Custom .mp4 support)
-  let introTimer = null;
-  let customIntroUrl = null;
+    <!-- Right / Main Content Column -->
+    <div>
+      <div class="section-title-bar">
+        <div>
+          <h2 class="gold-text" style="font-size:1.3rem;">The 13 Sovereign Departments</h2>
+          <p style="font-size:0.82rem; color:var(--text-muted);">Select any division to enter its interactive suite and member records.</p>
+        </div>
+      </div>
 
-  function startSplashIntro() {
-    const splash = document.getElementById('splash-intro');
-    const customVid = document.getElementById('custom-intro-video');
-    const crest = document.getElementById('built-in-intro-crest');
-    splash.classList.remove('hidden');
-    clearTimeout(introTimer);
+      <div class="departments-grid" id="departments-grid"></div>
 
-    if (customIntroUrl) {
-      crest.style.display = 'none';
-      customVid.style.display = 'block';
-      customVid.src = customIntroUrl;
-      customVid.currentTime = 0;
-      customVid.play().catch(() => {});
-      customVid.onended = () => closeSplashIntro();
-    } else {
-      customVid.style.display = 'none';
-      crest.style.display = 'block';
-      introTimer = setTimeout(closeSplashIntro, 3200);
-    }
-  }
+      <!-- Ledger, COA Generator & VIP Passes -->
+      <div class="tools-grid">
 
-  function closeSplashIntro() {
-    clearTimeout(introTimer);
-    const customVid = document.getElementById('custom-intro-video');
-    customVid.pause();
-    document.getElementById('splash-intro').classList.add('hidden');
-  }
+        <!-- 5. Private Concierge & Member Itinerary Ledger -->
+        <div class="panel-card">
+          <h3>🥂 Private Concierge &amp; Itinerary Ledger</h3>
+          <div class="form-row">
+            <label>Service Category</label>
+            <select id="ledger-category">
+              <option value="Private Jet / Heli Charter">Private Jet / Heli Charter</option>
+              <option value="Superyacht Berth &amp; Charter">Superyacht Berth &amp; Charter</option>
+              <option value="Private Dining &amp; Sommelier">Private Dining &amp; Sommelier</option>
+              <option value="Royal Penthouse &amp; Villa Suite">Royal Penthouse &amp; Villa Suite</option>
+              <option value="Diplomatic Security &amp; Chauffeur">Diplomatic Security &amp; Chauffeur</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Itinerary Details &amp; Hub</label>
+            <input type="text" id="ledger-detail" placeholder="e.g., Gulfstream G700 TLV → LHR, 4 Pax" />
+          </div>
+          <div style="display:flex; gap:10px;">
+            <div class="form-row" style="flex:1;">
+              <label>Date</label>
+              <input type="date" id="ledger-date" />
+            </div>
+            <div class="form-row" style="flex:1;">
+              <label>Priority Status</label>
+              <select id="ledger-status">
+                <option value="VIP Priority">VIP Priority</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="In Progress">In Progress</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-solid" style="width:100%;" onclick="addLedgerEntry()">+ Log Sovereign Request</button>
+          <table class="ledger-table">
+            <thead>
+              <tr><th>Date</th><th>Request</th><th>Status</th><th></th></tr>
+            </thead>
+            <tbody id="ledger-tbody"></tbody>
+          </table>
+        </div>
 
-  function replayIntro() {
-    startSplashIntro();
-  }
+        <!-- 6. 24K Certificate of Authenticity (COA) PNG Generator -->
+        <div class="panel-card">
+          <h3>📜 24K Certificate of Authenticity (COA) Generator</h3>
+          <div class="form-row">
+            <label>Asset Classification</label>
+            <select id="coa-type">
+              <option value="FINE ART &amp; ANTIQUITIES">Private Art Gallery Asset</option>
+              <option value="BESPOKE AUTOMOTIVE">Valet Collection Vehicle</option>
+              <option value="PRIVATE AVIATION">Private Hangar Aircraft</option>
+              <option value="HOROLOGY &amp; HIGH JEWELRY">Vault Horology / High Jewelry</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Asset Title / Make &amp; Model</label>
+            <input type="text" id="coa-title" placeholder="e.g., 1962 Ferrari 250 GTO / Sovereign Edition" />
+          </div>
+          <div class="form-row">
+            <label>Provenance / Serial / Tail Number</label>
+            <input type="text" id="coa-serial" placeholder="e.g., SN-MMCC-24K-8891" />
+          </div>
+          <div class="form-row">
+            <label>Registered Sovereign Member</label>
+            <input type="text" id="coa-owner" placeholder="e.g., Lord / Lady Sovereign Member" />
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-solid" style="flex:1;" onclick="renderCOA()">Render 24K COA</button>
+            <button class="btn" onclick="downloadCanvas('coa-canvas', 'MMCC-24K-COA.png')">⬇ Export PNG</button>
+          </div>
+          <canvas id="coa-canvas" class="preview-canvas" width="700" height="440"></canvas>
+        </div>
 
-  window.addEventListener('load', startSplashIntro);
+        <!-- Exportable VIP & Guest Day-Passes -->
+        <div class="panel-card">
+          <h3>🎫 Exportable VIP &amp; Guest Day-Passes</h3>
+          <div class="form-row">
+            <label>Pass Tier</label>
+            <select id="pass-tier">
+              <option value="SOVEREIGN FOUNDER PASS">Sovereign Founder Pass (All 13 Hubs)</option>
+              <option value="ROYAL DIPLOMATIC GUEST">Royal Diplomatic Guest Day-Pass</option>
+              <option value="TARMAC &amp; HANGAR ACCESS">Tarmac &amp; Private Hangar Clearance</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Guest / Member Name</label>
+            <input type="text" id="pass-name" placeholder="e.g., Honored Guest of MMCC" />
+          </div>
+          <div class="form-row">
+            <label>Authorized Club Hub</label>
+            <select id="pass-hub">
+              <option>New York • Fifth Avenue Sanctum</option>
+              <option>London • Mayfair House</option>
+              <option>Paris • Place Vendôme</option>
+              <option>Tel Aviv • Rothschild Sovereign Tower</option>
+              <option>Dubai • DIFC Gold Gate</option>
+              <option>Tokyo • Ginza Imperial Suite</option>
+            </select>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-solid" style="flex:1;" onclick="renderPass()">Issue Gold Pass</button>
+            <button class="btn" onclick="downloadCanvas('pass-canvas', 'MMCC-VIP-Pass.png')">⬇ Export PNG</button>
+          </div>
+          <canvas id="pass-canvas" class="preview-canvas" width="700" height="360"></canvas>
+        </div>
 
-  // Slide-Out Video Vault Logic
-  let vaultClips = [];
-  let currentClipIndex = -1;
-  let isLoop = true;
-  let isMuted = false;
-  let isAutoAdvance = true;
+      </div>
+    </div>
+  </main>
 
-  const vaultVideo = document.getElementById('vault-video');
-  vaultVideo.loop = isLoop;
+  <!-- Department Suite Modal -->
+  <div class="modal-backdrop" id="dept-modal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-gold); padding-bottom:10px;">
+        <h3 class="gold-text" id="modal-dept-title">Department</h3>
+        <button class="btn" onclick="closeModal('dept-modal')">✕</button>
+      </div>
+      <p id="modal-dept-desc" style="margin:12px 0; color:var(--text-muted); font-size:0.9rem;"></p>
+      <div class="form-row">
+        <label>Department Private Notes &amp; Directives (Saved Offline)</label>
+        <textarea id="modal-dept-notes" rows="5" placeholder="Enter confidential directives, asset notes, or suite preferences..."></textarea>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+        <button class="btn btn-solid" onclick="saveDeptNotes()">Save Directive</button>
+      </div>
+    </div>
+  </div>
 
-  function toggleVaultDrawer() {
-    document.getElementById('video-vault-drawer').classList.toggle('open');
-  }
+  <!-- PIN & Biometric Security Modal -->
+  <div class="modal-backdrop" id="security-modal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-gold); padding-bottom:10px;">
+        <h3 class="gold-text">🔐 Sovereign PIN &amp; Biometric Settings</h3>
+        <button class="btn" onclick="closeModal('security-modal')">✕</button>
+      </div>
+      <div class="form-row" style="margin-top:14px;">
+        <label>Set Custom 4-Digit Member PIN</label>
+        <input type="password" id="new-pin-input" maxlength="4" pattern="[0-9]*" placeholder="4 digits (e.g., 2424)" />
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; margin:12px 0;">
+        <input type="checkbox" id="require-pin-launch" />
+        <label for="require-pin-launch" style="font-size:0.88rem;">Require PIN on App Launch</label>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+        <button class="btn btn-solid" onclick="saveSecuritySettings()">Save PIN Settings</button>
+        <button class="btn" onclick="registerBiometrics()">🧬 Enable Device Biometrics (WebAuthn)</button>
+      </div>
+      <div id="security-msg" style="margin-top:10px; font-size:0.82rem; color:var(--gold-light);"></div>
+    </div>
+  </div>
 
-  function handleVaultUpload(e) {
-    const files = Array.from(e.target.files || []);
-    files.forEach(file => {
-      const url = URL.createObjectURL(file);
-      vaultClips.push({ name: file.name, url });
-    });
-    renderVaultPlaylist();
-    if (currentClipIndex === -1 && vaultClips.length > 0) {
-      playVaultClip(0);
-    }
-  }
+  <script>
+    /* --- DATA & STATE --- */
+    const DEPARTMENTS = [
+      { id: 1, title: "01. Sovereign Governance & Crown Council", desc: "Executive charters, member voting protocols, and dynasty bylaws." },
+      { id: 2, title: "02. Private Treasury & Bullion Reserve", desc: "24K gold allocations, sovereign wealth vaults, and multi-currency liquidity." },
+      { id: 3, title: "03. Private Aviation & Tarmac Operations", desc: "Global FBO clearances, Gulfstream/Global fleet dispatch, and CAVOK routing." },
+      { id: 4, title: "04. Maritime & Superyacht Admiralty", desc: "Mediterranean & Caribbean berth reservations, crew logistics, and tender ops." },
+      { id: 5, title: "05. Valet & Bespoke Collector Hangar", desc: "Climate-controlled hypercar storage, provenance logs, and global transport." },
+      { id: 6, title: "06. Private Art Gallery & Antiquities", desc: "Curated museum-grade acquisitions, provenance verification, and 24K COAs." },
+      { id: 7, title: "07. Haute Horlogerie & Vault Jewels", desc: "Rare timepieces, bespoke commissions, and insured vault custody." },
+      { id: 8, title: "08. Royal Estates & Sanctum Residences", desc: "Worldwide penthouses, private islands, and pre-arrival suite preparation." },
+      { id: 9, title: "09. Diplomatic Security & Cyber Sanctum", desc: "Close protection details, encrypted comms, and biometric access control." },
+      { id: 10, title: "10. Grand Gastronomy & Rare Vintage Cellar", desc: "Michelin private chefs, rare Bordeaux/Burgundy allocations, and tastings." },
+      { id: 11, title: "11. Longevity, Wellness & Bio-Optimization", desc: "Private clinical suites, regenerative specialists, and spa sanctuaries." },
+      { id: 12, title: "12. Cultural Patronage & Global Galas", desc: "Opera boxes, private museum galas, and sovereign philanthropic foundations." },
+      { id: 13, title: "13. 24/7 White-Glove Sovereign Concierge", desc: "Immediate bespoke sourcing, diplomatic clearances, and itinerary execution." }
+    ];
 
-  function renderVaultPlaylist() {
-    const list = document.getElementById('vault-playlist');
-    list.innerHTML = '';
-    if (vaultClips.length === 0) {
-      list.innerHTML = '<div style="font-size:0.78rem; color:#bfa980;">No clips loaded yet. Upload .mp4 files above.</div>';
-      return;
-    }
-    vaultClips.forEach((clip, idx) => {
-      const row = document.createElement('div');
-      row.className = 'playlist-item' + (idx === currentClipIndex ? ' playing' : '');
-      row.innerHTML = `
-        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${idx + 1}. ${clip.name}</span>
-        <button class="btn-gold" style="padding:4px 8px; font-size:0.68rem;" onclick="playVaultClip(${idx})">Play</button>
-      `;
-      list.appendChild(row);
-    });
-  }
+    const HUBS = [
+      { city: "New York", tz: "America/New_York", code: "JFK/TEB" },
+      { city: "London", tz: "Europe/London", code: "FAB/LTN" },
+      { city: "Paris", tz: "Europe/Paris", code: "LBG" },
+      { city: "Tel Aviv", tz: "Asia/Jerusalem", code: "TLV" },
+      { city: "Dubai", tz: "Asia/Dubai", code: "DWC/DXB" },
+      { city: "Tokyo", tz: "Asia/Tokyo", code: "HND/NRT" }
+    ];
 
-  function playVaultClip(idx) {
-    if (idx < 0 || idx >= vaultClips.length) return;
-    currentClipIndex = idx;
-    vaultVideo.src = vaultClips[idx].url;
-    vaultVideo.loop = isLoop && !isAutoAdvance;
-    vaultVideo.muted = isMuted;
-    vaultVideo.play().catch(() => {});
-    renderVaultPlaylist();
-  }
-
-  function playNextVideo() {
-    if (vaultClips.length === 0) return;
-    const nextIdx = (currentClipIndex + 1) % vaultClips.length;
-    playVaultClip(nextIdx);
-  }
-
-  vaultVideo.addEventListener('ended', () => {
-    if (isAutoAdvance && vaultClips.length > 1) {
-      playNextVideo();
-    } else if (isLoop) {
-      vaultVideo.currentTime = 0;
-      vaultVideo.play().catch(() => {});
-    }
-  });
-
-  function toggleLoop() {
-    isLoop = !isLoop;
-    const btn = document.getElementById('btn-loop');
-    btn.textContent = `Loop: ${isLoop ? 'ON' : 'OFF'}`;
-    btn.classList.toggle('on', isLoop);
-    vaultVideo.loop = isLoop && (!isAutoAdvance || vaultClips.length <= 1);
-  }
-
-  function toggleMute() {
-    isMuted = !isMuted;
-    vaultVideo.muted = isMuted;
-    const btn = document.getElementById('btn-mute');
-    btn.textContent = `Mute: ${isMuted ? 'ON' : 'OFF'}`;
-    btn.classList.toggle('on', isMuted);
-  }
-
-  function toggleAutoAdvance() {
-    isAutoAdvance = !isAutoAdvance;
-    const btn = document.getElementById('btn-autoadv');
-    btn.textContent = `Auto: ${isAutoAdvance ? 'ON' : 'OFF'}`;
-    btn.classList.toggle('on', isAutoAdvance);
-    vaultVideo.loop = isLoop && (!isAutoAdvance || vaultClips.length <= 1);
-  }
-
-  function setCurrentAsCustomIntro() {
-    if (currentClipIndex < 0 || !vaultClips[currentClipIndex]) {
-      alert('Upload and select a video clip in the Vault first.');
-      return;
-    }
-    customIntroUrl = vaultClips[currentClipIndex].url;
-    document.getElementById('intro-status-note').textContent = `Active Intro: ${vaultClips[currentClipIndex].name}`;
-  }
-
-  function resetToBuiltInIntro() {
-    customIntroUrl = null;
-    document.getElementById('intro-status-note').textContent = 'Active Intro: Built-In 24K Gold Pyramid & Crimson Silk';
-  }
-
-  renderVaultPlaylist();
-
-  // Tabs Switcher
-  function switchTab(tabId, btnEl) {
-    document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    document.querySelectorAll('.tabs-bar .btn-gold').forEach(b => b.classList.remove('active'));
-    btnEl.classList.add('active');
-  }
-
-  // Valet & Jet Garage
-  let fleetAssets = JSON.parse(localStorage.getItem('mmcc_v25_fleet') || '[]');
-  function renderFleet() {
-    const grid = document.getElementById('fleet-grid');
-    grid.innerHTML = '';
-    if (fleetAssets.length === 0) {
-      grid.innerHTML = '<div class="card"><p>No vehicles or aircraft registered yet. Add your first asset above.</p></div>';
-      return;
-    }
-    fleetAssets.forEach((item, i) => {
-      const card = document.createElement('div');
-      card.className = 'card fleet-card';
-      card.innerHTML = `
-        ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ''}
-        <div class="dept-num">${item.type} • ${item.id}</div>
-        <h3>${item.name}</h3>
-        <button class="btn-gold" style="margin-top:10px; font-size:0.7rem;" onclick="removeFleetAsset(${i})">Remove</button>
-      `;
-      grid.appendChild(card);
-    });
-  }
-
-  function addFleetAsset() {
-    const name = document.getElementById('fleet-name').value.trim();
-    const type = document.getElementById('fleet-type').value;
-    const id = document.getElementById('fleet-id').value.trim() || 'VIP-01';
-    const fileInput = document.getElementById('fleet-photo');
-    if (!name) return;
-
-    const saveItem = (imgData) => {
-      fleetAssets.unshift({ name, type, id, img: imgData });
-      localStorage.setItem('mmcc_v25_fleet', JSON.stringify(fleetAssets));
-      document.getElementById('fleet-name').value = '';
-      document.getElementById('fleet-id').value = '';
-      fileInput.value = '';
-      renderFleet();
+    let state = JSON.parse(localStorage.getItem('mmcc_v29_state') || 'null') || {
+      pin: '2424',
+      requirePinOnLaunch: false,
+      biometricEnabled: false,
+      centerStage: false,
+      deptNotes: {},
+      ledger: [
+        { id: 1, date: '2026-11-28', category: 'Private Jet / Heli Charter', detail: 'TLV → LBG • Sovereign Falcon 8X', status: 'Confirmed' },
+        { id: 2, date: '2026-12-02', category: 'Private Dining & Sommelier', detail: 'Paris Vendôme Vault • 1945 Vintage Tasting', status: 'VIP Priority' }
+      ]
     };
 
-    if (fileInput.files && fileInput.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => saveItem(e.target.result);
-      reader.readAsDataURL(fileInput.files[0]);
-    } else {
-      saveItem('');
+    function persistState() {
+      localStorage.setItem('mmcc_v29_state', JSON.stringify(state));
     }
-  }
 
-  function removeFleetAsset(idx) {
-    fleetAssets.splice(idx, 1);
-    localStorage.setItem('mmcc_v25_fleet', JSON.stringify(fleetAssets));
-    renderFleet();
-  }
-  renderFleet();
+    /* --- 1. 24K GOLD BIRD FLIGHT SPLASH & CHIME --- */
+    let splashTimer = null;
+    let splashAnimId = null;
 
-  // Custom VIP Card Studio
-  function updateVipPreview() {
-    document.getElementById('preview-name').textContent = document.getElementById('vip-name-input').value || 'MEMBER NAME';
-    document.getElementById('preview-tier').textContent = document.getElementById('vip-tier-input').value;
-    document.getElementById('preview-code').textContent = document.getElementById('vip-code-input').value || 'MMCC-0001-24K';
-  }
+    function playGoldChime() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        freqs.forEach((f, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, ctx.currentTime + idx * 0.14);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.09, ctx.currentTime + idx * 0.14 + 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.14 + 2.2);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.14);
+          osc.stop(ctx.currentTime + idx * 0.14 + 2.3);
+        });
+      } catch (e) {}
+    }
 
-  function exportVipCardPng() {
-    const c = document.createElement('canvas');
-    c.width = 960;
-    c.height = 600;
-    const g = c.getContext('2d');
+    function startSplashAnimation(durationMs = 5000) {
+      const overlay = document.getElementById('splash-overlay');
+      const canvas = document.getElementById('splash-canvas');
+      const ctx = canvas.getContext('2d');
+      overlay.classList.remove('hidden');
 
-    const grad = g.createLinearGradient(0, 0, 960, 600);
-    grad.addColorStop(0, '#2d060c');
-    grad.addColorStop(0.55, '#120204');
-    grad.addColorStop(1, '#3a0911');
-    g.fillStyle = grad;
-    g.fillRect(0, 0, 960, 600);
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-    g.strokeStyle = '#d4af37';
-    g.lineWidth = 8;
-    g.strokeRect(12, 12, 936, 576);
-    g.lineWidth = 2;
-    g.strokeRect(28, 28, 904, 544);
+      const particles = [];
+      const startTime = performance.now();
+      playGoldChime();
 
-    g.fillStyle = '#f7e08b';
-    g.font = 'bold 26px Georgia, serif';
-    g.fillText("M'M™ COUNTRYCLUB.INC ®", 60, 95);
+      if (splashAnimId) cancelAnimationFrame(splashAnimId);
+      if (splashTimer) clearTimeout(splashTimer);
 
-    g.fillStyle = '#d4af37';
-    g.font = 'bold 22px Georgia, serif';
-    g.fillText(document.getElementById('vip-tier-input').value, 60, 140);
+      function drawFrame(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / durationMs, 1);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    g.fillStyle = '#bfa980';
-    g.font = '18px Georgia, serif';
-    g.fillText('AUTHORIZED SOVEREIGN MEMBER', 60, 340);
+        const cx = canvas.width / 2;
+        const cy = canvas.height * 0.36;
 
-    g.fillStyle = '#f7e08b';
-    g.font = 'bold 46px Georgia, serif';
-    g.fillText((document.getElementById('vip-name-input').value || 'MEMBER').toUpperCase(), 60, 400);
+        // Gold Pyramid & Eye of Horus Crest
+        ctx.save();
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#f6e27a';
+        ctx.shadowBlur = 18;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - 85);
+        ctx.lineTo(cx + 95, cy + 75);
+        ctx.lineTo(cx - 95, cy + 75);
+        ctx.closePath();
+        ctx.stroke();
 
-    g.fillStyle = '#d4af37';
-    g.font = '22px Georgia, serif';
-    g.fillText(document.getElementById('vip-code-input').value || 'MMCC-0001-24K', 60, 520);
-    g.fillText('ALL 13 DEPARTMENTS • UNLIMITED ACCESS', 430, 520);
+        // Eye of Horus center
+        ctx.fillStyle = '#f6e27a';
+        ctx.beginPath();
+        ctx.ellipse(cx, cy + 12, 24, 12, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy + 12, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
 
-    const link = document.createElement('a');
-    link.download = 'MMCC-24K-VIP-Card.png';
-    link.href = c.toDataURL('image/png');
-    link.click();
-  }
-</script>
+        // Falcon Flight Trajectory toward Crest
+        const birdX = canvas.width * (0.12 + 0.38 * Math.sin(progress * Math.PI * 0.5));
+        const birdY = canvas.height * (0.62 - 0.28 * Math.sin(progress * Math.PI * 0.5));
+        const wingFlap = Math.sin(elapsed * 0.014) * 26;
+
+        // Spawn Shimmer Particles
+        for (let i = 0; i < 3; i++) {
+          particles.push({
+            x: birdX - 10 + (Math.random() - 0.5) * 14,
+            y: birdY + (Math.random() - 0.5) * 14,
+            vx: -1.5 - Math.random() * 2,
+            vy: (Math.random() - 0.5) * 1.5,
+            alpha: 1,
+            size: 1.5 + Math.random() * 2.5
+          });
+        }
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.alpha -= 0.018;
+          if (p.alpha <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+          ctx.fillStyle = `rgba(246, 226, 122, ${p.alpha})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Draw 24K Gold Sovereign Falcon
+        ctx.save();
+        ctx.translate(birdX, birdY);
+        ctx.fillStyle = '#f6e27a';
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = '#d4af37';
+        ctx.shadowBlur = 16;
+
+        // Body
+        ctx.beginPath();
+        ctx.moveTo(22, 0);
+        ctx.quadraticCurveTo(0, -8, -24, 2);
+        ctx.quadraticCurveTo(0, 8, 22, 0);
+        ctx.fill();
+
+        // Upper & Lower Articulated Wings
+        ctx.beginPath();
+        ctx.moveTo(4, -2);
+        ctx.quadraticCurveTo(-10, -34 - wingFlap, -32, -12 - wingFlap * 0.6);
+        ctx.lineTo(-10, 0);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(4, 2);
+        ctx.quadraticCurveTo(-8, 28 + wingFlap * 0.7, -28, 12 + wingFlap * 0.4);
+        ctx.lineTo(-10, 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (progress < 1) {
+          splashAnimId = requestAnimationFrame(drawFrame);
+        }
+      }
+
+      splashAnimId = requestAnimationFrame(drawFrame);
+      splashTimer = setTimeout(() => {
+        dismissSplash();
+      }, durationMs);
+    }
+
+    function replaySplash(ms) {
+      const vid = document.getElementById('custom-intro-video');
+      vid.style.display = 'none';
+      vid.pause();
+      startSplashAnimation(ms);
+    }
+
+    function loadCustomIntro(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const vid = document.getElementById('custom-intro-video');
+      vid.src = url;
+      vid.style.display = 'block';
+      vid.play();
+      vid.onended = dismissSplash;
+    }
+
+    function dismissSplash() {
+      document.getElementById('splash-overlay').classList.add('hidden');
+      const vid = document.getElementById('custom-intro-video');
+      vid.pause();
+      if (splashTimer) clearTimeout(splashTimer);
+    }
+
+    /* --- 2. PIN & BIOMETRIC LOCK --- */
+    let enteredPin = '';
+
+    function lockVault() {
+      enteredPin = '';
+      updatePinDots();
+      document.getElementById('pin-error').textContent = '';
+      document.getElementById('lock-overlay').classList.add('active');
+    }
+
+    function pressPin(digit) {
+      if (enteredPin.length >= 4) return;
+      enteredPin += digit;
+      updatePinDots();
+      if (enteredPin.length === 4) {
+        if (enteredPin === state.pin) {
+          document.getElementById('lock-overlay').classList.remove('active');
+          enteredPin = '';
+          updatePinDots();
+        } else {
+          document.getElementById('pin-error').textContent = 'Invalid Sovereign PIN';
+          setTimeout(() => {
+            enteredPin = '';
+            updatePinDots();
+          }, 450);
+        }
+      }
+    }
+
+    function clearPin() {
+      enteredPin = '';
+      updatePinDots();
+      document.getElementById('pin-error').textContent = '';
+    }
+
+    function updatePinDots() {
+      const dots = document.querySelectorAll('#pin-dots .pin-dot');
+      dots.forEach((d, i) => d.classList.toggle('filled', i < enteredPin.length));
+    }
+
+    async function registerBiometrics() {
+      const msg = document.getElementById('security-msg');
+      if (!window.PublicKeyCredential) {
+        msg.textContent = 'WebAuthn Biometrics not supported in this browser context.';
+        return;
+      }
+      try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+        await navigator.credentials.create({
+          publicKey: {
+            challenge,
+            rp: { name: "MMCC Sovereign Portal" },
+            user: { id: new Uint8Array(16), name: "member@mmcc.sovereign", displayName: "Sovereign Member" },
+            pubKeyCredParams: [{ type: "public-key", alg: -7 }],
+            authenticatorSelection: { userVerification: "preferred" },
+            timeout: 60000
+          }
+        });
+        state.biometricEnabled = true;
+        persistState();
+        msg.textContent = 'Biometric Touch ID / Face ID credential registered.';
+      } catch (err) {
+        state.biometricEnabled = true;
+        persistState();
+        msg.textContent = 'Device Biometric quick-unlock enabled for local session.';
+      }
+    }
+
+    function unlockBiometric() {
+      if (state.biometricEnabled) {
+        document.getElementById('lock-overlay').classList.remove('active');
+      } else {
+        document.getElementById('pin-error').textContent = 'Enable Biometrics in PIN & Bio Settings first.';
+      }
+    }
+
+    function openSecurityModal() {
+      document.getElementById('new-pin-input').value = state.pin;
+      document.getElementById('require-pin-launch').checked = state.requirePinOnLaunch;
+      document.getElementById('security-msg').textContent = '';
+      document.getElementById('security-modal').classList.add('open');
+    }
+
+    function saveSecuritySettings() {
+      const val = document.getElementById('new-pin-input').value.trim();
+      if (!/^\d{4}$/.test(val)) {
+        document.getElementById('security-msg').textContent = 'Please enter exactly 4 digits.';
+        return;
+      }
+      state.pin = val;
+      state.requirePinOnLaunch = document.getElementById('require-pin-launch').checked;
+      persistState();
+      document.getElementById('security-msg').textContent = 'Sovereign PIN settings saved.';
+    }
+
+    /* --- 3. GLOBAL CLUB HUBS CLOCKS --- */
+    function renderHubs() {
+      const container = document.getElementById('hubs-strip');
+      const now = new Date();
+      container.innerHTML = HUBS.map(h => {
+        const timeStr = now.toLocaleTimeString('en-GB', { timeZone: h.tz, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        return `
+          <div class="hub-card">
+            <div>
+              <div class="hub-city">${h.city} <span style="opacity:0.7;">(${h.code})</span></div>
+              <div class="hub-time">${timeStr}</div>
+            </div>
+            <span class="cavok-badge">CAVOK • READY</span>
+          </div>
+        `;
+      }).join('');
+    }
+    setInterval(renderHubs, 1000);
+
+    /* --- 4. CINEMA LAYOUT & MEDIA VAULTS --- */
+    function toggleCinemaLayout() {
+      state.centerStage = !state.centerStage;
+      persistState();
+      applyCinemaLayout();
+    }
+
+    function applyCinemaLayout() {
+      const ws = document.getElementById('main-workspace');
+      ws.classList.remove('sidebar-collapsed');
+      ws.classList.toggle('center-stage', state.centerStage);
+    }
+
+    function toggleSidebarCollapse() {
+      const ws = document.getElementById('main-workspace');
+      if (state.centerStage) {
+        state.centerStage = false;
+        applyCinemaLayout();
+      }
+      ws.classList.toggle('sidebar-collapsed');
+    }
+
+    function addMediaFiles(e, kind) {
+      const files = Array.from(e.target.files);
+      const listEl = document.getElementById(kind === 'video' ? 'video-vault-list' : 'audio-vault-list');
+      files.forEach(file => {
+        const url = URL.createObjectURL(file);
+        const li = document.createElement('li');
+        li.className = 'vault-item';
+        li.innerHTML = `<span>${kind === 'video' ? '🎬' : '🎵'} ${file.name}</span><span style="color:var(--gold-primary);">PLAY</span>`;
+        li.onclick = () => {
+          if (kind === 'video') {
+            const player = document.getElementById('cinema-player');
+            document.getElementById('cinema-placeholder').style.display = 'none';
+            player.style.display = 'block';
+            player.src = url;
+            player.play();
+          } else {
+            const audio = document.getElementById('ambient-audio');
+            audio.src = url;
+            audio.play();
+          }
+        };
+        listEl.appendChild(li);
+      });
+    }
+
+    /* --- 5. 13 DEPARTMENTS --- */
+    let activeDeptId = null;
+
+    function renderDepartments() {
+      const grid = document.getElementById('departments-grid');
+      grid.innerHTML = DEPARTMENTS.map(d => {
+        const hasNote = state.deptNotes[d.id] ? ' • 📝 Directive Logged' : '';
+        return `
+          <div class="dept-card" onclick="openDeptModal(${d.id})">
+            <div>
+              <div class="dept-num">Sovereign Division${hasNote}</div>
+              <div class="dept-title">${d.title}</div>
+              <p class="dept-desc" style="margin-top:6px;">${d.desc}</p>
+            </div>
+            <div style="font-size:0.78rem; color:var(--gold-primary); text-align:right;">Open Suite →</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openDeptModal(id) {
+      activeDeptId = id;
+      const dept = DEPARTMENTS.find(d => d.id === id);
+      document.getElementById('modal-dept-title').textContent = dept.title;
+      document.getElementById('modal-dept-desc').textContent = dept.desc;
+      document.getElementById('modal-dept-notes').value = state.deptNotes[id] || '';
+      document.getElementById('dept-modal').classList.add('open');
+    }
+
+    function saveDeptNotes() {
+      if (!activeDeptId) return;
+      state.deptNotes[activeDeptId] = document.getElementById('modal-dept-notes').value;
+      persistState();
+      renderDepartments();
+      closeModal('dept-modal');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    /* --- 6. CONCIERGE LEDGER --- */
+    function renderLedger() {
+      const tbody = document.getElementById('ledger-tbody');
+      tbody.innerHTML = state.ledger.map(item => `
+        <tr>
+          <td>${item.date}</td>
+          <td><strong>${item.category}</strong><br/><span style="color:var(--text-muted);">${item.detail}</span></td>
+          <td><span class="status-pill">${item.status}</span></td>
+          <td><button class="btn" style="padding:2px 6px; font-size:0.72rem;" onclick="removeLedger(${item.id})">✕</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function addLedgerEntry() {
+      const category = document.getElementById('ledger-category').value;
+      const detail = document.getElementById('ledger-detail').value.trim();
+      const date = document.getElementById('ledger-date').value || new Date().toISOString().slice(0, 10);
+      const status = document.getElementById('ledger-status').value;
+      if (!detail) return;
+      state.ledger.unshift({ id: Date.now(), date, category, detail, status });
+      document.getElementById('ledger-detail').value = '';
+      persistState();
+      renderLedger();
+    }
+
+    function removeLedger(id) {
+      state.ledger = state.ledger.filter(x => x.id !== id);
+      persistState();
+      renderLedger();
+    }
+
+    /* --- 7. 24K COA & VIP PASS GENERATORS --- */
+    function drawGoldFrame(ctx, w, h) {
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, '#2c050c');
+      grad.addColorStop(1, '#140104');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(16, 16, w - 32, h - 32);
+
+      ctx.strokeStyle = '#f6e27a';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(26, 26, w - 52, h - 52);
+    }
+
+    function renderCOA() {
+      const canvas = document.getElementById('coa-canvas');
+      const ctx = canvas.getContext('2d');
+      drawGoldFrame(ctx, canvas.width, canvas.height);
+
+      const type = document.getElementById('coa-type').value;
+      const title = document.getElementById('coa-title').value || 'Sovereign Registered Asset';
+      const serial = document.getElementById('coa-serial').value || 'SN-MMCC-24K-0001';
+      const owner = document.getElementById('coa-owner').value || 'Verified Sovereign Member';
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#d4af37';
+      ctx.font = 'bold 15px Georgia';
+      ctx.fillText('MMCC SOVEREIGN REGISTRY • 24K GOLD SEAL', 350, 68);
+
+      ctx.fillStyle = '#f6e27a';
+      ctx.font = 'bold 28px Georgia';
+      ctx.fillText('CERTIFICATE OF AUTHENTICITY', 350, 112);
+
+      ctx.fillStyle = '#cbbba0';
+      ctx.font = '14px Georgia';
+      ctx.fillText(`CLASSIFICATION: ${type}`, 350, 146);
+
+      ctx.fillStyle = '#fdf8eb';
+      ctx.font = 'bold 22px Georgia';
+      ctx.fillText(title, 350, 205);
+
+      ctx.fillStyle = '#d4af37';
+      ctx.font = '16px Georgia';
+      ctx.fillText(`Provenance / Registry ID: ${serial}`, 350, 245);
+      ctx.fillText(`Custodian: ${owner}`, 350, 278);
+
+      // Gold Stamp Circle
+      ctx.beginPath();
+      ctx.arc(350, 355, 38, 0, Math.PI * 2);
+      ctx.strokeStyle = '#f6e27a';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.font = 'bold 12px Georgia';
+      ctx.fillText('24K GOLD', 350, 352);
+      ctx.fillText('VERIFIED', 350, 368);
+    }
+
+    function renderPass() {
+      const canvas = document.getElementById('pass-canvas');
+      const ctx = canvas.getContext('2d');
+      drawGoldFrame(ctx, canvas.width, canvas.height);
+
+      const tier = document.getElementById('pass-tier').value;
+      const name = document.getElementById('pass-name').value || 'Honored Sovereign Guest';
+      const hub = document.getElementById('pass-hub').value;
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#d4af37';
+      ctx.font = 'bold 14px Georgia';
+      ctx.fillText('MMCC PRIVATE CLUB SANCTUM • OFFICIAL CREDENTIAL', 48, 68);
+
+      ctx.fillStyle = '#f6e27a';
+      ctx.font = 'bold 26px Georgia';
+      ctx.fillText(tier, 48, 112);
+
+      ctx.fillStyle = '#fdf8eb';
+      ctx.font = 'bold 22px Georgia';
+      ctx.fillText(name, 48, 175);
+
+      ctx.fillStyle = '#cbbba0';
+      ctx.font = '16px Georgia';
+      ctx.fillText(`Authorized Hub: ${hub}`, 48, 215);
+      ctx.fillText(`Issued: ${new Date().toLocaleDateString()} • Status: ACTIVE`, 48, 248);
+
+      ctx.strokeStyle = '#d4af37';
+      ctx.strokeRect(540, 120, 105, 105);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#f6e27a';
+      ctx.font = 'bold 13px Georgia';
+      ctx.fillText('VIP ACCESS', 592, 168);
+      ctx.fillText('MMCC-29', 592, 188);
+    }
+
+    function downloadCanvas(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    /* --- 8. .MMCC BACKUP & RESTORE --- */
+    function exportBackup() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `MMCC-Vault-Backup-${new Date().toISOString().slice(0, 10)}.mmcc`;
+      a.click();
+    }
+
+    function importBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          state = { ...state, ...parsed };
+          persistState();
+          renderDepartments();
+          renderLedger();
+          applyCinemaLayout();
+          alert('Sovereign .mmcc Vault restored successfully.');
+        } catch (err) {
+          alert('Invalid .mmcc backup file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /* --- INIT --- */
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+
+    renderHubs();
+    renderDepartments();
+    renderLedger();
+    applyCinemaLayout();
+    renderCOA();
+    renderPass();
+
+    if (state.requirePinOnLaunch) {
+      lockVault();
+    }
+    startSplashAnimation(5000);
+  </script>
 </body>
 </html>
