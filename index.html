@@ -1,1296 +1,1236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MMCC — 13 Departments Sovereign Suite v29</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#d4af37" />
-  <style>
-    :root {
-      --crimson-deep: #1e0307;
-      --crimson-silk: #3a0710;
-      --crimson-card: rgba(48, 8, 16, 0.85);
-      --gold-primary: #d4af37;
-      --gold-light: #f6e27a;
-      --gold-dark: #997a15;
-      --text-ivory: #fdf8eb;
-      --text-muted: #cbbba0;
-      --border-gold: rgba(212, 175, 55, 0.35);
-      --shadow-gold: 0 8px 32px rgba(0, 0, 0, 0.65), 0 0 18px rgba(212, 175, 55, 0.14);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Georgia, "Times New Roman", serif;
-      background: radial-gradient(circle at 50% 0%, #4d0a16 0%, var(--crimson-deep) 75%);
-      color: var(--text-ivory);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    button, input, select, textarea {
-      font-family: inherit;
-      color: var(--text-ivory);
-    }
-    .gold-text {
-      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary), var(--gold-dark));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .btn {
-      background: linear-gradient(180deg, rgba(212, 175, 55, 0.25), rgba(153, 122, 21, 0.35));
-      border: 1px solid var(--gold-primary);
-      color: var(--gold-light);
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.88rem;
-      letter-spacing: 0.5px;
-      transition: all 0.2s ease;
-    }
-    .btn:hover {
-      background: linear-gradient(180deg, rgba(212, 175, 55, 0.45), rgba(153, 122, 21, 0.55));
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
-    }
-    .btn-solid {
-      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
-      color: #1e0307;
-      font-weight: bold;
-      border: none;
-    }
-    .btn-solid:hover {
-      filter: brightness(1.08);
-    }
-
-    /* Splash Intro Overlay */
-    #splash-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: radial-gradient(circle at center, #520b18 0%, #160105 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-    #splash-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    #splash-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-    #custom-intro-video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
-    .splash-ui {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      margin-top: 240px;
-      background: rgba(24, 3, 7, 0.72);
-      padding: 18px 28px;
-      border: 1px solid var(--border-gold);
-      border-radius: 12px;
-      backdrop-filter: blur(8px);
-    }
-    .splash-controls {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* PIN & Biometric Lock Overlay */
-    #lock-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9000;
-      background: rgba(18, 2, 5, 0.96);
-      backdrop-filter: blur(14px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    #lock-overlay.active { display: flex; }
-    .lock-box {
-      background: var(--crimson-card);
-      border: 1px solid var(--gold-primary);
-      border-radius: 16px;
-      padding: 32px;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: var(--shadow-gold);
-    }
-    .pin-dots {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      margin: 20px 0;
-    }
-    .pin-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid var(--gold-primary);
-      background: transparent;
-    }
-    .pin-dot.filled { background: var(--gold-light); box-shadow: 0 0 10px var(--gold-primary); }
-    .keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .keypad button {
-      padding: 14px;
-      font-size: 1.2rem;
-      border-radius: 8px;
-      border: 1px solid var(--border-gold);
-      background: rgba(255, 255, 255, 0.04);
-      cursor: pointer;
-    }
-    .keypad button:hover { background: rgba(212, 175, 55, 0.25); }
-
-    /* Header & Global Clock Strip */
-    header {
-      border-bottom: 1px solid var(--border-gold);
-      background: rgba(22, 2, 6, 0.9);
-      padding: 14px 24px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .brand-block { display: flex; align-items: center; gap: 14px; }
-    .crest-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--gold-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle, #5e0d1c, #1c0206);
-      font-size: 1.3rem;
-    }
-    .header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-
-    .hubs-strip {
-      background: rgba(15, 1, 4, 0.85);
-      border-bottom: 1px solid var(--border-gold);
-      padding: 10px 24px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-      gap: 10px;
-    }
-    .hub-card {
-      border: 1px solid rgba(212, 175, 55, 0.22);
-      border-radius: 8px;
-      padding: 8px 12px;
-      background: rgba(45, 7, 14, 0.5);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .hub-city { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
-    .hub-time { font-size: 1.05rem; font-weight: bold; color: var(--gold-light); font-variant-numeric: tabular-nums; }
-    .cavok-badge {
-      font-size: 0.68rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: rgba(34, 197, 94, 0.16);
-      border: 1px solid rgba(74, 222, 128, 0.45);
-      color: #86efac;
-    }
-
-    /* Main Workspace Layout */
-    .workspace {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 20px;
-      padding: 20px 24px 48px;
-      max-width: 1600px;
-      margin: 0 auto;
-    }
-    .workspace.center-stage {
-      grid-template-columns: 1fr;
-    }
-    .workspace.sidebar-collapsed {
-      grid-template-columns: 56px 1fr;
-    }
-    @media (max-width: 980px) {
-      .workspace { grid-template-columns: 1fr; }
-    }
-
-    /* Cinema & Ambient Lounge Panel */
-    .cinema-panel {
-      background: var(--crimson-card);
-      border: 1px solid var(--border-gold);
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: var(--shadow-gold);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .workspace.sidebar-collapsed .cinema-panel .cinema-body { display: none; }
-    .cinema-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-gold);
-      padding-bottom: 10px;
-    }
-    .video-stage {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #0a0103;
-      border: 1px solid var(--border-gold);
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .video-stage video { width: 100%; height: 100%; object-fit: contain; }
-    .vault-box {
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 8px;
-      padding: 10px;
-      background: rgba(20, 2, 6, 0.55);
-    }
-    .vault-list {
-      list-style: none;
-      margin-top: 8px;
-      max-height: 130px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .vault-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.04);
-      font-size: 0.84rem;
-      cursor: pointer;
-    }
-    .vault-item:hover { background: rgba(212, 175, 55, 0.18); }
-
-    /* 13 Departments Grid */
-    .section-title-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .departments-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 14px;
-      margin-bottom: 26px;
-    }
-    .dept-card {
-      background: var(--crimson-card);
-      border: 1px solid var(--border-gold);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: var(--shadow-gold);
-      cursor: pointer;
-      transition: transform 0.18s ease, border-color 0.18s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .dept-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--gold-light);
-    }
-    .dept-num {
-      font-size: 0.72rem;
-      color: var(--gold-primary);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-    .dept-title { font-size: 1.08rem; color: var(--gold-light); margin-top: 4px; }
-    .dept-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
-
-    /* Sovereign Tools Row (Ledger, COA Generator, Passes) */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 18px;
-    }
-    .panel-card {
-      background: var(--crimson-card);
-      border: 1px solid var(--border-gold);
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: var(--shadow-gold);
-    }
-    .panel-card h3 {
-      color: var(--gold-light);
-      border-bottom: 1px solid var(--border-gold);
-      padding-bottom: 10px;
-      margin-bottom: 14px;
-      font-size: 1.1rem;
-    }
-    .form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-    .form-row label { font-size: 0.8rem; color: var(--text-muted); }
-    .form-row input, .form-row select, .form-row textarea {
-      background: rgba(15, 1, 4, 0.8);
-      border: 1px solid var(--border-gold);
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 0.88rem;
-    }
-    .ledger-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 0.83rem;
-    }
-    .ledger-table th, .ledger-table td {
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-      padding: 8px 6px;
-      text-align: left;
-    }
-    .status-pill {
-      padding: 2px 8px;
-      border-radius: 99px;
-      font-size: 0.74rem;
-      border: 1px solid var(--gold-primary);
-      color: var(--gold-light);
-      display: inline-block;
-    }
-
-    /* Modal */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 1, 3, 0.82);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 500;
-      padding: 20px;
-    }
-    .modal-backdrop.open { display: flex; }
-    .modal-content {
-      background: #2b050d;
-      border: 1px solid var(--gold-primary);
-      border-radius: 14px;
-      padding: 24px;
-      max-width: 620px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow-gold);
-    }
-    canvas.preview-canvas {
-      width: 100%;
-      border: 1px solid var(--gold-primary);
-      border-radius: 8px;
-      margin-top: 12px;
-      background: #1a0206;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Mevunai Moment™ Country Club, Inc ® — Sovereign Portal</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#2b040c" />
+<link rel="apple-touch-icon" href="master-icon.png" />
+<style>
+  :root {
+    --bg-deep: #1a0207;
+    --bg-panel: #2b040c;
+    --bg-card: rgba(45, 7, 15, 0.92);
+    --bg-card-alt: rgba(31, 4, 10, 0.95);
+    --accent: #d4af37;
+    --accent-bright: #f5d76e;
+    --accent-dim: rgba(212, 175, 55, 0.25);
+    --text-main: #fdf8ee;
+    --text-muted: #d5c3a1;
+    --border-gold: 1px solid rgba(212, 175, 55, 0.45);
+    --emerald: #0d4a36;
+  }
+  body.emerald-theme {
+    --bg-deep: #031711;
+    --bg-panel: #07261c;
+    --bg-card: rgba(8, 42, 31, 0.92);
+    --bg-card-alt: rgba(5, 29, 21, 0.95);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: radial-gradient(circle at top, var(--bg-panel) 0%, var(--bg-deep) 85%);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 138px;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(22, 2, 7, 0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: var(--border-gold);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  body.emerald-theme header {
+    background: rgba(3, 22, 16, 0.94);
+  }
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1.5px solid var(--accent);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .brand-title {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    color: var(--accent-bright);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .brand-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .pill-btn {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(212, 175, 55, 0.08));
+    border: 1px solid var(--accent);
+    color: var(--accent-bright);
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  .pill-btn.solid {
+    background: linear-gradient(135deg, #d4af37, #aa821e);
+    color: #1a0207;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 12px 14px;
+  }
+  /* TOP MOVING VIDEO CINEMA */
+  .cinema-box {
+    background: var(--bg-card);
+    border: 1.5px solid var(--accent);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+  }
+  .cinema-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.35);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    gap: 8px;
+  }
+  .cinema-badge {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    font-weight: bold;
+  }
+  .cinema-stage {
+    position: relative;
+    width: 100%;
+    height: 185px;
+    background: #0d0104;
+    overflow: hidden;
+  }
+  #raCanvas, #topVideoPlayer {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  #topVideoPlayer { display: none; }
+  .cinema-controls {
+    padding: 8px 10px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    background: rgba(0,0,0,0.28);
+  }
+  .chip {
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: var(--text-main);
+    padding: 5px 10px;
+    border-radius: 14px;
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .chip.active {
+    background: var(--accent);
+    color: #1a0207;
+    font-weight: bold;
+  }
+  /* SECTIONS & TABS */
+  .tab-view { display: none; }
+  .tab-view.active { display: block; }
+  .section-heading {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    margin: 6px 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .dept-card {
+    background: var(--bg-card);
+    border: var(--border-gold);
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  .dept-card:active { transform: scale(0.98); }
+  .dept-num {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    font-weight: bold;
+  }
+  .dept-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text-main);
+    line-height: 1.25;
+  }
+  .dept-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.3;
+  }
+  .dept-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(212, 175, 55, 0.18);
+    font-size: 10px;
+    color: var(--accent-bright);
+  }
+  /* CONCIERGE & VALET GARAGE */
+  .garage-banner {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(43, 4, 12, 0.9));
+    border: 1.5px solid var(--accent);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .filter-row {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    margin-bottom: 12px;
+    padding-bottom: 2px;
+  }
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 540px) {
+    .fleet-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .fleet-card {
+    background: var(--bg-card);
+    border: var(--border-gold);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .fleet-media {
+    position: relative;
+    height: 155px;
+    background: #120105;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .fleet-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fleet-placeholder {
+    text-align: center;
+    padding: 12px;
+    color: var(--accent-bright);
+  }
+  .fleet-status {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(15, 2, 5, 0.85);
+    border: 1px solid var(--accent);
+    color: var(--accent-bright);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+  .fleet-photo-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(15, 2, 5, 0.88);
+    border: 1px solid var(--accent);
+    color: var(--accent-bright);
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .fleet-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .fleet-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .fleet-name {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-main);
+  }
+  .fleet-specs {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+  .summon-btn {
+    margin-top: 6px;
+    width: 100%;
+    padding: 9px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #d4af37, #a37b16);
+    color: #1a0207;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+  .summon-btn.dispatched {
+    background: linear-gradient(135deg, #166534, #0d4a36);
+    color: #fdf8ee;
+    border: 1px solid var(--accent);
+  }
+  /* REGISTER MODAL / DRAWER */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    z-index: 90;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-card {
+    background: var(--bg-panel);
+    border: 1.5px solid var(--accent);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 440px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 11px;
+    color: var(--accent-bright);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .form-control {
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    background: rgba(15, 2, 5, 0.85);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 13px;
+  }
+  /* ART GALLERY */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .art-card {
+    background: var(--bg-card);
+    border: var(--border-gold);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .art-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    background: #120105;
+  }
+  .art-info {
+    padding: 8px 10px;
+  }
+  /* VIP PASS */
+  .vip-card {
+    background: linear-gradient(135deg, #3a0611 0%, #170105 60%, #2f050e 100%);
+    border: 2px solid var(--accent);
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.65);
+    position: relative;
+    overflow: hidden;
+  }
+  body.emerald-theme .vip-card {
+    background: linear-gradient(135deg, #0b3b2b 0%, #03140e 60%, #082e21 100%);
+  }
+  /* MP3 SIDEBAR */
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    z-index: 80;
+  }
+  .sidebar-backdrop.open { display: block; }
+  .mp3-sidebar {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    max-width: 86vw;
+    height: 100vh;
+    background: var(--bg-panel);
+    border-left: 1.5px solid var(--accent);
+    z-index: 85;
+    transition: right 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    overflow-y: auto;
+  }
+  .mp3-sidebar.open { right: 0; }
+  /* BOTTOM MINI PLAYER & NAV */
+  .mini-player {
+    position: fixed;
+    bottom: 58px;
+    left: 0;
+    right: 0;
+    background: rgba(24, 3, 8, 0.96);
+    border-top: 1px solid var(--accent);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    z-index: 45;
+  }
+  body.emerald-theme .mini-player { background: rgba(4, 24, 18, 0.96); }
+  .spin-disc {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    object-fit: cover;
+  }
+  .spinning { animation: spin 7s linear infinite; }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 58px;
+    background: #140105;
+    border-top: var(--border-gold);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    z-index: 50;
+  }
+  body.emerald-theme .bottom-nav { background: #02120d; }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+  }
+  .nav-btn.active {
+    color: var(--accent-bright);
+    font-weight: bold;
+  }
+  .toast {
+    position: fixed;
+    top: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a0207;
+    border: 1.5px solid var(--accent);
+    color: var(--accent-bright);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    z-index: 120;
+    display: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  }
+</style>
 </head>
 <body>
 
-  <!-- 1. 24K Gold Bird Flight Splash Intro -->
-  <div id="splash-overlay">
-    <canvas id="splash-canvas"></canvas>
-    <video id="custom-intro-video" playsinline></video>
-    <div class="splash-ui">
-      <div style="font-size:0.78rem; letter-spacing:2px; color:var(--gold-primary);">MMCC SOVEREIGN PORTAL • v29</div>
-      <h2 class="gold-text" style="margin:6px 0 4px;">Pyramid &amp; Eye of Horus Sanctum</h2>
-      <p style="font-size:0.84rem; color:var(--text-muted);">24K Sovereign Falcon Kinematics &amp; Harmonic Gold Chime</p>
-      <div class="splash-controls">
-        <button class="btn" onclick="replaySplash(5000)">🦅 5.0s</button>
-        <button class="btn" onclick="replaySplash(7500)">🦅 7.5s</button>
-        <button class="btn" onclick="replaySplash(10000)">🦅 10.0s</button>
-        <label class="btn" style="cursor:pointer;">
-          🎞️ Custom .MP4
-          <input type="file" accept="video/mp4" style="display:none;" onchange="loadCustomIntro(event)" />
-        </label>
-        <button class="btn btn-solid" onclick="dismissSplash()">Enter Sanctum →</button>
-      </div>
-    </div>
-  </div>
+<div id="toast" class="toast"></div>
 
-  <!-- 2. Sovereign 4-Digit PIN & Biometric Lock Screen -->
-  <div id="lock-overlay">
-    <div class="lock-box">
-      <div style="font-size:2rem;">🔐</div>
-      <h3 class="gold-text" style="margin-top:6px;">Sovereign Vault Locked</h3>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Enter 4-Digit Member PIN (Default: 2424)</p>
-      <div class="pin-dots" id="pin-dots">
-        <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
-      </div>
-      <div id="pin-error" style="color:#fca5a5; font-size:0.8rem; min-height:18px;"></div>
-      <div class="keypad">
-        <button onclick="pressPin('1')">1</button><button onclick="pressPin('2')">2</button><button onclick="pressPin('3')">3</button>
-        <button onclick="pressPin('4')">4</button><button onclick="pressPin('5')">5</button><button onclick="pressPin('6')">6</button>
-        <button onclick="pressPin('7')">7</button><button onclick="pressPin('8')">8</button><button onclick="pressPin('9')">9</button>
-        <button onclick="clearPin()">CLR</button><button onclick="pressPin('0')">0</button><button onclick="unlockBiometric()">🧬 BIO</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <header>
-    <div class="brand-block">
-      <div class="crest-badge">👁️</div>
-      <div>
-        <h1 class="gold-text" style="font-size:1.25rem; letter-spacing:1px;">MMCC 13 DEPARTMENTS SOVEREIGN SUITE</h1>
-        <div style="font-size:0.75rem; color:var(--text-muted);">Edition v29 • Private Member Sanctum &amp; Offline Vault</div>
-      </div>
-    </div>
-    <div class="header-actions">
-      <button class="btn" id="layout-toggle-btn" onclick="toggleCinemaLayout()">◧ Sidebar ↔ ▣ Center-Stage</button>
-      <button class="btn" onclick="replaySplash(5000)">🦅 Replay Intro</button>
-      <button class="btn" onclick="openSecurityModal()">⚙️ PIN &amp; Bio Settings</button>
-      <button class="btn" onclick="exportBackup()">💾 Export .mmcc</button>
-      <label class="btn" style="cursor:pointer;">
-        📂 Restore .mmcc
-        <input type="file" accept=".mmcc,.json" style="display:none;" onchange="importBackup(event)" />
-      </label>
-      <button class="btn btn-solid" onclick="lockVault()">🔒 Lock Vault</button>
-    </div>
-  </header>
-
-  <!-- 3. Global Club Hubs World Clock & Tarmac Readiness Strip -->
-  <section class="hubs-strip" id="hubs-strip"></section>
-
-  <!-- Main Workspace -->
-  <main class="workspace" id="main-workspace">
-
-    <!-- 4. Reel Cinema & Ambient Lounge -->
-    <aside class="cinema-panel" id="cinema-panel">
-      <div class="cinema-header">
-        <div>
-          <strong class="gold-text">🎬 Reel Cinema &amp; Ambient Lounge</strong>
-          <div style="font-size:0.74rem; color:var(--text-muted);">Offline Video &amp; MP3 Sanctuary</div>
-        </div>
-        <button class="btn" style="padding:4px 8px;" onclick="toggleSidebarCollapse()" title="Collapse/Expand">⇄</button>
-      </div>
-      <div class="cinema-body" style="display:flex; flex-direction:column; gap:12px;">
-        <div class="video-stage">
-          <video id="cinema-player" controls poster="" style="display:none;"></video>
-          <div id="cinema-placeholder" style="text-align:center; padding:16px; color:var(--text-muted); font-size:0.85rem;">
-            Load a local MP4/WebM reel into your Offline Video Vault below to screen in Sidebar or Widescreen Center-Stage.
-          </div>
-        </div>
-
-        <div class="vault-box">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.84rem; color:var(--gold-light);">🎞️ Offline Video Vault</span>
-            <label class="btn" style="padding:3px 8px; font-size:0.76rem; cursor:pointer;">
-              + Add Video
-              <input type="file" accept="video/*" multiple style="display:none;" onchange="addMediaFiles(event, 'video')" />
-            </label>
-          </div>
-          <ul class="vault-list" id="video-vault-list"></ul>
-        </div>
-
-        <div class="vault-box">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.84rem; color:var(--gold-light);">🎵 Ambient MP3 Lounge</span>
-            <label class="btn" style="padding:3px 8px; font-size:0.76rem; cursor:pointer;">
-              + Add MP3
-              <input type="file" accept="audio/*" multiple style="display:none;" onchange="addMediaFiles(event, 'audio')" />
-            </label>
-          </div>
-          <audio id="ambient-audio" controls style="width:100%; height:32px; margin-top:8px;"></audio>
-          <ul class="vault-list" id="audio-vault-list"></ul>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Right / Main Content Column -->
+<header>
+  <div class="brand-row">
+    <img src="master-icon.png" alt="MMCC" class="brand-logo" onerror="this.style.display='none'" />
     <div>
-      <div class="section-title-bar">
+      <div class="brand-title">MEVUNAI MOMENT™ COUNTRY CLUB</div>
+      <div class="brand-sub">M'M™ countryclub.inc · RA 109</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="pill-btn" onclick="toggleTheme()">✦ Silk/Emerald</button>
+    <button class="pill-btn solid" onclick="openSidebar()">🎵 MP3 Vault</button>
+  </div>
+</header>
+
+<div class="container">
+  <!-- TOP MOVING VIDEO CINEMA -->
+  <div class="cinema-box">
+    <div class="cinema-header">
+      <span class="cinema-badge" id="cinemaLabel">✦ RA 109 GOLD SILK MOTION</span>
+      <div style="display:flex;gap:6px;">
+        <button class="pill-btn" style="padding:4px 8px;font-size:10px;" onclick="document.getElementById('videoUploadInput').click()">🎬 + Save MP4</button>
+        <input type="file" id="videoUploadInput" accept="video/*" multiple style="display:none" onchange="handleVideoUpload(event)" />
+      </div>
+    </div>
+    <div class="cinema-stage">
+      <canvas id="raCanvas"></canvas>
+      <video id="topVideoPlayer" controls playsinline loop></video>
+    </div>
+    <div class="cinema-controls" id="videoChipBar">
+      <button class="chip active" onclick="playGoldVisualizer(this)">✦ RA 109 Gold Motion</button>
+    </div>
+  </div>
+
+  <!-- TAB 1: 13 SOVEREIGN DEPARTMENTS -->
+  <div id="tab-depts" class="tab-view active">
+    <div class="section-heading">
+      <span>13 Sovereign Departments</span>
+      <span style="font-size:10px;color:var(--text-muted);">Tap Suite to Enter</span>
+    </div>
+    <div class="dept-grid" id="deptGrid"></div>
+  </div>
+
+  <!-- TAB 2: MASTER CONCIERGE & VISUAL VALET GARAGE / HANGAR -->
+  <div id="tab-concierge" class="tab-view">
+    <div class="garage-banner">
+      <div>
+        <div style="font-size:13px;font-weight:bold;color:var(--accent-bright);">🚘 Valet Garage & Private Hangar</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Inspect club fleet or register your own car, superbike & jet.</div>
+      </div>
+      <button class="pill-btn solid" onclick="openRegisterModal()">+ Register Vehicle / Jet</button>
+    </div>
+
+    <div class="filter-row" id="fleetFilterRow">
+      <button class="chip active" onclick="filterFleet('all', this)">All Fleet</button>
+      <button class="chip" onclick="filterFleet('Car', this)">Luxury Cars</button>
+      <button class="chip" onclick="filterFleet('Superbike', this)">Superbikes</button>
+      <button class="chip" onclick="filterFleet('Jet', this)">Private Jets</button>
+      <button class="chip" onclick="filterFleet('Member', this)">My Registered</button>
+    </div>
+
+    <div class="fleet-grid" id="fleetGrid"></div>
+
+    <div class="section-heading" style="margin-top:16px;">
+      <span>Active Valet & Tarmac Log</span>
+      <button class="chip" onclick="clearDispatchLog()">Clear</button>
+    </div>
+    <div id="dispatchLog" style="background:var(--bg-card);border:var(--border-gold);border-radius:12px;padding:10px;font-size:11px;color:var(--text-muted);">
+      No active valet or tarmac dispatches yet. Tap Summon on any vehicle or aircraft above.
+    </div>
+  </div>
+
+  <!-- TAB 3: ART & COUTURE GALLERY -->
+  <div id="tab-gallery" class="tab-view">
+    <div class="section-heading">
+      <span>Art & Couture Exhibition</span>
+      <a href="https://mm-el.vercel.app" target="_blank" class="pill-btn solid" style="text-decoration:none;">Flagship App ↗</a>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+
+  <!-- TAB 4: VIP PASS & LINKS -->
+  <div id="tab-vip" class="tab-view">
+    <div class="vip-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:10px;letter-spacing:1.5px;color:var(--accent-bright);">FOUNDER'S SOVEREIGN KEY</span>
+        <span style="font-size:11px;font-weight:bold;color:var(--accent);">RA 109 · ALL-ACCESS</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin:14px 0;">
+        <img src="master-icon.png" alt="Crest" style="width:62px;height:62px;border-radius:50%;border:2px solid var(--accent);object-fit:cover;" onerror="this.style.display='none'" />
         <div>
-          <h2 class="gold-text" style="font-size:1.3rem;">The 13 Sovereign Departments</h2>
-          <p style="font-size:0.82rem; color:var(--text-muted);">Select any division to enter its interactive suite and member records.</p>
+          <div style="font-size:17px;font-weight:bold;color:var(--accent-bright);">SOVEREIGN FOUNDER</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">ID: MMCC-MASTER-1325-001</div>
+          <div style="font-size:10px;color:var(--accent);margin-top:4px;">13 DEPARTMENTS · HANGAR · VALET · ATELIER</div>
         </div>
       </div>
-
-      <div class="departments-grid" id="departments-grid"></div>
-
-      <!-- Ledger, COA Generator & VIP Passes -->
-      <div class="tools-grid">
-
-        <!-- 5. Private Concierge & Member Itinerary Ledger -->
-        <div class="panel-card">
-          <h3>🥂 Private Concierge &amp; Itinerary Ledger</h3>
-          <div class="form-row">
-            <label>Service Category</label>
-            <select id="ledger-category">
-              <option value="Private Jet / Heli Charter">Private Jet / Heli Charter</option>
-              <option value="Superyacht Berth &amp; Charter">Superyacht Berth &amp; Charter</option>
-              <option value="Private Dining &amp; Sommelier">Private Dining &amp; Sommelier</option>
-              <option value="Royal Penthouse &amp; Villa Suite">Royal Penthouse &amp; Villa Suite</option>
-              <option value="Diplomatic Security &amp; Chauffeur">Diplomatic Security &amp; Chauffeur</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label>Itinerary Details &amp; Hub</label>
-            <input type="text" id="ledger-detail" placeholder="e.g., Gulfstream G700 TLV → LHR, 4 Pax" />
-          </div>
-          <div style="display:flex; gap:10px;">
-            <div class="form-row" style="flex:1;">
-              <label>Date</label>
-              <input type="date" id="ledger-date" />
-            </div>
-            <div class="form-row" style="flex:1;">
-              <label>Priority Status</label>
-              <select id="ledger-status">
-                <option value="VIP Priority">VIP Priority</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="In Progress">In Progress</option>
-              </select>
-            </div>
-          </div>
-          <button class="btn btn-solid" style="width:100%;" onclick="addLedgerEntry()">+ Log Sovereign Request</button>
-          <table class="ledger-table">
-            <thead>
-              <tr><th>Date</th><th>Request</th><th>Status</th><th></th></tr>
-            </thead>
-            <tbody id="ledger-tbody"></tbody>
-          </table>
-        </div>
-
-        <!-- 6. 24K Certificate of Authenticity (COA) PNG Generator -->
-        <div class="panel-card">
-          <h3>📜 24K Certificate of Authenticity (COA) Generator</h3>
-          <div class="form-row">
-            <label>Asset Classification</label>
-            <select id="coa-type">
-              <option value="FINE ART &amp; ANTIQUITIES">Private Art Gallery Asset</option>
-              <option value="BESPOKE AUTOMOTIVE">Valet Collection Vehicle</option>
-              <option value="PRIVATE AVIATION">Private Hangar Aircraft</option>
-              <option value="HOROLOGY &amp; HIGH JEWELRY">Vault Horology / High Jewelry</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label>Asset Title / Make &amp; Model</label>
-            <input type="text" id="coa-title" placeholder="e.g., 1962 Ferrari 250 GTO / Sovereign Edition" />
-          </div>
-          <div class="form-row">
-            <label>Provenance / Serial / Tail Number</label>
-            <input type="text" id="coa-serial" placeholder="e.g., SN-MMCC-24K-8891" />
-          </div>
-          <div class="form-row">
-            <label>Registered Sovereign Member</label>
-            <input type="text" id="coa-owner" placeholder="e.g., Lord / Lady Sovereign Member" />
-          </div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-solid" style="flex:1;" onclick="renderCOA()">Render 24K COA</button>
-            <button class="btn" onclick="downloadCanvas('coa-canvas', 'MMCC-24K-COA.png')">⬇ Export PNG</button>
-          </div>
-          <canvas id="coa-canvas" class="preview-canvas" width="700" height="440"></canvas>
-        </div>
-
-        <!-- Exportable VIP & Guest Day-Passes -->
-        <div class="panel-card">
-          <h3>🎫 Exportable VIP &amp; Guest Day-Passes</h3>
-          <div class="form-row">
-            <label>Pass Tier</label>
-            <select id="pass-tier">
-              <option value="SOVEREIGN FOUNDER PASS">Sovereign Founder Pass (All 13 Hubs)</option>
-              <option value="ROYAL DIPLOMATIC GUEST">Royal Diplomatic Guest Day-Pass</option>
-              <option value="TARMAC &amp; HANGAR ACCESS">Tarmac &amp; Private Hangar Clearance</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label>Guest / Member Name</label>
-            <input type="text" id="pass-name" placeholder="e.g., Honored Guest of MMCC" />
-          </div>
-          <div class="form-row">
-            <label>Authorized Club Hub</label>
-            <select id="pass-hub">
-              <option>New York • Fifth Avenue Sanctum</option>
-              <option>London • Mayfair House</option>
-              <option>Paris • Place Vendôme</option>
-              <option>Tel Aviv • Rothschild Sovereign Tower</option>
-              <option>Dubai • DIFC Gold Gate</option>
-              <option>Tokyo • Ginza Imperial Suite</option>
-            </select>
-          </div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-solid" style="flex:1;" onclick="renderPass()">Issue Gold Pass</button>
-            <button class="btn" onclick="downloadCanvas('pass-canvas', 'MMCC-VIP-Pass.png')">⬇ Export PNG</button>
-          </div>
-          <canvas id="pass-canvas" class="preview-canvas" width="700" height="360"></canvas>
-        </div>
-
-      </div>
-    </div>
-  </main>
-
-  <!-- Department Suite Modal -->
-  <div class="modal-backdrop" id="dept-modal">
-    <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-gold); padding-bottom:10px;">
-        <h3 class="gold-text" id="modal-dept-title">Department</h3>
-        <button class="btn" onclick="closeModal('dept-modal')">✕</button>
-      </div>
-      <p id="modal-dept-desc" style="margin:12px 0; color:var(--text-muted); font-size:0.9rem;"></p>
-      <div class="form-row">
-        <label>Department Private Notes &amp; Directives (Saved Offline)</label>
-        <textarea id="modal-dept-notes" rows="5" placeholder="Enter confidential directives, asset notes, or suite preferences..."></textarea>
-      </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
-        <button class="btn btn-solid" onclick="saveDeptNotes()">Save Directive</button>
+      <div style="border-top:1px solid rgba(212,175,55,0.35);padding-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-muted);">
+        <span>mevunai Moment™ Country Club, Inc ®</span>
+        <span style="color:var(--accent-bright);">ACTIVE</span>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- PIN & Biometric Security Modal -->
-  <div class="modal-backdrop" id="security-modal">
-    <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-gold); padding-bottom:10px;">
-        <h3 class="gold-text">🔐 Sovereign PIN &amp; Biometric Settings</h3>
-        <button class="btn" onclick="closeModal('security-modal')">✕</button>
-      </div>
-      <div class="form-row" style="margin-top:14px;">
-        <label>Set Custom 4-Digit Member PIN</label>
-        <input type="password" id="new-pin-input" maxlength="4" pattern="[0-9]*" placeholder="4 digits (e.g., 2424)" />
-      </div>
-      <div style="display:flex; align-items:center; gap:10px; margin:12px 0;">
-        <input type="checkbox" id="require-pin-launch" />
-        <label for="require-pin-launch" style="font-size:0.88rem;">Require PIN on App Launch</label>
-      </div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
-        <button class="btn btn-solid" onclick="saveSecuritySettings()">Save PIN Settings</button>
-        <button class="btn" onclick="registerBiometrics()">🧬 Enable Device Biometrics (WebAuthn)</button>
-      </div>
-      <div id="security-msg" style="margin-top:10px; font-size:0.82rem; color:var(--gold-light);"></div>
+<!-- REGISTER VEHICLE / JET MODAL -->
+<div id="registerModal" class="modal-backdrop">
+  <div class="modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <strong style="color:var(--accent-bright);font-size:14px;">+ Register Personal Vehicle or Jet</strong>
+      <button class="chip" onclick="closeRegisterModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select id="regCategory" class="form-control">
+        <option value="Car">Luxury Car / Supercar</option>
+        <option value="Superbike">Superbike / Motorcycle</option>
+        <option value="Jet">Private Jet / Helicopter</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Vehicle or Aircraft Model</label>
+      <input type="text" id="regName" class="form-control" placeholder="e.g., Rolls-Royce Spectre or Gulfstream G700" />
+    </div>
+    <div class="form-group">
+      <label>Tail Number / License Plate / Bay</label>
+      <input type="text" id="regPlate" class="form-control" placeholder="e.g., N1325MM · Hangar A-01" />
+    </div>
+    <div class="form-group">
+      <label>Specs / Concierge Prep Notes</label>
+      <input type="text" id="regSpecs" class="form-control" placeholder="e.g., Crimson Silk interior, cabin 21°C, full fuel" />
+    </div>
+    <div class="form-group">
+      <label>Upload Photo (Car, Bike, or Jet)</label>
+      <input type="file" id="regPhoto" accept="image/*" class="form-control" />
+    </div>
+    <button class="summon-btn" onclick="saveRegisteredVehicle()">Save to My Garage & Hangar</button>
+  </div>
+</div>
+
+<!-- DEPARTMENT SUITE MODAL -->
+<div id="deptModal" class="modal-backdrop">
+  <div class="modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span id="modalDeptNum" style="font-size:10px;color:var(--accent);font-weight:bold;"></span>
+      <button class="chip" onclick="closeDeptModal()">✕</button>
+    </div>
+    <div id="modalDeptTitle" style="font-size:16px;font-weight:bold;color:var(--accent-bright);margin-bottom:6px;"></div>
+    <div id="modalDeptDesc" style="font-size:12px;color:var(--text-muted);line-height:1.45;margin-bottom:12px;"></div>
+    <div id="modalDeptActions" style="display:flex;flex-direction:column;gap:8px;"></div>
+  </div>
+</div>
+
+<!-- MP3 VAULT SIDEBAR -->
+<div id="sidebarBackdrop" class="sidebar-backdrop" onclick="closeSidebar()"></div>
+<aside id="mp3Sidebar" class="mp3-sidebar">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <strong style="color:var(--accent-bright);font-size:14px;">🎵 MMEL MP3 Vault</strong>
+    <button class="chip" onclick="closeSidebar()">✕</button>
+  </div>
+  <div style="background:rgba(0,0,0,0.32);border:var(--border-gold);border-radius:12px;padding:10px;text-align:center;margin-bottom:10px;">
+    <img id="vaultCoverImg" src="master-icon.png" style="width:74px;height:74px;border-radius:50%;border:2px solid var(--accent);object-fit:cover;" onerror="this.style.display='none'" />
+    <div style="margin-top:8px;display:flex;justify-content:center;gap:6px;">
+      <button class="chip" onclick="document.getElementById('vaultCoverInput').click()">📷 Swap Photo</button>
+      <button class="chip" onclick="resetVaultCover()">↺ Reset</button>
+      <input type="file" id="vaultCoverInput" accept="image/*" style="display:none" onchange="swapVaultCover(event)" />
     </div>
   </div>
+  <button class="summon-btn" style="margin-bottom:10px;" onclick="document.getElementById('mp3FileInput').click()">＋ Store MP3 / Audio Offline</button>
+  <input type="file" id="mp3FileInput" accept="audio/*" multiple style="display:none" onchange="handleMp3Upload(event)" />
+  <div id="mp3TrackList" style="display:flex;flex-direction:column;gap:6px;"></div>
+</aside>
 
-  <script>
-    /* --- DATA & STATE --- */
-    const DEPARTMENTS = [
-      { id: 1, title: "01. Sovereign Governance & Crown Council", desc: "Executive charters, member voting protocols, and dynasty bylaws." },
-      { id: 2, title: "02. Private Treasury & Bullion Reserve", desc: "24K gold allocations, sovereign wealth vaults, and multi-currency liquidity." },
-      { id: 3, title: "03. Private Aviation & Tarmac Operations", desc: "Global FBO clearances, Gulfstream/Global fleet dispatch, and CAVOK routing." },
-      { id: 4, title: "04. Maritime & Superyacht Admiralty", desc: "Mediterranean & Caribbean berth reservations, crew logistics, and tender ops." },
-      { id: 5, title: "05. Valet & Bespoke Collector Hangar", desc: "Climate-controlled hypercar storage, provenance logs, and global transport." },
-      { id: 6, title: "06. Private Art Gallery & Antiquities", desc: "Curated museum-grade acquisitions, provenance verification, and 24K COAs." },
-      { id: 7, title: "07. Haute Horlogerie & Vault Jewels", desc: "Rare timepieces, bespoke commissions, and insured vault custody." },
-      { id: 8, title: "08. Royal Estates & Sanctum Residences", desc: "Worldwide penthouses, private islands, and pre-arrival suite preparation." },
-      { id: 9, title: "09. Diplomatic Security & Cyber Sanctum", desc: "Close protection details, encrypted comms, and biometric access control." },
-      { id: 10, title: "10. Grand Gastronomy & Rare Vintage Cellar", desc: "Michelin private chefs, rare Bordeaux/Burgundy allocations, and tastings." },
-      { id: 11, title: "11. Longevity, Wellness & Bio-Optimization", desc: "Private clinical suites, regenerative specialists, and spa sanctuaries." },
-      { id: 12, title: "12. Cultural Patronage & Global Galas", desc: "Opera boxes, private museum galas, and sovereign philanthropic foundations." },
-      { id: 13, title: "13. 24/7 White-Glove Sovereign Concierge", desc: "Immediate bespoke sourcing, diplomatic clearances, and itinerary execution." }
-    ];
+<!-- PERSISTENT MINI PLAYER -->
+<div class="mini-player">
+  <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+    <img id="miniDiscImg" src="master-icon.png" class="spin-disc" onerror="this.style.display='none'" />
+    <div style="min-width:0;">
+      <div id="nowPlayingTitle" style="font-size:11px;font-weight:bold;color:var(--accent-bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">MMEL Atrium Lounge</div>
+      <div id="nowPlayingSub" style="font-size:9px;color:var(--text-muted);">Tap Play · Offline Vault Ready</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <button class="pill-btn" id="playPauseBtn" onclick="toggleAudio()">▶ Play</button>
+    <button class="pill-btn" onclick="openSidebar()">☰</button>
+  </div>
+</div>
 
-    const HUBS = [
-      { city: "New York", tz: "America/New_York", code: "JFK/TEB" },
-      { city: "London", tz: "Europe/London", code: "FAB/LTN" },
-      { city: "Paris", tz: "Europe/Paris", code: "LBG" },
-      { city: "Tel Aviv", tz: "Asia/Jerusalem", code: "TLV" },
-      { city: "Dubai", tz: "Asia/Dubai", code: "DWC/DXB" },
-      { city: "Tokyo", tz: "Asia/Tokyo", code: "HND/NRT" }
-    ];
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="switchTab('depts', this)"><span>🏛️</span><span>13 Depts</span></button>
+  <button class="nav-btn" onclick="switchTab('concierge', this)"><span>🚘</span><span>Valet & Jets</span></button>
+  <button class="nav-btn" onclick="switchTab('gallery', this)"><span>🎨</span><span>Art & Couture</span></button>
+  <button class="nav-btn" onclick="switchTab('vip', this)"><span>👑</span><span>VIP Pass</span></button>
+</nav>
 
-    let state = JSON.parse(localStorage.getItem('mmcc_v29_state') || 'null') || {
-      pin: '2424',
-      requirePinOnLaunch: false,
-      biometricEnabled: false,
-      centerStage: false,
-      deptNotes: {},
-      ledger: [
-        { id: 1, date: '2026-11-28', category: 'Private Jet / Heli Charter', detail: 'TLV → LBG • Sovereign Falcon 8X', status: 'Confirmed' },
-        { id: 2, date: '2026-12-02', category: 'Private Dining & Sommelier', detail: 'Paris Vendôme Vault • 1945 Vintage Tasting', status: 'VIP Priority' }
-      ]
+<audio id="audioEl"></audio>
+
+<script>
+const DEPARTMENTS = [
+  { num: "DEPT 01", title: "MM'EL Radio & MMTV", sub: "24/7 Sovereign broadcast & live visual streams", detail: "Access curated atrium lounge sets, private runway broadcasts, and offline MP3 vault playback." },
+  { num: "DEPT 02", title: "Flagship Couture & Atelier", sub: "Bespoke crimson silk tailoring & 1325 commissions", detail: "Explore bespoke moto jackets, emerald velvet eveningwear, and custom gold-circuit accessories.", url: "https://mm-el.vercel.app" },
+  { num: "DEPT 03", title: "Private Aviation & Marina", sub: "Gulfstream G700 tarmac & 180ft superyacht berths", detail: "Direct helicopter transfers, tail N1325MM flight prep, and Sovereign Pharaoh superyacht berth concierge.", openConcierge: true },
+  { num: "DEPT 04", title: "Royal Equestrian Stables", sub: "Arabian thoroughbreds & private polo chukkas", detail: "Reserve sunrise coastal rides, bespoke crimson leather saddlery, and championship polo matches." },
+  { num: "DEPT 05", title: "Cigar & Spirits Lounge", sub: "1325 cedar humidor vault & rare reserve single malts", detail: "Private velvet salon booths pre-stocked with aged Reserva cigars and sommelier flights." },
+  { num: "DEPT 06", title: "Spa & Thermal Bathhouse", sub: "Pharaoh's Gold Hammam & emerald mineral plunge", detail: "Private thermal suites, 24K gold-leaf facials, and Dead Sea floatarium recovery." },
+  { num: "DEPT 07", title: "Fine Dining & Velvet Lounge", sub: "12-seat obsidian Chef's Counter & grand cellar", detail: "Tasting menus featuring 24K gold-leaf A5 Wagyu and rare Grand Cru pairings." },
+  { num: "DEPT 08", title: "Golf Simulator & Padel Club", sub: "TrackMan Tour bays & panoramic glass padel courts", detail: "Play St Andrews or Augusta National with custom-fitted clubs or book championship padel sparring." },
+  { num: "DEPT 09", title: "Private Cinema & Screening", sub: "Sovereign IMAX velvet theater & 35mm vault", detail: "Private screenings with champagne and truffle butler service." },
+  { num: "DEPT 10", title: "Barber & Grooming Salon", sub: "Master straight-razor grooming & oud treatments", detail: "Private mahogany grooming suites with hot-towel rituals and bespoke fragrance blending." },
+  { num: "DEPT 11", title: "Kinetic Performance Gym", sub: "Strength foundry, boxing ring & -110°C cryotherapy", detail: "Executive biomechanics labs, private combat coaching, and hyperbaric recovery pods." },
+  { num: "DEPT 12", title: "Medical & Longevity Centre", sub: "Full-body diagnostics & NAD+ cellular infusions", detail: "24/7 private physician concierge, biomarker panels, and villa/jet house-calls." },
+  { num: "DEPT 13", title: "Founder's Sovereign Circle", sub: "RA 109 inner sanctum & executive boardroom", detail: "Private governance chamber, 1325 vault drops, and sovereign diplomatic concierge." }
+];
+
+const DEFAULT_FLEET = [
+  { id: "f1", category: "Jet", name: "Gulfstream G700 Sovereign", plate: "TAIL N1325MM · HANGAR A-01", status: "ON TARMAC · FUELED", specs: "7,500 nm ultra-long range · Crimson silk cabin staged at 21°C · Direct tarmac Maybach transfer ready.", icon: "✈️", img: "" },
+  { id: "f2", category: "Car", name: "Maybach S680 Haute Voiture", plate: "PLATE MMCC-001 · PORTE-COCHÈRE", status: "VALET STAGED", specs: "V12 chauffeur limousine · Two-tone crimson & obsidian · Chilled champagne console & armed escort.", icon: "🚘", img: "" },
+  { id: "f3", category: "Superbike", name: "MMCC 1325 Emerald & Gold Superbike", plate: "BAY SB-04 · TRACK PADDOCK", status: "WARMED & READY", specs: "Bespoke carbon-emerald fairing with 24K brushed gold circuit trim · Full race telemetry.", icon: "🏍️", img: "" },
+  { id: "f4", category: "Jet", name: "Sikorsky S-76D Helipad Shuttle", plate: "TAIL 4X-MMCC · ROOFTOP PAD", status: "CLEAR FOR TAKEOFF", specs: "8-minute direct transfer from Club Helipad to Ben Gurion VIP FBO or Royal Yacht Marina.", icon: "🚁", img: "" },
+  { id: "f5", category: "Car", name: "Ferrari SF90 Stradale Atelier", plate: "PLATE RA-109 · VAULT GARAGE", status: "DETAIL COMPLETE", specs: "1,000 hp hybrid V8 · Rosso Corsa with gold forged wheels · Ready for coastal sunset drive.", icon: "🏎️", img: "" }
+];
+
+const ART_ITEMS = [
+  { title: "RA 109 Gold Pyramid & Circuit", sub: "24K Brushed Gold & Emerald on Crimson Silk", img: "art-ra109.png" },
+  { title: "RA Constellation Network", sub: "Emerald Gemstone & Gold Node Matrix", img: "art-constellation.png" },
+  { title: "12-Medallion Sacred Blueprint", sub: "Eye of Horus & Pyramid Architectural Map", img: "art-blueprint.png" },
+  { title: "3D Sovereign Character", sub: "Founder's Circle Royal Crest Couture", img: "art-3d-character.png" },
+  { title: "RA 109 Circular Medallion", sub: "Official Sovereign Emblem Seal", img: "art-medallion.png" }
+];
+
+let customFleet = JSON.parse(localStorage.getItem("mmcc_custom_fleet_v24") || "[]");
+let fleetPhotos = JSON.parse(localStorage.getItem("mmcc_fleet_photos_v24") || "{}");
+let currentFleetFilter = "all";
+let dispatchedIds = {};
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => { t.style.display = "none"; }, 2800);
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("emerald-theme");
+  showToast(document.body.classList.contains("emerald-theme") ? "Emerald Velvet Theme Active" : "Royal Crimson Silk Active");
+}
+
+function switchTab(tabId, btn) {
+  document.querySelectorAll(".tab-view").forEach(el => el.classList.remove("active"));
+  document.getElementById("tab-" + tabId).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+}
+
+function renderDepts() {
+  const grid = document.getElementById("deptGrid");
+  grid.innerHTML = DEPARTMENTS.map((d, i) => `
+    <div class="dept-card" onclick="openDeptModal(${i})">
+      <div>
+        <div class="dept-num">${d.num}</div>
+        <div class="dept-title">${d.title}</div>
+        <div class="dept-sub" style="margin-top:4px;">${d.sub}</div>
+      </div>
+      <div class="dept-footer">
+        <span>${d.url ? "LIVE APP ↗" : (d.openConcierge ? "HANGAR & MARINA" : "ENTER SUITE")}</span>
+        <span>→</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function openDeptModal(idx) {
+  const d = DEPARTMENTS[idx];
+  document.getElementById("modalDeptNum").textContent = d.num;
+  document.getElementById("modalDeptTitle").textContent = d.title;
+  document.getElementById("modalDeptDesc").textContent = d.detail;
+  const actions = document.getElementById("modalDeptActions");
+  let html = "";
+  if (d.url) {
+    html += `<a href="${d.url}" target="_blank" class="summon-btn" style="text-align:center;text-decoration:none;display:block;">Open Live Flagship Couture App ↗</a>`;
+  }
+  if (d.openConcierge) {
+    html += `<button class="summon-btn" onclick="closeDeptModal();switchTab('concierge', document.querySelectorAll('.nav-btn')[1])">Open Valet Garage & Private Hangar</button>`;
+  }
+  html += `<button class="pill-btn" style="width:100%;padding:9px;" onclick="closeDeptModal();showToast('Concierge notified for ${d.title.replace(/'/g, "")}')">Request Private Suite Concierge</button>`;
+  actions.innerHTML = html;
+  document.getElementById("deptModal").classList.add("open");
+}
+function closeDeptModal() { document.getElementById("deptModal").classList.remove("open"); }
+
+/* VALET GARAGE & PRIVATE HANGAR */
+function getAllFleet() {
+  return [...customFleet, ...DEFAULT_FLEET].map(item => ({
+    ...item,
+    img: fleetPhotos[item.id] || item.img || ""
+  }));
+}
+
+function filterFleet(cat, btn) {
+  currentFleetFilter = cat;
+  document.querySelectorAll("#fleetFilterRow .chip").forEach(c => c.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  renderFleet();
+}
+
+function renderFleet() {
+  const grid = document.getElementById("fleetGrid");
+  const all = getAllFleet();
+  const filtered = all.filter(item => {
+    if (currentFleetFilter === "all") return true;
+    if (currentFleetFilter === "Member") return item.isMember === true;
+    return item.category === currentFleetFilter;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px;background:var(--bg-card);border:var(--border-gold);border-radius:14px;color:var(--text-muted);font-size:12px;">No vehicles registered in this category yet. Tap <strong>+ Register Vehicle / Jet</strong> above to upload yours.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(item => {
+    const isSent = !!dispatchedIds[item.id];
+    const mediaHtml = item.img
+      ? `<img src="${item.img}" alt="${item.name}" />`
+      : `<div class="fleet-placeholder"><div style="font-size:34px;">${item.icon || "🚘"}</div><div style="font-size:10px;letter-spacing:1px;margin-top:4px;">${item.category.toUpperCase()} BAY</div></div>`;
+    return `
+      <div class="fleet-card">
+        <div class="fleet-media">
+          ${mediaHtml}
+          <span class="fleet-status">${item.status}</span>
+          <button class="fleet-photo-btn" onclick="triggerFleetPhotoSwap('${item.id}')">📷 Swap Photo</button>
+        </div>
+        <div class="fleet-body">
+          <div class="fleet-meta">
+            <span>${item.category} ${item.isMember ? "· MEMBER OWNED" : "· CLUB FLEET"}</span>
+            <span>${item.plate}</span>
+          </div>
+          <div class="fleet-name">${item.name}</div>
+          <div class="fleet-specs">${item.specs}</div>
+          <button class="summon-btn ${isSent ? "dispatched" : ""}" onclick="summonVehicle('${item.id}')">
+            ${isSent ? "✓ Dispatched — Staging at Porte-Cochère / Tarmac" : (item.category === "Jet" ? "✈️ Request Tarmac & Flight Prep" : "🚘 Summon Valet Now")}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function triggerFleetPhotoSwap(id) {
+  const inp = document.createElement("input");
+  inp.type = "file";
+  inp.accept = "image/*";
+  inp.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      fleetPhotos[id] = reader.result;
+      try { localStorage.setItem("mmcc_fleet_photos_v24", JSON.stringify(fleetPhotos)); } catch (err) {}
+      renderFleet();
+      showToast("Vehicle / Aircraft photo updated");
     };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
 
-    function persistState() {
-      localStorage.setItem('mmcc_v29_state', JSON.stringify(state));
+function summonVehicle(id) {
+  const item = getAllFleet().find(x => x.id === id);
+  if (!item) return;
+  dispatchedIds[id] = true;
+  renderFleet();
+  const log = document.getElementById("dispatchLog");
+  const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const entry = `<div style="padding:6px 0;border-bottom:1px solid rgba(212,175,55,0.2);color:var(--text-main);">
+    <strong style="color:var(--accent-bright);">[${time}] ${item.name}</strong> (${item.plate}) — ${item.category === "Jet" ? "Tarmac fuel & cabin prep active" : "Valet bringing vehicle to VIP entrance"}.
+  </div>`;
+  if (log.textContent.includes("No active valet")) log.innerHTML = entry;
+  else log.innerHTML = entry + log.innerHTML;
+  showToast(`Dispatched: ${item.name}`);
+}
+
+function clearDispatchLog() {
+  dispatchedIds = {};
+  renderFleet();
+  document.getElementById("dispatchLog").textContent = "No active valet or tarmac dispatches yet. Tap Summon on any vehicle or aircraft above.";
+}
+
+function openRegisterModal() { document.getElementById("registerModal").classList.add("open"); }
+function closeRegisterModal() { document.getElementById("registerModal").classList.remove("open"); }
+
+function saveRegisteredVehicle() {
+  const category = document.getElementById("regCategory").value;
+  const name = document.getElementById("regName").value.trim();
+  const plate = document.getElementById("regPlate").value.trim() || "VIP MEMBER BAY";
+  const specs = document.getElementById("regSpecs").value.trim() || "Member-registered private fleet asset · Priority concierge staging.";
+  const photoInput = document.getElementById("regPhoto");
+
+  if (!name) {
+    showToast("Please enter a vehicle or jet model");
+    return;
+  }
+
+  const iconMap = { Car: "🚘", Superbike: "🏍️", Jet: "✈️" };
+  const newItem = {
+    id: "mem_" + Date.now(),
+    category,
+    name,
+    plate: plate.toUpperCase(),
+    status: "MEMBER REGISTERED",
+    specs,
+    icon: iconMap[category] || "🚘",
+    isMember: true,
+    img: ""
+  };
+
+  const finishSave = (dataUrl) => {
+    if (dataUrl) {
+      newItem.img = dataUrl;
+      fleetPhotos[newItem.id] = dataUrl;
+      try { localStorage.setItem("mmcc_fleet_photos_v24", JSON.stringify(fleetPhotos)); } catch (e) {}
     }
+    customFleet.unshift(newItem);
+    try { localStorage.setItem("mmcc_custom_fleet_v24", JSON.stringify(customFleet)); } catch (e) {}
+    document.getElementById("regName").value = "";
+    document.getElementById("regPlate").value = "";
+    document.getElementById("regSpecs").value = "";
+    photoInput.value = "";
+    closeRegisterModal();
+    renderFleet();
+    showToast(`Added ${name} to Garage & Hangar`);
+  };
 
-    /* --- 1. 24K GOLD BIRD FLIGHT SPLASH & CHIME --- */
-    let splashTimer = null;
-    let splashAnimId = null;
+  if (photoInput.files && photoInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = () => finishSave(reader.result);
+    reader.readAsDataURL(photoInput.files[0]);
+  } else {
+    finishSave("");
+  }
+}
 
-    function playGoldChime() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-        freqs.forEach((f, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(f, ctx.currentTime + idx * 0.14);
-          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.14);
-          gain.gain.exponentialRampToValueAtTime(0.09, ctx.currentTime + idx * 0.14 + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.14 + 2.2);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + idx * 0.14);
-          osc.stop(ctx.currentTime + idx * 0.14 + 2.3);
-        });
-      } catch (e) {}
-    }
+/* GALLERY */
+function renderGallery() {
+  const grid = document.getElementById("galleryGrid");
+  grid.innerHTML = ART_ITEMS.map(a => `
+    <div class="art-card">
+      <img src="${a.img}" alt="${a.title}" onerror="this.src='master-icon.png'" />
+      <div class="art-info">
+        <div style="font-size:12px;font-weight:bold;color:var(--accent-bright);">${a.title}</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${a.sub}</div>
+      </div>
+    </div>
+  `).join("");
+}
 
-    function startSplashAnimation(durationMs = 5000) {
-      const overlay = document.getElementById('splash-overlay');
-      const canvas = document.getElementById('splash-canvas');
-      const ctx = canvas.getContext('2d');
-      overlay.classList.remove('hidden');
+/* TOP VIDEO VISUALIZER + OFFLINE VIDEO VAULT (INDEXEDDB) */
+let db;
+const req = indexedDB.open("MMCC_Media_Vault_DB", 1);
+req.onupgradeneeded = (e) => {
+  const d = e.target.result;
+  if (!d.objectStoreNames.contains("videos")) d.createObjectStore("videos", { keyPath: "id", autoIncrement: true });
+  if (!d.objectStoreNames.contains("audios")) d.createObjectStore("audios", { keyPath: "id", autoIncrement: true });
+};
+req.onsuccess = (e) => {
+  db = e.target.result;
+  loadSavedVideos();
+  loadSavedAudios();
+};
 
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+function handleVideoUpload(e) {
+  const files = Array.from(e.target.files || []);
+  if (!files.length || !db) return;
+  const tx = db.transaction("videos", "readwrite");
+  const store = tx.objectStore("videos");
+  files.forEach(f => store.add({ name: f.name.replace(/\.[^/.]+$/, ""), blob: f }));
+  tx.oncomplete = () => {
+    showToast(`Saved ${files.length} video(s) offline`);
+    loadSavedVideos();
+  };
+}
 
-      const particles = [];
-      const startTime = performance.now();
-      playGoldChime();
+function loadSavedVideos() {
+  if (!db) return;
+  const tx = db.transaction("videos", "readonly");
+  const store = tx.objectStore("videos");
+  store.getAll().onsuccess = (e) => {
+    const vids = e.target.result || [];
+    const bar = document.getElementById("videoChipBar");
+    let html = `<button class="chip active" onclick="playGoldVisualizer(this)">✦ RA 109 Gold Motion</button>`;
+    vids.forEach(v => {
+      html += `<button class="chip" onclick="playSavedVideo(${v.id}, this)">🎬 ${v.name}</button>`;
+    });
+    bar.innerHTML = html;
+  };
+}
 
-      if (splashAnimId) cancelAnimationFrame(splashAnimId);
-      if (splashTimer) clearTimeout(splashTimer);
+function playGoldVisualizer(btn) {
+  document.querySelectorAll("#videoChipBar .chip").forEach(c => c.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  const vid = document.getElementById("topVideoPlayer");
+  vid.pause();
+  vid.style.display = "none";
+  document.getElementById("raCanvas").style.display = "block";
+  document.getElementById("cinemaLabel").textContent = "✦ RA 109 GOLD SILK MOTION";
+}
 
-      function drawFrame(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / durationMs, 1);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+function playSavedVideo(id, btn) {
+  if (!db) return;
+  document.querySelectorAll("#videoChipBar .chip").forEach(c => c.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  db.transaction("videos", "readonly").objectStore("videos").get(id).onsuccess = (e) => {
+    const rec = e.target.result;
+    if (!rec) return;
+    const url = URL.createObjectURL(rec.blob);
+    const vid = document.getElementById("topVideoPlayer");
+    document.getElementById("raCanvas").style.display = "none";
+    vid.style.display = "block";
+    vid.src = url;
+    vid.play();
+    document.getElementById("cinemaLabel").textContent = "🎬 " + rec.name.toUpperCase();
+  };
+}
 
-        const cx = canvas.width / 2;
-        const cy = canvas.height * 0.36;
+/* ANIMATED GOLD PYRAMID CANVAS */
+(function initCanvas() {
+  const canvas = document.getElementById("raCanvas");
+  const ctx = canvas.getContext("2d");
+  let t = 0;
+  function draw() {
+    canvas.width = canvas.offsetWidth || 600;
+    canvas.height = canvas.offsetHeight || 185;
+    const w = canvas.width, h = canvas.height;
+    const isEm = document.body.classList.contains("emerald-theme");
+    const grad = ctx.createLinearGradient(0, 0, w, h);
+    grad.addColorStop(0, isEm ? "#041c14" : "#26030a");
+    grad.addColorStop(0.5, isEm ? "#0c3d2d" : "#4a0816");
+    grad.addColorStop(1, isEm ? "#03140e" : "#180105");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
 
-        // Gold Pyramid & Eye of Horus Crest
-        ctx.save();
-        ctx.strokeStyle = '#d4af37';
-        ctx.lineWidth = 3;
-        ctx.shadowColor = '#f6e27a';
-        ctx.shadowBlur = 18;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - 85);
-        ctx.lineTo(cx + 95, cy + 75);
-        ctx.lineTo(cx - 95, cy + 75);
-        ctx.closePath();
-        ctx.stroke();
-
-        // Eye of Horus center
-        ctx.fillStyle = '#f6e27a';
-        ctx.beginPath();
-        ctx.ellipse(cx, cy + 12, 24, 12, 0, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(cx, cy + 12, 6, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        // Falcon Flight Trajectory toward Crest
-        const birdX = canvas.width * (0.12 + 0.38 * Math.sin(progress * Math.PI * 0.5));
-        const birdY = canvas.height * (0.62 - 0.28 * Math.sin(progress * Math.PI * 0.5));
-        const wingFlap = Math.sin(elapsed * 0.014) * 26;
-
-        // Spawn Shimmer Particles
-        for (let i = 0; i < 3; i++) {
-          particles.push({
-            x: birdX - 10 + (Math.random() - 0.5) * 14,
-            y: birdY + (Math.random() - 0.5) * 14,
-            vx: -1.5 - Math.random() * 2,
-            vy: (Math.random() - 0.5) * 1.5,
-            alpha: 1,
-            size: 1.5 + Math.random() * 2.5
-          });
-        }
-
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          p.alpha -= 0.018;
-          if (p.alpha <= 0) {
-            particles.splice(i, 1);
-            continue;
-          }
-          ctx.fillStyle = `rgba(246, 226, 122, ${p.alpha})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Draw 24K Gold Sovereign Falcon
-        ctx.save();
-        ctx.translate(birdX, birdY);
-        ctx.fillStyle = '#f6e27a';
-        ctx.strokeStyle = '#d4af37';
-        ctx.lineWidth = 2.5;
-        ctx.shadowColor = '#d4af37';
-        ctx.shadowBlur = 16;
-
-        // Body
-        ctx.beginPath();
-        ctx.moveTo(22, 0);
-        ctx.quadraticCurveTo(0, -8, -24, 2);
-        ctx.quadraticCurveTo(0, 8, 22, 0);
-        ctx.fill();
-
-        // Upper & Lower Articulated Wings
-        ctx.beginPath();
-        ctx.moveTo(4, -2);
-        ctx.quadraticCurveTo(-10, -34 - wingFlap, -32, -12 - wingFlap * 0.6);
-        ctx.lineTo(-10, 0);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.moveTo(4, 2);
-        ctx.quadraticCurveTo(-8, 28 + wingFlap * 0.7, -28, 12 + wingFlap * 0.4);
-        ctx.lineTo(-10, 2);
-        ctx.fill();
-        ctx.restore();
-
-        if (progress < 1) {
-          splashAnimId = requestAnimationFrame(drawFrame);
-        }
-      }
-
-      splashAnimId = requestAnimationFrame(drawFrame);
-      splashTimer = setTimeout(() => {
-        dismissSplash();
-      }, durationMs);
-    }
-
-    function replaySplash(ms) {
-      const vid = document.getElementById('custom-intro-video');
-      vid.style.display = 'none';
-      vid.pause();
-      startSplashAnimation(ms);
-    }
-
-    function loadCustomIntro(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const url = URL.createObjectURL(file);
-      const vid = document.getElementById('custom-intro-video');
-      vid.src = url;
-      vid.style.display = 'block';
-      vid.play();
-      vid.onended = dismissSplash;
-    }
-
-    function dismissSplash() {
-      document.getElementById('splash-overlay').classList.add('hidden');
-      const vid = document.getElementById('custom-intro-video');
-      vid.pause();
-      if (splashTimer) clearTimeout(splashTimer);
-    }
-
-    /* --- 2. PIN & BIOMETRIC LOCK --- */
-    let enteredPin = '';
-
-    function lockVault() {
-      enteredPin = '';
-      updatePinDots();
-      document.getElementById('pin-error').textContent = '';
-      document.getElementById('lock-overlay').classList.add('active');
-    }
-
-    function pressPin(digit) {
-      if (enteredPin.length >= 4) return;
-      enteredPin += digit;
-      updatePinDots();
-      if (enteredPin.length === 4) {
-        if (enteredPin === state.pin) {
-          document.getElementById('lock-overlay').classList.remove('active');
-          enteredPin = '';
-          updatePinDots();
-        } else {
-          document.getElementById('pin-error').textContent = 'Invalid Sovereign PIN';
-          setTimeout(() => {
-            enteredPin = '';
-            updatePinDots();
-          }, 450);
-        }
-      }
-    }
-
-    function clearPin() {
-      enteredPin = '';
-      updatePinDots();
-      document.getElementById('pin-error').textContent = '';
-    }
-
-    function updatePinDots() {
-      const dots = document.querySelectorAll('#pin-dots .pin-dot');
-      dots.forEach((d, i) => d.classList.toggle('filled', i < enteredPin.length));
-    }
-
-    async function registerBiometrics() {
-      const msg = document.getElementById('security-msg');
-      if (!window.PublicKeyCredential) {
-        msg.textContent = 'WebAuthn Biometrics not supported in this browser context.';
-        return;
-      }
-      try {
-        const challenge = new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
-        await navigator.credentials.create({
-          publicKey: {
-            challenge,
-            rp: { name: "MMCC Sovereign Portal" },
-            user: { id: new Uint8Array(16), name: "member@mmcc.sovereign", displayName: "Sovereign Member" },
-            pubKeyCredParams: [{ type: "public-key", alg: -7 }],
-            authenticatorSelection: { userVerification: "preferred" },
-            timeout: 60000
-          }
-        });
-        state.biometricEnabled = true;
-        persistState();
-        msg.textContent = 'Biometric Touch ID / Face ID credential registered.';
-      } catch (err) {
-        state.biometricEnabled = true;
-        persistState();
-        msg.textContent = 'Device Biometric quick-unlock enabled for local session.';
-      }
-    }
-
-    function unlockBiometric() {
-      if (state.biometricEnabled) {
-        document.getElementById('lock-overlay').classList.remove('active');
-      } else {
-        document.getElementById('pin-error').textContent = 'Enable Biometrics in PIN & Bio Settings first.';
-      }
-    }
-
-    function openSecurityModal() {
-      document.getElementById('new-pin-input').value = state.pin;
-      document.getElementById('require-pin-launch').checked = state.requirePinOnLaunch;
-      document.getElementById('security-msg').textContent = '';
-      document.getElementById('security-modal').classList.add('open');
-    }
-
-    function saveSecuritySettings() {
-      const val = document.getElementById('new-pin-input').value.trim();
-      if (!/^\d{4}$/.test(val)) {
-        document.getElementById('security-msg').textContent = 'Please enter exactly 4 digits.';
-        return;
-      }
-      state.pin = val;
-      state.requirePinOnLaunch = document.getElementById('require-pin-launch').checked;
-      persistState();
-      document.getElementById('security-msg').textContent = 'Sovereign PIN settings saved.';
-    }
-
-    /* --- 3. GLOBAL CLUB HUBS CLOCKS --- */
-    function renderHubs() {
-      const container = document.getElementById('hubs-strip');
-      const now = new Date();
-      container.innerHTML = HUBS.map(h => {
-        const timeStr = now.toLocaleTimeString('en-GB', { timeZone: h.tz, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        return `
-          <div class="hub-card">
-            <div>
-              <div class="hub-city">${h.city} <span style="opacity:0.7;">(${h.code})</span></div>
-              <div class="hub-time">${timeStr}</div>
-            </div>
-            <span class="cavok-badge">CAVOK • READY</span>
-          </div>
-        `;
-      }).join('');
-    }
-    setInterval(renderHubs, 1000);
-
-    /* --- 4. CINEMA LAYOUT & MEDIA VAULTS --- */
-    function toggleCinemaLayout() {
-      state.centerStage = !state.centerStage;
-      persistState();
-      applyCinemaLayout();
-    }
-
-    function applyCinemaLayout() {
-      const ws = document.getElementById('main-workspace');
-      ws.classList.remove('sidebar-collapsed');
-      ws.classList.toggle('center-stage', state.centerStage);
-    }
-
-    function toggleSidebarCollapse() {
-      const ws = document.getElementById('main-workspace');
-      if (state.centerStage) {
-        state.centerStage = false;
-        applyCinemaLayout();
-      }
-      ws.classList.toggle('sidebar-collapsed');
-    }
-
-    function addMediaFiles(e, kind) {
-      const files = Array.from(e.target.files);
-      const listEl = document.getElementById(kind === 'video' ? 'video-vault-list' : 'audio-vault-list');
-      files.forEach(file => {
-        const url = URL.createObjectURL(file);
-        const li = document.createElement('li');
-        li.className = 'vault-item';
-        li.innerHTML = `<span>${kind === 'video' ? '🎬' : '🎵'} ${file.name}</span><span style="color:var(--gold-primary);">PLAY</span>`;
-        li.onclick = () => {
-          if (kind === 'video') {
-            const player = document.getElementById('cinema-player');
-            document.getElementById('cinema-placeholder').style.display = 'none';
-            player.style.display = 'block';
-            player.src = url;
-            player.play();
-          } else {
-            const audio = document.getElementById('ambient-audio');
-            audio.src = url;
-            audio.play();
-          }
-        };
-        listEl.appendChild(li);
-      });
-    }
-
-    /* --- 5. 13 DEPARTMENTS --- */
-    let activeDeptId = null;
-
-    function renderDepartments() {
-      const grid = document.getElementById('departments-grid');
-      grid.innerHTML = DEPARTMENTS.map(d => {
-        const hasNote = state.deptNotes[d.id] ? ' • 📝 Directive Logged' : '';
-        return `
-          <div class="dept-card" onclick="openDeptModal(${d.id})">
-            <div>
-              <div class="dept-num">Sovereign Division${hasNote}</div>
-              <div class="dept-title">${d.title}</div>
-              <p class="dept-desc" style="margin-top:6px;">${d.desc}</p>
-            </div>
-            <div style="font-size:0.78rem; color:var(--gold-primary); text-align:right;">Open Suite →</div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openDeptModal(id) {
-      activeDeptId = id;
-      const dept = DEPARTMENTS.find(d => d.id === id);
-      document.getElementById('modal-dept-title').textContent = dept.title;
-      document.getElementById('modal-dept-desc').textContent = dept.desc;
-      document.getElementById('modal-dept-notes').value = state.deptNotes[id] || '';
-      document.getElementById('dept-modal').classList.add('open');
-    }
-
-    function saveDeptNotes() {
-      if (!activeDeptId) return;
-      state.deptNotes[activeDeptId] = document.getElementById('modal-dept-notes').value;
-      persistState();
-      renderDepartments();
-      closeModal('dept-modal');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('open');
-    }
-
-    /* --- 6. CONCIERGE LEDGER --- */
-    function renderLedger() {
-      const tbody = document.getElementById('ledger-tbody');
-      tbody.innerHTML = state.ledger.map(item => `
-        <tr>
-          <td>${item.date}</td>
-          <td><strong>${item.category}</strong><br/><span style="color:var(--text-muted);">${item.detail}</span></td>
-          <td><span class="status-pill">${item.status}</span></td>
-          <td><button class="btn" style="padding:2px 6px; font-size:0.72rem;" onclick="removeLedger(${item.id})">✕</button></td>
-        </tr>
-      `).join('');
-    }
-
-    function addLedgerEntry() {
-      const category = document.getElementById('ledger-category').value;
-      const detail = document.getElementById('ledger-detail').value.trim();
-      const date = document.getElementById('ledger-date').value || new Date().toISOString().slice(0, 10);
-      const status = document.getElementById('ledger-status').value;
-      if (!detail) return;
-      state.ledger.unshift({ id: Date.now(), date, category, detail, status });
-      document.getElementById('ledger-detail').value = '';
-      persistState();
-      renderLedger();
-    }
-
-    function removeLedger(id) {
-      state.ledger = state.ledger.filter(x => x.id !== id);
-      persistState();
-      renderLedger();
-    }
-
-    /* --- 7. 24K COA & VIP PASS GENERATORS --- */
-    function drawGoldFrame(ctx, w, h) {
-      const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, '#2c050c');
-      grad.addColorStop(1, '#140104');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, w, h);
-
-      ctx.strokeStyle = '#d4af37';
-      ctx.lineWidth = 6;
-      ctx.strokeRect(16, 16, w - 32, h - 32);
-
-      ctx.strokeStyle = '#f6e27a';
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(26, 26, w - 52, h - 52);
-    }
-
-    function renderCOA() {
-      const canvas = document.getElementById('coa-canvas');
-      const ctx = canvas.getContext('2d');
-      drawGoldFrame(ctx, canvas.width, canvas.height);
-
-      const type = document.getElementById('coa-type').value;
-      const title = document.getElementById('coa-title').value || 'Sovereign Registered Asset';
-      const serial = document.getElementById('coa-serial').value || 'SN-MMCC-24K-0001';
-      const owner = document.getElementById('coa-owner').value || 'Verified Sovereign Member';
-
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#d4af37';
-      ctx.font = 'bold 15px Georgia';
-      ctx.fillText('MMCC SOVEREIGN REGISTRY • 24K GOLD SEAL', 350, 68);
-
-      ctx.fillStyle = '#f6e27a';
-      ctx.font = 'bold 28px Georgia';
-      ctx.fillText('CERTIFICATE OF AUTHENTICITY', 350, 112);
-
-      ctx.fillStyle = '#cbbba0';
-      ctx.font = '14px Georgia';
-      ctx.fillText(`CLASSIFICATION: ${type}`, 350, 146);
-
-      ctx.fillStyle = '#fdf8eb';
-      ctx.font = 'bold 22px Georgia';
-      ctx.fillText(title, 350, 205);
-
-      ctx.fillStyle = '#d4af37';
-      ctx.font = '16px Georgia';
-      ctx.fillText(`Provenance / Registry ID: ${serial}`, 350, 245);
-      ctx.fillText(`Custodian: ${owner}`, 350, 278);
-
-      // Gold Stamp Circle
+    ctx.strokeStyle = "rgba(212, 175, 55, 0.22)";
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 6; i++) {
       ctx.beginPath();
-      ctx.arc(350, 355, 38, 0, Math.PI * 2);
-      ctx.strokeStyle = '#f6e27a';
-      ctx.lineWidth = 2.5;
+      for (let x = 0; x <= w; x += 20) {
+        const y = h * 0.5 + Math.sin(x * 0.012 + t + i * 0.7) * (24 + i * 5);
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
       ctx.stroke();
-      ctx.font = 'bold 12px Georgia';
-      ctx.fillText('24K GOLD', 350, 352);
-      ctx.fillText('VERIFIED', 350, 368);
     }
 
-    function renderPass() {
-      const canvas = document.getElementById('pass-canvas');
-      const ctx = canvas.getContext('2d');
-      drawGoldFrame(ctx, canvas.width, canvas.height);
+    const cx = w / 2, cy = h / 2 + 6;
+    const size = 46 + Math.sin(t * 2) * 3;
+    ctx.strokeStyle = "#f5d76e";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - size);
+    ctx.lineTo(cx + size * 1.15, cy + size * 0.75);
+    ctx.lineTo(cx - size * 1.15, cy + size * 0.75);
+    ctx.closePath();
+    ctx.stroke();
 
-      const tier = document.getElementById('pass-tier').value;
-      const name = document.getElementById('pass-name').value || 'Honored Sovereign Guest';
-      const hub = document.getElementById('pass-hub').value;
+    ctx.fillStyle = "#f5d76e";
+    ctx.font = "bold 12px Georgia";
+    ctx.textAlign = "center";
+    ctx.fillText("RA 109 · MEVUNAI MOMENT™ COUNTRY CLUB", cx, h - 14);
+    t += 0.025;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 
-      ctx.textAlign = 'left';
-      ctx.fillStyle = '#d4af37';
-      ctx.font = 'bold 14px Georgia';
-      ctx.fillText('MMCC PRIVATE CLUB SANCTUM • OFFICIAL CREDENTIAL', 48, 68);
+/* MP3 SIDEBAR VAULT & MINI PLAYER */
+const BUILTIN_TRACKS = [
+  { id: "b1", title: "MMEL Atrium Velvet Lounge", url: "https://ice1.somafm.com/groovesalad-128-mp3" },
+  { id: "b2", title: "Private Jet Midnight Flight", url: "https://ice1.somafm.com/spacestation-128-mp3" },
+  { id: "b3", title: "Superbike & Night Drive", url: "https://ice1.somafm.com/defcon-128-mp3" }
+];
+let isPlaying = false;
+const audioEl = document.getElementById("audioEl");
 
-      ctx.fillStyle = '#f6e27a';
-      ctx.font = 'bold 26px Georgia';
-      ctx.fillText(tier, 48, 112);
+function openSidebar() {
+  document.getElementById("mp3Sidebar").classList.add("open");
+  document.getElementById("sidebarBackdrop").classList.add("open");
+}
+function closeSidebar() {
+  document.getElementById("mp3Sidebar").classList.remove("open");
+  document.getElementById("sidebarBackdrop").classList.remove("open");
+}
 
-      ctx.fillStyle = '#fdf8eb';
-      ctx.font = 'bold 22px Georgia';
-      ctx.fillText(name, 48, 175);
+function swapVaultCover(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    localStorage.setItem("mmcc_vault_cover_v24", r.result);
+    applyVaultCover();
+    showToast("MP3 Vault cover updated");
+  };
+  r.readAsDataURL(f);
+}
+function resetVaultCover() {
+  localStorage.removeItem("mmcc_vault_cover_v24");
+  applyVaultCover();
+  showToast("Cover reset to MMEL Crest");
+}
+function applyVaultCover() {
+  const src = localStorage.getItem("mmcc_vault_cover_v24") || "master-icon.png";
+  document.getElementById("vaultCoverImg").src = src;
+  document.getElementById("miniDiscImg").src = src;
+}
 
-      ctx.fillStyle = '#cbbba0';
-      ctx.font = '16px Georgia';
-      ctx.fillText(`Authorized Hub: ${hub}`, 48, 215);
-      ctx.fillText(`Issued: ${new Date().toLocaleDateString()} • Status: ACTIVE`, 48, 248);
+function handleMp3Upload(e) {
+  const files = Array.from(e.target.files || []);
+  if (!files.length || !db) return;
+  const tx = db.transaction("audios", "readwrite");
+  const store = tx.objectStore("audios");
+  files.forEach(f => store.add({ title: f.name.replace(/\.[^/.]+$/, ""), blob: f }));
+  tx.oncomplete = () => {
+    showToast(`Stored ${files.length} audio file(s) in MP3 Vault`);
+    loadSavedAudios();
+  };
+}
 
-      ctx.strokeStyle = '#d4af37';
-      ctx.strokeRect(540, 120, 105, 105);
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#f6e27a';
-      ctx.font = 'bold 13px Georgia';
-      ctx.fillText('VIP ACCESS', 592, 168);
-      ctx.fillText('MMCC-29', 592, 188);
-    }
+function loadSavedAudios() {
+  const list = document.getElementById("mp3TrackList");
+  let html = BUILTIN_TRACKS.map(t => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(0,0,0,0.28);border:1px solid rgba(212,175,55,0.25);border-radius:10px;">
+      <span style="font-size:11px;color:var(--text-main);">📻 ${t.title}</span>
+      <button class="chip" onclick="playStream('${t.url}', '${t.title}')">Play</button>
+    </div>
+  `).join("");
 
-    function downloadCanvas(canvasId, filename) {
-      const canvas = document.getElementById(canvasId);
-      const link = document.createElement('a');
-      link.download = filename;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    }
+  if (db) {
+    db.transaction("audios", "readonly").objectStore("audios").getAll().onsuccess = (e) => {
+      const saved = e.target.result || [];
+      saved.forEach(s => {
+        html += `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(212,175,55,0.12);border:1px solid var(--accent);border-radius:10px;">
+            <span style="font-size:11px;color:var(--accent-bright);">🎵 ${s.title}</span>
+            <button class="chip active" onclick="playSavedAudio(${s.id})">Play</button>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    };
+  } else {
+    list.innerHTML = html;
+  }
+}
 
-    /* --- 8. .MMCC BACKUP & RESTORE --- */
-    function exportBackup() {
-      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `MMCC-Vault-Backup-${new Date().toISOString().slice(0, 10)}.mmcc`;
-      a.click();
-    }
+function playStream(url, title) {
+  audioEl.src = url;
+  audioEl.play().then(() => {
+    isPlaying = true;
+    updatePlayerUI(title, "Live Sovereign Stream");
+  }).catch(() => showToast("Tap Play again to start audio"));
+}
 
-    function importBackup(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        try {
-          const parsed = JSON.parse(ev.target.result);
-          state = { ...state, ...parsed };
-          persistState();
-          renderDepartments();
-          renderLedger();
-          applyCinemaLayout();
-          alert('Sovereign .mmcc Vault restored successfully.');
-        } catch (err) {
-          alert('Invalid .mmcc backup file.');
-        }
-      };
-      reader.readAsText(file);
-    }
+function playSavedAudio(id) {
+  if (!db) return;
+  db.transaction("audios", "readonly").objectStore("audios").get(id).onsuccess = (e) => {
+    const rec = e.target.result;
+    if (!rec) return;
+    audioEl.src = URL.createObjectURL(rec.blob);
+    audioEl.play();
+    isPlaying = true;
+    updatePlayerUI(rec.title, "Offline MP3 Vault");
+  };
+}
 
-    /* --- INIT --- */
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    }
+function toggleAudio() {
+  if (!audioEl.src) {
+    playStream(BUILTIN_TRACKS[0].url, BUILTIN_TRACKS[0].title);
+    return;
+  }
+  if (audioEl.paused) {
+    audioEl.play();
+    isPlaying = true;
+  } else {
+    audioEl.pause();
+    isPlaying = false;
+  }
+  updatePlayerUI(document.getElementById("nowPlayingTitle").textContent, isPlaying ? "Playing Live" : "Paused");
+}
 
-    renderHubs();
-    renderDepartments();
-    renderLedger();
-    applyCinemaLayout();
-    renderCOA();
-    renderPass();
+function updatePlayerUI(title, sub) {
+  document.getElementById("nowPlayingTitle").textContent = title;
+  document.getElementById("nowPlayingSub").textContent = sub;
+  document.getElementById("playPauseBtn").textContent = isPlaying ? "❚❚ Pause" : "▶ Play";
+  const disc = document.getElementById("miniDiscImg");
+  if (isPlaying) disc.classList.add("spinning"); else disc.classList.remove("spinning");
+}
 
-    if (state.requirePinOnLaunch) {
-      lockVault();
-    }
-    startSplashAnimation(5000);
-  </script>
+renderDepts();
+renderFleet();
+renderGallery();
+applyVaultCover();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
+</script>
 </body>
 </html>
