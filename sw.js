@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mmcc-13-depts-video-vault-v24-network-first';
+const CACHE_NAME = 'mmcc-13-depts-video-library-v26-network-first';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (event) => {
@@ -20,10 +20,10 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
     fetch(event.request)
-      .then((networkRes) => {
-        const clone = networkRes.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
-        return networkRes;
+      .then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
+        return response;
       })
       .catch(() => caches.match(event.request))
   );
