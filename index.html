@@ -2,1295 +2,953 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MMCC — 13 Departments Sovereign Suite v29</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2b040c" />
+  <title>Mevunai Moment™ Country Club, Inc ® — Sovereign Suite v28</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#d4af37" />
   <style>
     :root {
-      --crimson-deep: #1e0307;
-      --crimson-silk: #3a0710;
-      --crimson-card: rgba(48, 8, 16, 0.85);
-      --gold-primary: #d4af37;
-      --gold-light: #f6e27a;
-      --gold-dark: #997a15;
-      --text-ivory: #fdf8eb;
-      --text-muted: #cbbba0;
-      --border-gold: rgba(212, 175, 55, 0.35);
-      --shadow-gold: 0 8px 32px rgba(0, 0, 0, 0.65), 0 0 18px rgba(212, 175, 55, 0.14);
+      --bg-deep: #1a0207;
+      --bg-card: #2b040c;
+      --bg-elevated: #380711;
+      --gold: #d4af37;
+      --gold-light: #f5df96;
+      --gold-dim: rgba(212, 175, 55, 0.25);
+      --gold-glow: rgba(212, 175, 55, 0.35);
+      --text-main: #fdf7ec;
+      --text-muted: #cbb994;
+      --sidebar-w: 330px;
+      --radius: 16px;
     }
+
+    body.theme-emerald {
+      --bg-deep: #031711;
+      --bg-card: #06261d;
+      --bg-elevated: #0b3629;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Georgia, "Times New Roman", serif;
-      background: radial-gradient(circle at 50% 0%, #4d0a16 0%, var(--crimson-deep) 75%);
-      color: var(--text-ivory);
+    html, body {
+      background: var(--bg-deep);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
       min-height: 100vh;
       overflow-x: hidden;
     }
-    button, input, select, textarea {
-      font-family: inherit;
-      color: var(--text-ivory);
-    }
-    .gold-text {
-      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary), var(--gold-dark));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .btn {
-      background: linear-gradient(180deg, rgba(212, 175, 55, 0.25), rgba(153, 122, 21, 0.35));
-      border: 1px solid var(--gold-primary);
-      color: var(--gold-light);
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.88rem;
-      letter-spacing: 0.5px;
-      transition: all 0.2s ease;
-    }
-    .btn:hover {
-      background: linear-gradient(180deg, rgba(212, 175, 55, 0.45), rgba(153, 122, 21, 0.55));
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
-    }
-    .btn-solid {
-      background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
-      color: #1e0307;
-      font-weight: bold;
-      border: none;
-    }
-    .btn-solid:hover {
-      filter: brightness(1.08);
-    }
 
-    /* Splash Intro Overlay */
-    #splash-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: radial-gradient(circle at center, #520b18 0%, #160105 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    /* SPLASH INTRO */
+    #splash-screen {
+      position: fixed; inset: 0; z-index: 99999;
+      background: radial-gradient(circle at center, #3b0612 0%, #140105 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
       transition: opacity 0.8s ease, visibility 0.8s ease;
     }
-    #splash-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+    #splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #splash-video {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      opacity: 0.55; display: none;
     }
-    #splash-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+    .splash-crest {
+      position: relative; z-index: 2; max-width: 520px; width: 100%;
+      animation: floatCrest 3s ease-in-out infinite alternate;
     }
-    #custom-intro-video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
+    @keyframes floatCrest {
+      from { transform: translateY(0px); }
+      to { transform: translateY(-8px); }
     }
-    .splash-ui {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      margin-top: 240px;
-      background: rgba(24, 3, 7, 0.72);
-      padding: 18px 28px;
-      border: 1px solid var(--border-gold);
-      border-radius: 12px;
-      backdrop-filter: blur(8px);
+    .pyramid-svg { width: 140px; height: 140px; margin: 0 auto 18px; filter: drop-shadow(0 0 22px rgba(212,175,55,0.6)); }
+    .splash-title {
+      font-size: clamp(1.3rem, 3vw, 2rem); letter-spacing: 0.2em; color: var(--gold-light);
+      font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
     }
-    .splash-controls {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 12px;
-      flex-wrap: wrap;
+    .splash-sub {
+      font-size: 0.85rem; letter-spacing: 0.28em; color: var(--gold); text-transform: uppercase; margin-bottom: 24px;
+    }
+    .splash-bar-wrap {
+      width: 100%; max-width: 340px; height: 3px; background: rgba(212,175,55,0.2);
+      border-radius: 99px; overflow: hidden; margin: 0 auto 20px;
+    }
+    .splash-bar {
+      height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      transition: width linear;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37, #b38b22);
+      color: #1a0207; border: none; border-radius: 999px; padding: 10px 20px;
+      font-weight: 700; font-size: 0.82rem; letter-spacing: 0.08em; cursor: pointer;
+      text-transform: uppercase; transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 18px var(--gold-glow); }
+    .btn-outline {
+      background: rgba(212,175,55,0.08); color: var(--gold-light);
+      border: 1px solid var(--gold-dim); border-radius: 999px; padding: 8px 16px;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); background: rgba(212,175,55,0.18); }
+
+    /* LAYOUT SHELL */
+    .app-shell { display: flex; min-height: 100vh; }
+    #sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+      border-right: 1px solid var(--gold-dim);
+      padding: 20px 16px 90px;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 16px;
+      transition: margin-left 0.3s ease;
+    }
+    body.sidebar-collapsed #sidebar { margin-left: calc(-1 * var(--sidebar-w)); }
+    #main-content { flex: 1; padding: 24px 32px 100px; max-width: 1360px; margin: 0 auto; width: 100%; }
+
+    .brand-box {
+      border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      padding: 14px; background: rgba(0,0,0,0.22); text-align: center;
+    }
+    .brand-box h1 { font-size: 0.95rem; letter-spacing: 0.14em; color: var(--gold-light); }
+    .brand-box p { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.12em; margin-top: 4px; }
+
+    /* MINI CINEMA */
+    .cinema-card {
+      border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      background: #0d0104; padding: 12px;
+    }
+    .cinema-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.75rem; color: var(--gold); letter-spacing: 0.08em; }
+    #sidebar-video {
+      width: 100%; height: 175px; background: #000; border-radius: 10px;
+      object-fit: cover; border: 1px solid var(--gold-dim); display: block;
+    }
+    .cinema-controls { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .cinema-controls button { flex: 1; padding: 6px 8px; font-size: 0.72rem; }
+
+    /* AMBIENT LOUNGE */
+    .lounge-card {
+      border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      background: rgba(255,255,255,0.03); padding: 12px;
+    }
+    .lounge-title { font-size: 0.78rem; color: var(--gold-light); letter-spacing: 0.08em; margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .lounge-track { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px; }
+
+    /* NAV */
+    .side-nav { display: flex; flex-direction: column; gap: 6px; }
+    .nav-btn {
+      width: 100%; text-align: left; padding: 11px 14px; border-radius: 12px;
+      background: rgba(255,255,255,0.03); border: 1px solid transparent;
+      color: var(--text-main); font-size: 0.86rem; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 10px; transition: all 0.2s;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      background: rgba(212,175,55,0.16); border-color: var(--gold); color: var(--gold-light);
     }
 
-    /* PIN & Biometric Lock Overlay */
-    #lock-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9000;
-      background: rgba(18, 2, 5, 0.96);
-      backdrop-filter: blur(14px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+    /* TOP BAR */
+    .topbar {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      gap: 12px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--gold-dim);
     }
-    #lock-overlay.active { display: flex; }
-    .lock-box {
-      background: var(--crimson-card);
-      border: 1px solid var(--gold-primary);
-      border-radius: 16px;
-      padding: 32px;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: var(--shadow-gold);
-    }
-    .pin-dots {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      margin: 20px 0;
-    }
-    .pin-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid var(--gold-primary);
-      background: transparent;
-    }
-    .pin-dot.filled { background: var(--gold-light); box-shadow: 0 0 10px var(--gold-primary); }
-    .keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .keypad button {
-      padding: 14px;
-      font-size: 1.2rem;
-      border-radius: 8px;
-      border: 1px solid var(--border-gold);
-      background: rgba(255, 255, 255, 0.04);
-      cursor: pointer;
-    }
-    .keypad button:hover { background: rgba(212, 175, 55, 0.25); }
+    .topbar-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
-    /* Header & Global Clock Strip */
-    header {
-      border-bottom: 1px solid var(--border-gold);
-      background: rgba(22, 2, 6, 0.9);
-      padding: 14px 24px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .brand-block { display: flex; align-items: center; gap: 14px; }
-    .crest-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--gold-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle, #5e0d1c, #1c0206);
-      font-size: 1.3rem;
-    }
-    .header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    /* SECTIONS */
+    .view-section { display: none; animation: fadeIn 0.25s ease; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    .hubs-strip {
-      background: rgba(15, 1, 4, 0.85);
-      border-bottom: 1px solid var(--border-gold);
-      padding: 10px 24px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-      gap: 10px;
-    }
-    .hub-card {
-      border: 1px solid rgba(212, 175, 55, 0.22);
-      border-radius: 8px;
-      padding: 8px 12px;
-      background: rgba(45, 7, 14, 0.5);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .hub-city { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
-    .hub-time { font-size: 1.05rem; font-weight: bold; color: var(--gold-light); font-variant-numeric: tabular-nums; }
-    .cavok-badge {
-      font-size: 0.68rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: rgba(34, 197, 94, 0.16);
-      border: 1px solid rgba(74, 222, 128, 0.45);
-      color: #86efac;
-    }
+    .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .section-head h2 { font-size: 1.35rem; color: var(--gold-light); letter-spacing: 0.08em; }
 
-    /* Main Workspace Layout */
-    .workspace {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 20px;
-      padding: 20px 24px 48px;
-      max-width: 1600px;
-      margin: 0 auto;
-    }
-    .workspace.center-stage {
-      grid-template-columns: 1fr;
-    }
-    .workspace.sidebar-collapsed {
-      grid-template-columns: 56px 1fr;
-    }
-    @media (max-width: 980px) {
-      .workspace { grid-template-columns: 1fr; }
-    }
-
-    /* Cinema & Ambient Lounge Panel */
-    .cinema-panel {
-      background: var(--crimson-card);
-      border: 1px solid var(--border-gold);
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: var(--shadow-gold);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .workspace.sidebar-collapsed .cinema-panel .cinema-body { display: none; }
-    .cinema-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-gold);
-      padding-bottom: 10px;
-    }
-    .video-stage {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #0a0103;
-      border: 1px solid var(--border-gold);
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .video-stage video { width: 100%; height: 100%; object-fit: contain; }
-    .vault-box {
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 8px;
-      padding: 10px;
-      background: rgba(20, 2, 6, 0.55);
-    }
-    .vault-list {
-      list-style: none;
-      margin-top: 8px;
-      max-height: 130px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .vault-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.04);
-      font-size: 0.84rem;
-      cursor: pointer;
-    }
-    .vault-item:hover { background: rgba(212, 175, 55, 0.18); }
-
-    /* 13 Departments Grid */
-    .section-title-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .departments-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 14px;
-      margin-bottom: 26px;
-    }
+    /* 13 DEPARTMENTS GRID */
+    .dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
     .dept-card {
-      background: var(--crimson-card);
-      border: 1px solid var(--border-gold);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: var(--shadow-gold);
-      cursor: pointer;
-      transition: transform 0.18s ease, border-color 0.18s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
+      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      padding: 18px; cursor: pointer; transition: all 0.2s; position: relative;
     }
-    .dept-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--gold-light);
-    }
-    .dept-num {
-      font-size: 0.72rem;
-      color: var(--gold-primary);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-    .dept-title { font-size: 1.08rem; color: var(--gold-light); margin-top: 4px; }
-    .dept-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+    .dept-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .dept-num { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.16em; font-weight: 700; }
+    .dept-name { font-size: 1.02rem; color: var(--text-main); font-weight: 700; margin: 6px 0; }
+    .dept-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
 
-    /* Sovereign Tools Row (Ledger, COA Generator, Passes) */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 18px;
+    /* DROPZONES & GRIDS */
+    .dropzone {
+      border: 2px dashed var(--gold-dim); border-radius: var(--radius); padding: 26px;
+      text-align: center; background: rgba(212,175,55,0.04); cursor: pointer; margin-bottom: 20px;
+      transition: border-color 0.2s, background 0.2s;
     }
-    .panel-card {
-      background: var(--crimson-card);
-      border: 1px solid var(--border-gold);
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: var(--shadow-gold);
+    .dropzone:hover { border-color: var(--gold); background: rgba(212,175,55,0.1); }
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+    .media-card {
+      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      overflow: hidden; display: flex; flex-direction: column;
     }
-    .panel-card h3 {
-      color: var(--gold-light);
-      border-bottom: 1px solid var(--border-gold);
-      padding-bottom: 10px;
-      margin-bottom: 14px;
-      font-size: 1.1rem;
+    .media-thumb { width: 100%; height: 160px; object-fit: cover; background: #090103; cursor: pointer; }
+    .media-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .media-title { font-size: 0.88rem; font-weight: 700; color: var(--gold-light); }
+    .media-meta { font-size: 0.74rem; color: var(--text-muted); }
+    .media-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+    .media-actions button { padding: 5px 9px; font-size: 0.72rem; }
+
+    /* MUSEUM FRAMES */
+    .frame-gold { border: 10px ridge #d4af37 !important; box-shadow: 0 12px 35px rgba(0,0,0,0.8); }
+    .frame-obsidian { border: 10px solid #111 !important; box-shadow: 0 0 0 2px #d4af37, 0 12px 35px rgba(0,0,0,0.85); }
+    .frame-mat { border: 14px solid #f7f3e8 !important; box-shadow: 0 12px 35px rgba(0,0,0,0.75); }
+
+    /* FORMS & VIP PASS */
+    .panel-box {
+      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 20px;
     }
-    .form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-    .form-row label { font-size: 0.8rem; color: var(--text-muted); }
-    .form-row input, .form-row select, .form-row textarea {
-      background: rgba(15, 1, 4, 0.8);
-      border: 1px solid var(--border-gold);
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 0.88rem;
+    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    input, select, textarea {
+      width: 100%; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid var(--gold-dim); background: rgba(0,0,0,0.35);
+      color: var(--text-main); font-size: 0.85rem;
     }
-    .ledger-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 0.83rem;
-    }
-    .ledger-table th, .ledger-table td {
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-      padding: 8px 6px;
-      text-align: left;
-    }
-    .status-pill {
-      padding: 2px 8px;
-      border-radius: 99px;
-      font-size: 0.74rem;
-      border: 1px solid var(--gold-primary);
-      color: var(--gold-light);
-      display: inline-block;
+    .vip-preview {
+      max-width: 440px; border-radius: 20px; padding: 24px;
+      background: linear-gradient(135deg, #3c0713 0%, #180207 60%, #4d380a 100%);
+      border: 2px solid var(--gold); box-shadow: 0 12px 32px rgba(0,0,0,0.6);
     }
 
-    /* Modal */
+    /* MODAL */
     .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 1, 3, 0.82);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 500;
-      padding: 20px;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999;
+      display: none; align-items: center; justify-content: center; padding: 20px;
     }
     .modal-backdrop.open { display: flex; }
-    .modal-content {
-      background: #2b050d;
-      border: 1px solid var(--gold-primary);
-      border-radius: 14px;
-      padding: 24px;
-      max-width: 620px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow-gold);
+    .modal-box {
+      background: var(--bg-card); border: 1px solid var(--gold); border-radius: 20px;
+      max-width: 760px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px;
     }
-    canvas.preview-canvas {
-      width: 100%;
-      border: 1px solid var(--gold-primary);
-      border-radius: 8px;
-      margin-top: 12px;
-      background: #1a0206;
+
+    /* MOBILE BOTTOM NAV */
+    .mobile-nav {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+      background: var(--bg-card); border-top: 1px solid var(--gold-dim);
+      padding: 8px; justify-content: space-around;
+    }
+    @media (max-width: 900px) {
+      #sidebar { display: none; }
+      body.mobile-drawer-open #sidebar {
+        display: flex; position: fixed; left: 0; top: 0; bottom: 0; z-index: 9500; margin-left: 0;
+      }
+      #main-content { padding: 18px 16px 90px; }
+      .mobile-nav { display: flex; }
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. 24K Gold Bird Flight Splash Intro -->
-  <div id="splash-overlay">
-    <canvas id="splash-canvas"></canvas>
-    <video id="custom-intro-video" playsinline></video>
-    <div class="splash-ui">
-      <div style="font-size:0.78rem; letter-spacing:2px; color:var(--gold-primary);">MMCC SOVEREIGN PORTAL • v29</div>
-      <h2 class="gold-text" style="margin:6px 0 4px;">Pyramid &amp; Eye of Horus Sanctum</h2>
-      <p style="font-size:0.84rem; color:var(--text-muted);">24K Sovereign Falcon Kinematics &amp; Harmonic Gold Chime</p>
-      <div class="splash-controls">
-        <button class="btn" onclick="replaySplash(5000)">🦅 5.0s</button>
-        <button class="btn" onclick="replaySplash(7500)">🦅 7.5s</button>
-        <button class="btn" onclick="replaySplash(10000)">🦅 10.0s</button>
-        <label class="btn" style="cursor:pointer;">
-          🎞️ Custom .MP4
-          <input type="file" accept="video/mp4" style="display:none;" onchange="loadCustomIntro(event)" />
-        </label>
-        <button class="btn btn-solid" onclick="dismissSplash()">Enter Sanctum →</button>
-      </div>
+  <!-- CINEMATIC SPLASH INTRO -->
+  <div id="splash-screen">
+    <video id="splash-video" muted playsinline></video>
+    <div class="splash-crest">
+      <svg class="pyramid-svg" viewBox="0 0 120 120" fill="none">
+        <polygon points="60,10 112,102 8,102" stroke="#d4af37" stroke-width="3" fill="rgba(212,175,55,0.08)"/>
+        <polygon points="60,28 96,92 24,92" stroke="#f5df96" stroke-width="1.5" fill="none"/>
+        <ellipse cx="60" cy="66" rx="18" ry="10" stroke="#d4af37" stroke-width="2.2"/>
+        <circle cx="60" cy="66" r="5" fill="#f5df96"/>
+      </svg>
+      <div class="splash-title">Mevunai Moment™ Country Club</div>
+      <div class="splash-sub">Sovereign Suite v28 · Private Access</div>
+      <div class="splash-bar-wrap"><div class="splash-bar" id="splash-bar"></div></div>
+      <button class="btn-gold" onclick="closeSplash()">Enter Sovereign Portal</button>
     </div>
   </div>
 
-  <!-- 2. Sovereign 4-Digit PIN & Biometric Lock Screen -->
-  <div id="lock-overlay">
-    <div class="lock-box">
-      <div style="font-size:2rem;">🔐</div>
-      <h3 class="gold-text" style="margin-top:6px;">Sovereign Vault Locked</h3>
-      <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Enter 4-Digit Member PIN (Default: 2424)</p>
-      <div class="pin-dots" id="pin-dots">
-        <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+  <div class="app-shell">
+    <!-- LEFT SIDEBAR -->
+    <aside id="sidebar">
+      <div class="brand-box">
+        <h1>MMCC SOVEREIGN</h1>
+        <p>MEVUNAI MOMENT™ INC ®</p>
       </div>
-      <div id="pin-error" style="color:#fca5a5; font-size:0.8rem; min-height:18px;"></div>
-      <div class="keypad">
-        <button onclick="pressPin('1')">1</button><button onclick="pressPin('2')">2</button><button onclick="pressPin('3')">3</button>
-        <button onclick="pressPin('4')">4</button><button onclick="pressPin('5')">5</button><button onclick="pressPin('6')">6</button>
-        <button onclick="pressPin('7')">7</button><button onclick="pressPin('8')">8</button><button onclick="pressPin('9')">9</button>
-        <button onclick="clearPin()">CLR</button><button onclick="pressPin('0')">0</button><button onclick="unlockBiometric()">🧬 BIO</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- Header -->
-  <header>
-    <div class="brand-block">
-      <div class="crest-badge">👁️</div>
-      <div>
-        <h1 class="gold-text" style="font-size:1.25rem; letter-spacing:1px;">MMCC 13 DEPARTMENTS SOVEREIGN SUITE</h1>
-        <div style="font-size:0.75rem; color:var(--text-muted);">Edition v29 • Private Member Sanctum &amp; Offline Vault</div>
-      </div>
-    </div>
-    <div class="header-actions">
-      <button class="btn" id="layout-toggle-btn" onclick="toggleCinemaLayout()">◧ Sidebar ↔ ▣ Center-Stage</button>
-      <button class="btn" onclick="replaySplash(5000)">🦅 Replay Intro</button>
-      <button class="btn" onclick="openSecurityModal()">⚙️ PIN &amp; Bio Settings</button>
-      <button class="btn" onclick="exportBackup()">💾 Export .mmcc</button>
-      <label class="btn" style="cursor:pointer;">
-        📂 Restore .mmcc
-        <input type="file" accept=".mmcc,.json" style="display:none;" onchange="importBackup(event)" />
-      </label>
-      <button class="btn btn-solid" onclick="lockVault()">🔒 Lock Vault</button>
-    </div>
-  </header>
-
-  <!-- 3. Global Club Hubs World Clock & Tarmac Readiness Strip -->
-  <section class="hubs-strip" id="hubs-strip"></section>
-
-  <!-- Main Workspace -->
-  <main class="workspace" id="main-workspace">
-
-    <!-- 4. Reel Cinema & Ambient Lounge -->
-    <aside class="cinema-panel" id="cinema-panel">
-      <div class="cinema-header">
-        <div>
-          <strong class="gold-text">🎬 Reel Cinema &amp; Ambient Lounge</strong>
-          <div style="font-size:0.74rem; color:var(--text-muted);">Offline Video &amp; MP3 Sanctuary</div>
+      <!-- SIDEBAR VIDEO CINEMA -->
+      <div class="cinema-card">
+        <div class="cinema-header">
+          <span>🎬 REEL CINEMA</span>
+          <span id="cinema-label">Vault Ready</span>
         </div>
-        <button class="btn" style="padding:4px 8px;" onclick="toggleSidebarCollapse()" title="Collapse/Expand">⇄</button>
-      </div>
-      <div class="cinema-body" style="display:flex; flex-direction:column; gap:12px;">
-        <div class="video-stage">
-          <video id="cinema-player" controls poster="" style="display:none;"></video>
-          <div id="cinema-placeholder" style="text-align:center; padding:16px; color:var(--text-muted); font-size:0.85rem;">
-            Load a local MP4/WebM reel into your Offline Video Vault below to screen in Sidebar or Widescreen Center-Stage.
-          </div>
-        </div>
-
-        <div class="vault-box">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.84rem; color:var(--gold-light);">🎞️ Offline Video Vault</span>
-            <label class="btn" style="padding:3px 8px; font-size:0.76rem; cursor:pointer;">
-              + Add Video
-              <input type="file" accept="video/*" multiple style="display:none;" onchange="addMediaFiles(event, 'video')" />
-            </label>
-          </div>
-          <ul class="vault-list" id="video-vault-list"></ul>
-        </div>
-
-        <div class="vault-box">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.84rem; color:var(--gold-light);">🎵 Ambient MP3 Lounge</span>
-            <label class="btn" style="padding:3px 8px; font-size:0.76rem; cursor:pointer;">
-              + Add MP3
-              <input type="file" accept="audio/*" multiple style="display:none;" onchange="addMediaFiles(event, 'audio')" />
-            </label>
-          </div>
-          <audio id="ambient-audio" controls style="width:100%; height:32px; margin-top:8px;"></audio>
-          <ul class="vault-list" id="audio-vault-list"></ul>
+        <video id="sidebar-video" controls playsinline loop></video>
+        <div class="cinema-controls">
+          <button class="btn-outline" onclick="prevVideo()">⏮ Prev</button>
+          <button class="btn-outline" onclick="nextVideo()">Next ⏭</button>
+          <button class="btn-outline" onclick="openTheatre()">⛶ Theatre</button>
         </div>
       </div>
+
+      <!-- AMBIENT LOUNGE AUDIO -->
+      <div class="lounge-card">
+        <div class="lounge-title">
+          <span>🎵 AMBIENT LOUNGE</span>
+          <span id="lounge-status">Standby</span>
+        </div>
+        <div class="lounge-track" id="lounge-track-name">24K Velvet Ambient Synth</div>
+        <audio id="lounge-audio" style="display:none;"></audio>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="btn-gold" style="flex:1; padding:6px 10px; font-size:0.74rem;" onclick="toggleLounge()">▶ Play / Pause</button>
+          <label class="btn-outline" style="padding:6px 10px; font-size:0.74rem; cursor:pointer;">
+            + MP3
+            <input type="file" accept="audio/*" style="display:none;" onchange="handleAudioUpload(event)" />
+          </label>
+        </div>
+      </div>
+
+      <!-- NAVIGATION -->
+      <nav class="side-nav">
+        <button class="nav-btn active" data-tab="depts" onclick="switchTab('depts', this)">🏛 13 Sovereign Departments</button>
+        <button class="nav-btn" data-tab="videos" onclick="switchTab('videos', this)">🎞 Offline Video Library</button>
+        <button class="nav-btn" data-tab="gallery" onclick="switchTab('gallery', this)">🎨 Private Art Gallery</button>
+        <button class="nav-btn" data-tab="valet" onclick="switchTab('valet', this)">🚁 Valet & Jet Hangar</button>
+        <button class="nav-btn" data-tab="vip" onclick="switchTab('vip', this)">👑 VIP & Guest Pass Studio</button>
+      </nav>
     </aside>
 
-    <!-- Right / Main Content Column -->
-    <div>
-      <div class="section-title-bar">
-        <div>
-          <h2 class="gold-text" style="font-size:1.3rem;">The 13 Sovereign Departments</h2>
-          <p style="font-size:0.82rem; color:var(--text-muted);">Select any division to enter its interactive suite and member records.</p>
+    <!-- MAIN STAGE -->
+    <main id="main-content">
+      <div class="topbar">
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn-outline" onclick="toggleSidebar()">☰ Sidebar</button>
+          <button class="btn-outline" onclick="toggleTheme()">💎 Silk / Emerald</button>
+          <button class="btn-outline" onclick="replaySplash()">✨ Replay Intro</button>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn-outline" onclick="exportVaultBackup()">📦 Export .MMCC Backup</button>
+          <label class="btn-outline" style="cursor:pointer;">
+            📥 Restore Backup
+            <input type="file" accept=".mmcc,.json" style="display:none;" onchange="importVaultBackup(event)" />
+          </label>
         </div>
       </div>
 
-      <div class="departments-grid" id="departments-grid"></div>
+      <!-- 1. 13 DEPARTMENTS -->
+      <section id="tab-depts" class="view-section active">
+        <div class="section-head">
+          <h2>13 Sovereign Departments</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Tap any suite to open Executive Brief, Pin Media & Log Notes</span>
+        </div>
+        <div class="dept-grid" id="dept-grid"></div>
+      </section>
 
-      <!-- Ledger, COA Generator & VIP Passes -->
-      <div class="tools-grid">
-
-        <!-- 5. Private Concierge & Member Itinerary Ledger -->
-        <div class="panel-card">
-          <h3>🥂 Private Concierge &amp; Itinerary Ledger</h3>
-          <div class="form-row">
-            <label>Service Category</label>
-            <select id="ledger-category">
-              <option value="Private Jet / Heli Charter">Private Jet / Heli Charter</option>
-              <option value="Superyacht Berth &amp; Charter">Superyacht Berth &amp; Charter</option>
-              <option value="Private Dining &amp; Sommelier">Private Dining &amp; Sommelier</option>
-              <option value="Royal Penthouse &amp; Villa Suite">Royal Penthouse &amp; Villa Suite</option>
-              <option value="Diplomatic Security &amp; Chauffeur">Diplomatic Security &amp; Chauffeur</option>
+      <!-- 2. VIDEO LIBRARY -->
+      <section id="tab-videos" class="view-section">
+        <div class="section-head">
+          <h2>Offline Video Library Vault</h2>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <label style="font-size:0.78rem; color:var(--text-muted);">Intro Duration:</label>
+            <select id="intro-duration-select" style="width:auto;" onchange="saveIntroDuration(this.value)">
+              <option value="5000">5.0s</option>
+              <option value="7500" selected>7.5s</option>
+              <option value="10000">10.0s</option>
             </select>
           </div>
-          <div class="form-row">
-            <label>Itinerary Details &amp; Hub</label>
-            <input type="text" id="ledger-detail" placeholder="e.g., Gulfstream G700 TLV → LHR, 4 Pax" />
+        </div>
+        <label class="dropzone" style="display:block;">
+          <strong style="color:var(--gold-light);">+ Upload .MP4 / .WebM / .MOV Reels to Offline Vault</strong>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px;">Saved locally in IndexedDB · Set any video as your custom launch intro</p>
+          <input type="file" accept="video/*" multiple style="display:none;" onchange="handleVideoUpload(event)" />
+        </label>
+        <div class="media-grid" id="video-grid"></div>
+      </section>
+
+      <!-- 3. ART GALLERY -->
+      <section id="tab-gallery" class="view-section">
+        <div class="section-head">
+          <h2>Private Art & Couture Gallery</h2>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <select id="gallery-frame-select" style="width:auto;" onchange="updateGalleryFrame(this.value)">
+              <option value="frame-gold">Frame: 24K Carved Gold</option>
+              <option value="frame-obsidian">Frame: Obsidian Lacquer</option>
+              <option value="frame-mat">Frame: Gallery White Mat</option>
+              <option value="">Frame: Frameless</option>
+            </select>
+            <button class="btn-gold" onclick="startExhibition()">🖼 Exhibition Slideshow</button>
           </div>
-          <div style="display:flex; gap:10px;">
-            <div class="form-row" style="flex:1;">
-              <label>Date</label>
-              <input type="date" id="ledger-date" />
-            </div>
-            <div class="form-row" style="flex:1;">
-              <label>Priority Status</label>
-              <select id="ledger-status">
-                <option value="VIP Priority">VIP Priority</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="In Progress">In Progress</option>
+        </div>
+        <label class="dropzone" style="display:block;">
+          <strong style="color:var(--gold-light);">+ Self-Upload Artworks & Couture Photos (.JPG, .PNG, .WEBP)</strong>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px;">Stored offline in your private vault with custom framing & curator notes</p>
+          <input type="file" accept="image/*" multiple style="display:none;" onchange="handleArtUpload(event)" />
+        </label>
+        <div class="media-grid" id="art-grid"></div>
+      </section>
+
+      <!-- 4. VALET & HANGAR -->
+      <section id="tab-valet" class="view-section">
+        <div class="section-head">
+          <h2>Valet Garage & Private Jet Hangar</h2>
+        </div>
+        <div class="panel-box">
+          <div class="form-row">
+            <input id="valet-type" placeholder="Type (e.g., Maybach S680 / Gulfstream G700)" />
+            <input id="valet-tag" placeholder="Plate / Tail Number (e.g., N109MM)" />
+            <input id="valet-bay" placeholder="Bay / Hangar Slot (e.g., Sovereign Bay 01)" />
+          </div>
+          <button class="btn-gold" onclick="addValetEntry()">+ Register Arrival</button>
+        </div>
+        <div class="dept-grid" id="valet-list"></div>
+      </section>
+
+      <!-- 5. VIP & GUEST PASS STUDIO -->
+      <section id="tab-vip" class="view-section">
+        <div class="section-head">
+          <h2>24K VIP & Guest Day-Pass Studio</h2>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:24px; align-items:start;">
+          <div class="panel-box">
+            <div class="form-row">
+              <input id="vip-name" value="FOUNDER · SOVEREIGN MEMBER" oninput="renderVipCard()" placeholder="Member or Guest Name" />
+              <select id="vip-tier" onchange="renderVipCard()">
+                <option value="FOUNDER'S SOVEREIGN KEY">Founder's Sovereign Key</option>
+                <option value="GUEST DAY-PASS · ALL SUITES">Guest Day-Pass · All Suites</option>
+                <option value="PRIVATE TARMAC & HANGAR ACCESS">Private Tarmac & Hangar Access</option>
               </select>
             </div>
+            <div class="form-row">
+              <input id="vip-code" value="MMCC-001-24K" oninput="renderVipCard()" placeholder="Pass / Valet Code" />
+              <input id="vip-date" value="PERPETUAL ACCESS" oninput="renderVipCard()" placeholder="Valid Date" />
+            </div>
+            <button class="btn-gold" onclick="downloadVipPng()">⬇ Download Pass as PNG</button>
           </div>
-          <button class="btn btn-solid" style="width:100%;" onclick="addLedgerEntry()">+ Log Sovereign Request</button>
-          <table class="ledger-table">
-            <thead>
-              <tr><th>Date</th><th>Request</th><th>Status</th><th></th></tr>
-            </thead>
-            <tbody id="ledger-tbody"></tbody>
-          </table>
+
+          <div class="vip-preview" id="vip-card-visual">
+            <div style="font-size:0.72rem; letter-spacing:0.2em; color:var(--gold);">MEVUNAI MOMENT™ COUNTRY CLUB</div>
+            <div id="card-tier-display" style="font-size:1.15rem; font-weight:700; color:var(--gold-light); margin:12px 0 6px;">FOUNDER'S SOVEREIGN KEY</div>
+            <div id="card-name-display" style="font-size:1rem; letter-spacing:0.08em; margin-bottom:18px;">FOUNDER · SOVEREIGN MEMBER</div>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); border-top:1px solid var(--gold-dim); padding-top:12px;">
+              <span id="card-code-display">ID: MMCC-001-24K</span>
+              <span id="card-date-display">PERPETUAL ACCESS</span>
+            </div>
+          </div>
         </div>
-
-        <!-- 6. 24K Certificate of Authenticity (COA) PNG Generator -->
-        <div class="panel-card">
-          <h3>📜 24K Certificate of Authenticity (COA) Generator</h3>
-          <div class="form-row">
-            <label>Asset Classification</label>
-            <select id="coa-type">
-              <option value="FINE ART &amp; ANTIQUITIES">Private Art Gallery Asset</option>
-              <option value="BESPOKE AUTOMOTIVE">Valet Collection Vehicle</option>
-              <option value="PRIVATE AVIATION">Private Hangar Aircraft</option>
-              <option value="HOROLOGY &amp; HIGH JEWELRY">Vault Horology / High Jewelry</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label>Asset Title / Make &amp; Model</label>
-            <input type="text" id="coa-title" placeholder="e.g., 1962 Ferrari 250 GTO / Sovereign Edition" />
-          </div>
-          <div class="form-row">
-            <label>Provenance / Serial / Tail Number</label>
-            <input type="text" id="coa-serial" placeholder="e.g., SN-MMCC-24K-8891" />
-          </div>
-          <div class="form-row">
-            <label>Registered Sovereign Member</label>
-            <input type="text" id="coa-owner" placeholder="e.g., Lord / Lady Sovereign Member" />
-          </div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-solid" style="flex:1;" onclick="renderCOA()">Render 24K COA</button>
-            <button class="btn" onclick="downloadCanvas('coa-canvas', 'MMCC-24K-COA.png')">⬇ Export PNG</button>
-          </div>
-          <canvas id="coa-canvas" class="preview-canvas" width="700" height="440"></canvas>
-        </div>
-
-        <!-- Exportable VIP & Guest Day-Passes -->
-        <div class="panel-card">
-          <h3>🎫 Exportable VIP &amp; Guest Day-Passes</h3>
-          <div class="form-row">
-            <label>Pass Tier</label>
-            <select id="pass-tier">
-              <option value="SOVEREIGN FOUNDER PASS">Sovereign Founder Pass (All 13 Hubs)</option>
-              <option value="ROYAL DIPLOMATIC GUEST">Royal Diplomatic Guest Day-Pass</option>
-              <option value="TARMAC &amp; HANGAR ACCESS">Tarmac &amp; Private Hangar Clearance</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label>Guest / Member Name</label>
-            <input type="text" id="pass-name" placeholder="e.g., Honored Guest of MMCC" />
-          </div>
-          <div class="form-row">
-            <label>Authorized Club Hub</label>
-            <select id="pass-hub">
-              <option>New York • Fifth Avenue Sanctum</option>
-              <option>London • Mayfair House</option>
-              <option>Paris • Place Vendôme</option>
-              <option>Tel Aviv • Rothschild Sovereign Tower</option>
-              <option>Dubai • DIFC Gold Gate</option>
-              <option>Tokyo • Ginza Imperial Suite</option>
-            </select>
-          </div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-solid" style="flex:1;" onclick="renderPass()">Issue Gold Pass</button>
-            <button class="btn" onclick="downloadCanvas('pass-canvas', 'MMCC-VIP-Pass.png')">⬇ Export PNG</button>
-          </div>
-          <canvas id="pass-canvas" class="preview-canvas" width="700" height="360"></canvas>
-        </div>
-
-      </div>
-    </div>
-  </main>
-
-  <!-- Department Suite Modal -->
-  <div class="modal-backdrop" id="dept-modal">
-    <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-gold); padding-bottom:10px;">
-        <h3 class="gold-text" id="modal-dept-title">Department</h3>
-        <button class="btn" onclick="closeModal('dept-modal')">✕</button>
-      </div>
-      <p id="modal-dept-desc" style="margin:12px 0; color:var(--text-muted); font-size:0.9rem;"></p>
-      <div class="form-row">
-        <label>Department Private Notes &amp; Directives (Saved Offline)</label>
-        <textarea id="modal-dept-notes" rows="5" placeholder="Enter confidential directives, asset notes, or suite preferences..."></textarea>
-      </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
-        <button class="btn btn-solid" onclick="saveDeptNotes()">Save Directive</button>
-      </div>
-    </div>
+      </section>
+    </main>
   </div>
 
-  <!-- PIN & Biometric Security Modal -->
-  <div class="modal-backdrop" id="security-modal">
-    <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-gold); padding-bottom:10px;">
-        <h3 class="gold-text">🔐 Sovereign PIN &amp; Biometric Settings</h3>
-        <button class="btn" onclick="closeModal('security-modal')">✕</button>
-      </div>
-      <div class="form-row" style="margin-top:14px;">
-        <label>Set Custom 4-Digit Member PIN</label>
-        <input type="password" id="new-pin-input" maxlength="4" pattern="[0-9]*" placeholder="4 digits (e.g., 2424)" />
-      </div>
-      <div style="display:flex; align-items:center; gap:10px; margin:12px 0;">
-        <input type="checkbox" id="require-pin-launch" />
-        <label for="require-pin-launch" style="font-size:0.88rem;">Require PIN on App Launch</label>
-      </div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
-        <button class="btn btn-solid" onclick="saveSecuritySettings()">Save PIN Settings</button>
-        <button class="btn" onclick="registerBiometrics()">🧬 Enable Device Biometrics (WebAuthn)</button>
-      </div>
-      <div id="security-msg" style="margin-top:10px; font-size:0.82rem; color:var(--gold-light);"></div>
-    </div>
+  <!-- MOBILE BOTTOM BAR -->
+  <div class="mobile-nav">
+    <button class="btn-outline" onclick="switchTab('depts')">🏛 Suites</button>
+    <button class="btn-outline" onclick="switchTab('videos')">🎬 Videos</button>
+    <button class="btn-outline" onclick="switchTab('gallery')">🎨 Art</button>
+    <button class="btn-outline" onclick="switchTab('vip')">👑 VIP</button>
+  </div>
+
+  <!-- UNIVERSAL MODAL -->
+  <div class="modal-backdrop" id="universal-modal" onclick="if(event.target===this) closeModal()">
+    <div class="modal-box" id="modal-content"></div>
   </div>
 
   <script>
-    /* --- DATA & STATE --- */
     const DEPARTMENTS = [
-      { id: 1, title: "01. Sovereign Governance & Crown Council", desc: "Executive charters, member voting protocols, and dynasty bylaws." },
-      { id: 2, title: "02. Private Treasury & Bullion Reserve", desc: "24K gold allocations, sovereign wealth vaults, and multi-currency liquidity." },
-      { id: 3, title: "03. Private Aviation & Tarmac Operations", desc: "Global FBO clearances, Gulfstream/Global fleet dispatch, and CAVOK routing." },
-      { id: 4, title: "04. Maritime & Superyacht Admiralty", desc: "Mediterranean & Caribbean berth reservations, crew logistics, and tender ops." },
-      { id: 5, title: "05. Valet & Bespoke Collector Hangar", desc: "Climate-controlled hypercar storage, provenance logs, and global transport." },
-      { id: 6, title: "06. Private Art Gallery & Antiquities", desc: "Curated museum-grade acquisitions, provenance verification, and 24K COAs." },
-      { id: 7, title: "07. Haute Horlogerie & Vault Jewels", desc: "Rare timepieces, bespoke commissions, and insured vault custody." },
-      { id: 8, title: "08. Royal Estates & Sanctum Residences", desc: "Worldwide penthouses, private islands, and pre-arrival suite preparation." },
-      { id: 9, title: "09. Diplomatic Security & Cyber Sanctum", desc: "Close protection details, encrypted comms, and biometric access control." },
-      { id: 10, title: "10. Grand Gastronomy & Rare Vintage Cellar", desc: "Michelin private chefs, rare Bordeaux/Burgundy allocations, and tastings." },
-      { id: 11, title: "11. Longevity, Wellness & Bio-Optimization", desc: "Private clinical suites, regenerative specialists, and spa sanctuaries." },
-      { id: 12, title: "12. Cultural Patronage & Global Galas", desc: "Opera boxes, private museum galas, and sovereign philanthropic foundations." },
-      { id: 13, title: "13. 24/7 White-Glove Sovereign Concierge", desc: "Immediate bespoke sourcing, diplomatic clearances, and itinerary execution." }
+      { id: 1, name: "01 · Sovereign Executive Concierge", desc: "24/7 global diplomatic travel, private charters & bespoke lifestyle command." },
+      { id: 2, name: "02 · Haute Couture & Atelier", desc: "Private runway archives, custom tailoring & seasonal maison lookbooks." },
+      { id: 3, name: "03 · Fine Art & Antiquités", desc: "Curated museum acquisitions, private auctions & vault exhibitions." },
+      { id: 4, name: "04 · Aviation & Private Hangar", desc: "Gulfstream & rotorcraft dispatch, FBO clearances & tarmac telemetry." },
+      { id: 5, name: "05 · Motorcar & Coachbuilt Fleet", desc: "Bespoke hypercars, armored chauffeur fleet & subterranean valet bays." },
+      { id: 6, name: "06 · Yachting & Maritime Club", desc: "Superyacht berths, Mediterranean tenders & oceanic expeditions." },
+      { id: 7, name: "07 · Culinary & Grand Cellar", desc: "Michelin private dining, rare vintages & sommelier tastings." },
+      { id: 8, name: "08 · Horology & High Jewelry", desc: "24K bespoke commissions, tourbillon vaults & gemological provenance." },
+      { id: 9, name: "09 · Wellness, Longevity & Spa", desc: "Regenerative therapies, thermal sanctuaries & private performance suites." },
+      { id: 10, name: "10 · Estates & Architectural Sanctuaries", desc: "Global penthouses, private islands & architectural blueprints." },
+      { id: 11, name: "11 · Sovereign Cinema & Acoustics", desc: "Private screening rooms, master reels & audiophile lounge sessions." },
+      { id: 12, name: "12 · Philanthropy & Legacy Foundation", desc: "Cultural patronage, endowments & global sovereign initiatives." },
+      { id: 13, name: "13 · Private Treasury & Member Keys", desc: "Credential issuance, guest day-passes & encrypted vault backups." }
     ];
 
-    const HUBS = [
-      { city: "New York", tz: "America/New_York", code: "JFK/TEB" },
-      { city: "London", tz: "Europe/London", code: "FAB/LTN" },
-      { city: "Paris", tz: "Europe/Paris", code: "LBG" },
-      { city: "Tel Aviv", tz: "Asia/Jerusalem", code: "TLV" },
-      { city: "Dubai", tz: "Asia/Dubai", code: "DWC/DXB" },
-      { city: "Tokyo", tz: "Asia/Tokyo", code: "HND/NRT" }
-    ];
-
-    let state = JSON.parse(localStorage.getItem('mmcc_v29_state') || 'null') || {
-      pin: '2424',
-      requirePinOnLaunch: false,
-      biometricEnabled: false,
-      centerStage: false,
-      deptNotes: {},
-      ledger: [
-        { id: 1, date: '2026-11-28', category: 'Private Jet / Heli Charter', detail: 'TLV → LBG • Sovereign Falcon 8X', status: 'Confirmed' },
-        { id: 2, date: '2026-12-02', category: 'Private Dining & Sommelier', detail: 'Paris Vendôme Vault • 1945 Vintage Tasting', status: 'VIP Priority' }
-      ]
+    let db;
+    let state = {
+      videos: [],
+      art: [],
+      audio: [],
+      valet: JSON.parse(localStorage.getItem('mmcc_valet_v28') || '[]'),
+      deptNotes: JSON.parse(localStorage.getItem('mmcc_dept_notes_v28') || '{}'),
+      introVideoId: localStorage.getItem('mmcc_intro_vid_v28') || null,
+      introDuration: parseInt(localStorage.getItem('mmcc_intro_dur_v28') || '7500', 10),
+      galleryFrame: localStorage.getItem('mmcc_gallery_frame_v28') || 'frame-gold',
+      currentVideoIdx: 0
     };
 
-    function persistState() {
-      localStorage.setItem('mmcc_v29_state', JSON.stringify(state));
+    /* INDEXEDDB SETUP */
+    function initDB() {
+      return new Promise((resolve) => {
+        const req = indexedDB.open('MMCC_Sovereign_Suite_v28', 1);
+        req.onupgradeneeded = (e) => {
+          const d = e.target.result;
+          if (!d.objectStoreNames.contains('videos')) d.createObjectStore('videos', { keyPath: 'id' });
+          if (!d.objectStoreNames.contains('art')) d.createObjectStore('art', { keyPath: 'id' });
+          if (!d.objectStoreNames.contains('audio')) d.createObjectStore('audio', { keyPath: 'id' });
+        };
+        req.onsuccess = (e) => { db = e.target.result; resolve(); };
+      });
     }
 
-    /* --- 1. 24K GOLD BIRD FLIGHT SPLASH & CHIME --- */
-    let splashTimer = null;
-    let splashAnimId = null;
+    function dbGetAll(store) {
+      return new Promise((res) => {
+        const tx = db.transaction(store, 'readonly');
+        const req = tx.objectStore(store).getAll();
+        req.onsuccess = () => res(req.result || []);
+      });
+    }
 
+    function dbPut(store, item) {
+      return new Promise((res) => {
+        const tx = db.transaction(store, 'readwrite');
+        tx.objectStore(store).put(item);
+        tx.oncomplete = () => res();
+      });
+    }
+
+    function dbDelete(store, id) {
+      return new Promise((res) => {
+        const tx = db.transaction(store, 'readwrite');
+        tx.objectStore(store).delete(id);
+        tx.oncomplete = () => res();
+      });
+    }
+
+    /* SPLASH & GOLD CHIME */
+    let splashTimer;
     function playGoldChime() {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-        freqs.forEach((f, idx) => {
+        [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(f, ctx.currentTime + idx * 0.14);
-          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.14);
-          gain.gain.exponentialRampToValueAtTime(0.09, ctx.currentTime + idx * 0.14 + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.14 + 2.2);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + idx * 0.14);
-          osc.stop(ctx.currentTime + idx * 0.14 + 2.3);
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.001, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.05, ctx.currentTime + 0.2 + i * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 2.4);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(); osc.stop(ctx.currentTime + 2.5);
         });
       } catch (e) {}
     }
 
-    function startSplashAnimation(durationMs = 5000) {
-      const overlay = document.getElementById('splash-overlay');
-      const canvas = document.getElementById('splash-canvas');
-      const ctx = canvas.getContext('2d');
-      overlay.classList.remove('hidden');
+    function startSplash() {
+      const splash = document.getElementById('splash-screen');
+      const bar = document.getElementById('splash-bar');
+      const vidEl = document.getElementById('splash-video');
+      splash.classList.remove('hidden');
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
 
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      const particles = [];
-      const startTime = performance.now();
-      playGoldChime();
-
-      if (splashAnimId) cancelAnimationFrame(splashAnimId);
-      if (splashTimer) clearTimeout(splashTimer);
-
-      function drawFrame(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / durationMs, 1);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        const cx = canvas.width / 2;
-        const cy = canvas.height * 0.36;
-
-        // Gold Pyramid & Eye of Horus Crest
-        ctx.save();
-        ctx.strokeStyle = '#d4af37';
-        ctx.lineWidth = 3;
-        ctx.shadowColor = '#f6e27a';
-        ctx.shadowBlur = 18;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - 85);
-        ctx.lineTo(cx + 95, cy + 75);
-        ctx.lineTo(cx - 95, cy + 75);
-        ctx.closePath();
-        ctx.stroke();
-
-        // Eye of Horus center
-        ctx.fillStyle = '#f6e27a';
-        ctx.beginPath();
-        ctx.ellipse(cx, cy + 12, 24, 12, 0, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(cx, cy + 12, 6, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        // Falcon Flight Trajectory toward Crest
-        const birdX = canvas.width * (0.12 + 0.38 * Math.sin(progress * Math.PI * 0.5));
-        const birdY = canvas.height * (0.62 - 0.28 * Math.sin(progress * Math.PI * 0.5));
-        const wingFlap = Math.sin(elapsed * 0.014) * 26;
-
-        // Spawn Shimmer Particles
-        for (let i = 0; i < 3; i++) {
-          particles.push({
-            x: birdX - 10 + (Math.random() - 0.5) * 14,
-            y: birdY + (Math.random() - 0.5) * 14,
-            vx: -1.5 - Math.random() * 2,
-            vy: (Math.random() - 0.5) * 1.5,
-            alpha: 1,
-            size: 1.5 + Math.random() * 2.5
-          });
-        }
-
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          p.alpha -= 0.018;
-          if (p.alpha <= 0) {
-            particles.splice(i, 1);
-            continue;
-          }
-          ctx.fillStyle = `rgba(246, 226, 122, ${p.alpha})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Draw 24K Gold Sovereign Falcon
-        ctx.save();
-        ctx.translate(birdX, birdY);
-        ctx.fillStyle = '#f6e27a';
-        ctx.strokeStyle = '#d4af37';
-        ctx.lineWidth = 2.5;
-        ctx.shadowColor = '#d4af37';
-        ctx.shadowBlur = 16;
-
-        // Body
-        ctx.beginPath();
-        ctx.moveTo(22, 0);
-        ctx.quadraticCurveTo(0, -8, -24, 2);
-        ctx.quadraticCurveTo(0, 8, 22, 0);
-        ctx.fill();
-
-        // Upper & Lower Articulated Wings
-        ctx.beginPath();
-        ctx.moveTo(4, -2);
-        ctx.quadraticCurveTo(-10, -34 - wingFlap, -32, -12 - wingFlap * 0.6);
-        ctx.lineTo(-10, 0);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.moveTo(4, 2);
-        ctx.quadraticCurveTo(-8, 28 + wingFlap * 0.7, -28, 12 + wingFlap * 0.4);
-        ctx.lineTo(-10, 2);
-        ctx.fill();
-        ctx.restore();
-
-        if (progress < 1) {
-          splashAnimId = requestAnimationFrame(drawFrame);
-        }
-      }
-
-      splashAnimId = requestAnimationFrame(drawFrame);
-      splashTimer = setTimeout(() => {
-        dismissSplash();
-      }, durationMs);
-    }
-
-    function replaySplash(ms) {
-      const vid = document.getElementById('custom-intro-video');
-      vid.style.display = 'none';
-      vid.pause();
-      startSplashAnimation(ms);
-    }
-
-    function loadCustomIntro(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const url = URL.createObjectURL(file);
-      const vid = document.getElementById('custom-intro-video');
-      vid.src = url;
-      vid.style.display = 'block';
-      vid.play();
-      vid.onended = dismissSplash;
-    }
-
-    function dismissSplash() {
-      document.getElementById('splash-overlay').classList.add('hidden');
-      const vid = document.getElementById('custom-intro-video');
-      vid.pause();
-      if (splashTimer) clearTimeout(splashTimer);
-    }
-
-    /* --- 2. PIN & BIOMETRIC LOCK --- */
-    let enteredPin = '';
-
-    function lockVault() {
-      enteredPin = '';
-      updatePinDots();
-      document.getElementById('pin-error').textContent = '';
-      document.getElementById('lock-overlay').classList.add('active');
-    }
-
-    function pressPin(digit) {
-      if (enteredPin.length >= 4) return;
-      enteredPin += digit;
-      updatePinDots();
-      if (enteredPin.length === 4) {
-        if (enteredPin === state.pin) {
-          document.getElementById('lock-overlay').classList.remove('active');
-          enteredPin = '';
-          updatePinDots();
-        } else {
-          document.getElementById('pin-error').textContent = 'Invalid Sovereign PIN';
-          setTimeout(() => {
-            enteredPin = '';
-            updatePinDots();
-          }, 450);
-        }
-      }
-    }
-
-    function clearPin() {
-      enteredPin = '';
-      updatePinDots();
-      document.getElementById('pin-error').textContent = '';
-    }
-
-    function updatePinDots() {
-      const dots = document.querySelectorAll('#pin-dots .pin-dot');
-      dots.forEach((d, i) => d.classList.toggle('filled', i < enteredPin.length));
-    }
-
-    async function registerBiometrics() {
-      const msg = document.getElementById('security-msg');
-      if (!window.PublicKeyCredential) {
-        msg.textContent = 'WebAuthn Biometrics not supported in this browser context.';
-        return;
-      }
-      try {
-        const challenge = new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
-        await navigator.credentials.create({
-          publicKey: {
-            challenge,
-            rp: { name: "MMCC Sovereign Portal" },
-            user: { id: new Uint8Array(16), name: "member@mmcc.sovereign", displayName: "Sovereign Member" },
-            pubKeyCredParams: [{ type: "public-key", alg: -7 }],
-            authenticatorSelection: { userVerification: "preferred" },
-            timeout: 60000
-          }
-        });
-        state.biometricEnabled = true;
-        persistState();
-        msg.textContent = 'Biometric Touch ID / Face ID credential registered.';
-      } catch (err) {
-        state.biometricEnabled = true;
-        persistState();
-        msg.textContent = 'Device Biometric quick-unlock enabled for local session.';
-      }
-    }
-
-    function unlockBiometric() {
-      if (state.biometricEnabled) {
-        document.getElementById('lock-overlay').classList.remove('active');
+      const customIntro = state.videos.find(v => v.id === state.introVideoId);
+      if (customIntro && customIntro.blob) {
+        vidEl.src = URL.createObjectURL(customIntro.blob);
+        vidEl.style.display = 'block';
+        vidEl.play().catch(() => {});
       } else {
-        document.getElementById('pin-error').textContent = 'Enable Biometrics in PIN & Bio Settings first.';
+        vidEl.style.display = 'none';
       }
-    }
 
-    function openSecurityModal() {
-      document.getElementById('new-pin-input').value = state.pin;
-      document.getElementById('require-pin-launch').checked = state.requirePinOnLaunch;
-      document.getElementById('security-msg').textContent = '';
-      document.getElementById('security-modal').classList.add('open');
-    }
-
-    function saveSecuritySettings() {
-      const val = document.getElementById('new-pin-input').value.trim();
-      if (!/^\d{4}$/.test(val)) {
-        document.getElementById('security-msg').textContent = 'Please enter exactly 4 digits.';
-        return;
-      }
-      state.pin = val;
-      state.requirePinOnLaunch = document.getElementById('require-pin-launch').checked;
-      persistState();
-      document.getElementById('security-msg').textContent = 'Sovereign PIN settings saved.';
-    }
-
-    /* --- 3. GLOBAL CLUB HUBS CLOCKS --- */
-    function renderHubs() {
-      const container = document.getElementById('hubs-strip');
-      const now = new Date();
-      container.innerHTML = HUBS.map(h => {
-        const timeStr = now.toLocaleTimeString('en-GB', { timeZone: h.tz, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        return `
-          <div class="hub-card">
-            <div>
-              <div class="hub-city">${h.city} <span style="opacity:0.7;">(${h.code})</span></div>
-              <div class="hub-time">${timeStr}</div>
-            </div>
-            <span class="cavok-badge">CAVOK • READY</span>
-          </div>
-        `;
-      }).join('');
-    }
-    setInterval(renderHubs, 1000);
-
-    /* --- 4. CINEMA LAYOUT & MEDIA VAULTS --- */
-    function toggleCinemaLayout() {
-      state.centerStage = !state.centerStage;
-      persistState();
-      applyCinemaLayout();
-    }
-
-    function applyCinemaLayout() {
-      const ws = document.getElementById('main-workspace');
-      ws.classList.remove('sidebar-collapsed');
-      ws.classList.toggle('center-stage', state.centerStage);
-    }
-
-    function toggleSidebarCollapse() {
-      const ws = document.getElementById('main-workspace');
-      if (state.centerStage) {
-        state.centerStage = false;
-        applyCinemaLayout();
-      }
-      ws.classList.toggle('sidebar-collapsed');
-    }
-
-    function addMediaFiles(e, kind) {
-      const files = Array.from(e.target.files);
-      const listEl = document.getElementById(kind === 'video' ? 'video-vault-list' : 'audio-vault-list');
-      files.forEach(file => {
-        const url = URL.createObjectURL(file);
-        const li = document.createElement('li');
-        li.className = 'vault-item';
-        li.innerHTML = `<span>${kind === 'video' ? '🎬' : '🎵'} ${file.name}</span><span style="color:var(--gold-primary);">PLAY</span>`;
-        li.onclick = () => {
-          if (kind === 'video') {
-            const player = document.getElementById('cinema-player');
-            document.getElementById('cinema-placeholder').style.display = 'none';
-            player.style.display = 'block';
-            player.src = url;
-            player.play();
-          } else {
-            const audio = document.getElementById('ambient-audio');
-            audio.src = url;
-            audio.play();
-          }
-        };
-        listEl.appendChild(li);
+      requestAnimationFrame(() => {
+        bar.style.transition = `width ${state.introDuration}ms linear`;
+        bar.style.width = '100%';
       });
+      clearTimeout(splashTimer);
+      splashTimer = setTimeout(closeSplash, state.introDuration);
     }
 
-    /* --- 5. 13 DEPARTMENTS --- */
-    let activeDeptId = null;
+    function closeSplash() {
+      clearTimeout(splashTimer);
+      document.getElementById('splash-screen').classList.add('hidden');
+      const vidEl = document.getElementById('splash-video');
+      vidEl.pause();
+    }
 
+    function replaySplash() {
+      playGoldChime();
+      startSplash();
+    }
+
+    function saveIntroDuration(ms) {
+      state.introDuration = parseInt(ms, 10);
+      localStorage.setItem('mmcc_intro_dur_v28', ms);
+    }
+
+    /* NAVIGATION & THEME */
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      document.body.classList.remove('mobile-drawer-open');
+    }
+
+    function toggleSidebar() {
+      if (window.innerWidth <= 900) {
+        document.body.classList.toggle('mobile-drawer-open');
+      } else {
+        document.body.classList.toggle('sidebar-collapsed');
+      }
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('theme-emerald');
+    }
+
+    /* 13 DEPARTMENTS */
     function renderDepartments() {
-      const grid = document.getElementById('departments-grid');
+      const grid = document.getElementById('dept-grid');
       grid.innerHTML = DEPARTMENTS.map(d => {
-        const hasNote = state.deptNotes[d.id] ? ' • 📝 Directive Logged' : '';
+        const note = state.deptNotes[d.id] || {};
         return `
           <div class="dept-card" onclick="openDeptModal(${d.id})">
-            <div>
-              <div class="dept-num">Sovereign Division${hasNote}</div>
-              <div class="dept-title">${d.title}</div>
-              <p class="dept-desc" style="margin-top:6px;">${d.desc}</p>
-            </div>
-            <div style="font-size:0.78rem; color:var(--gold-primary); text-align:right;">Open Suite →</div>
+            <div class="dept-num">SUITE ${String(d.id).padStart(2, '0')}</div>
+            <div class="dept-name">${d.name.replace(/^\d+\s·\s/, '')}</div>
+            <div class="dept-desc">${d.desc}</div>
+            ${note.memo ? `<div style="margin-top:10px; font-size:0.74rem; color:var(--gold-light);">📌 ${note.memo.slice(0, 48)}...</div>` : ''}
           </div>
         `;
       }).join('');
     }
 
     function openDeptModal(id) {
-      activeDeptId = id;
-      const dept = DEPARTMENTS.find(d => d.id === id);
-      document.getElementById('modal-dept-title').textContent = dept.title;
-      document.getElementById('modal-dept-desc').textContent = dept.desc;
-      document.getElementById('modal-dept-notes').value = state.deptNotes[id] || '';
-      document.getElementById('dept-modal').classList.add('open');
+      const d = DEPARTMENTS.find(x => x.id === id);
+      const saved = state.deptNotes[id] || { memo: '', pinnedVideo: '', pinnedArt: '' };
+      const vidOptions = state.videos.map(v => `<option value="${v.id}" ${saved.pinnedVideo===v.id?'selected':''}>${v.name}</option>`).join('');
+      const artOptions = state.art.map(a => `<option value="${a.id}" ${saved.pinnedArt===a.id?'selected':''}>${a.name}</option>`).join('');
+
+      document.getElementById('modal-content').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h3 style="color:var(--gold-light);">${d.name}</h3>
+          <button class="btn-outline" onclick="closeModal()">✕ Close</button>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:16px;">${d.desc}</p>
+        <label style="font-size:0.78rem; color:var(--gold);">Pin Vault Reel to Suite:</label>
+        <select id="dept-pin-vid" style="margin:6px 0 12px;"><option value="">— None —</option>${vidOptions}</select>
+        <label style="font-size:0.78rem; color:var(--gold);">Pin Gallery Artwork to Suite:</label>
+        <select id="dept-pin-art" style="margin:6px 0 12px;"><option value="">— None —</option>${artOptions}</select>
+        <label style="font-size:0.78rem; color:var(--gold);">Suite Concierge Notes:</label>
+        <textarea id="dept-memo" rows="3" style="margin:6px 0 14px;" placeholder="Enter private directives, guest preferences, or itinerary notes...">${saved.memo || ''}</textarea>
+        <button class="btn-gold" onclick="saveDeptNote(${id})">Save Suite Brief</button>
+      `;
+      document.getElementById('universal-modal').classList.add('open');
     }
 
-    function saveDeptNotes() {
-      if (!activeDeptId) return;
-      state.deptNotes[activeDeptId] = document.getElementById('modal-dept-notes').value;
-      persistState();
+    function saveDeptNote(id) {
+      state.deptNotes[id] = {
+        pinnedVideo: document.getElementById('dept-pin-vid').value,
+        pinnedArt: document.getElementById('dept-pin-art').value,
+        memo: document.getElementById('dept-memo').value
+      };
+      localStorage.setItem('mmcc_dept_notes_v28', JSON.stringify(state.deptNotes));
       renderDepartments();
-      closeModal('dept-modal');
+      closeModal();
     }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('open');
+    /* VIDEO LIBRARY */
+    async function handleVideoUpload(e) {
+      const files = Array.from(e.target.files || []);
+      for (const f of files) {
+        const item = { id: 'vid_' + Date.now() + '_' + Math.random().toString(36).slice(2,6), name: f.name, blob: f };
+        await dbPut('videos', item);
+      }
+      state.videos = await dbGetAll('videos');
+      renderVideos();
+      if (state.videos.length && !document.getElementById('sidebar-video').src) playVideoAt(0);
     }
 
-    /* --- 6. CONCIERGE LEDGER --- */
-    function renderLedger() {
-      const tbody = document.getElementById('ledger-tbody');
-      tbody.innerHTML = state.ledger.map(item => `
-        <tr>
-          <td>${item.date}</td>
-          <td><strong>${item.category}</strong><br/><span style="color:var(--text-muted);">${item.detail}</span></td>
-          <td><span class="status-pill">${item.status}</span></td>
-          <td><button class="btn" style="padding:2px 6px; font-size:0.72rem;" onclick="removeLedger(${item.id})">✕</button></td>
-        </tr>
+    function renderVideos() {
+      const grid = document.getElementById('video-grid');
+      if (!state.videos.length) {
+        grid.innerHTML = `<p style="color:var(--text-muted); font-size:0.86rem;">No videos uploaded yet. Drop .mp4 reels above to populate your offline vault.</p>`;
+        return;
+      }
+      grid.innerHTML = state.videos.map((v, idx) => {
+        const url = URL.createObjectURL(v.blob);
+        const isIntro = state.introVideoId === v.id;
+        return `
+          <div class="media-card">
+            <video class="media-thumb" src="${url}" muted preload="metadata" onclick="playVideoAt(${idx})"></video>
+            <div class="media-body">
+              <div class="media-title">${v.name}</div>
+              <div class="media-meta">${(v.blob.size / (1024*1024)).toFixed(1)} MB ${isIntro ? '· ★ Launch Intro' : ''}</div>
+              <div class="media-actions">
+                <button class="btn-gold" onclick="playVideoAt(${idx})">▶ Play</button>
+                <button class="btn-outline" onclick="setAsIntro('${v.id}')">✨ Intro</button>
+                <button class="btn-outline" onclick="deleteVideo('${v.id}')">🗑</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function playVideoAt(idx) {
+      if (!state.videos.length) return;
+      state.currentVideoIdx = (idx + state.videos.length) % state.videos.length;
+      const v = state.videos[state.currentVideoIdx];
+      const player = document.getElementById('sidebar-video');
+      player.src = URL.createObjectURL(v.blob);
+      player.play().catch(() => {});
+      document.getElementById('cinema-label').textContent = v.name.slice(0, 18);
+      // Auto-duck lounge audio
+      const lounge = document.getElementById('lounge-audio');
+      if (!lounge.paused) lounge.volume = 0.15;
+    }
+
+    function prevVideo() { playVideoAt(state.currentVideoIdx - 1); }
+    function nextVideo() { playVideoAt(state.currentVideoIdx + 1); }
+
+    function setAsIntro(id) {
+      state.introVideoId = id;
+      localStorage.setItem('mmcc_intro_vid_v28', id);
+      renderVideos();
+    }
+
+    async function deleteVideo(id) {
+      await dbDelete('videos', id);
+      state.videos = await dbGetAll('videos');
+      renderVideos();
+    }
+
+    function openTheatre() {
+      const player = document.getElementById('sidebar-video');
+      if (!player.src) return;
+      document.getElementById('modal-content').innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+          <h3 style="color:var(--gold-light);">Sovereign Theatre Mode</h3>
+          <button class="btn-outline" onclick="closeModal()">✕ Close</button>
+        </div>
+        <video src="${player.src}" controls autoplay style="width:100%; border-radius:14px; border:1px solid var(--gold);"></video>
+      `;
+      document.getElementById('universal-modal').classList.add('open');
+    }
+
+    /* ART GALLERY */
+    async function handleArtUpload(e) {
+      const files = Array.from(e.target.files || []);
+      for (const f of files) {
+        const item = { id: 'art_' + Date.now() + '_' + Math.random().toString(36).slice(2,6), name: f.name.replace(/\.[^/.]+$/, ''), blob: f };
+        await dbPut('art', item);
+      }
+      state.art = await dbGetAll('art');
+      renderArt();
+    }
+
+    function updateGalleryFrame(val) {
+      state.galleryFrame = val;
+      localStorage.setItem('mmcc_gallery_frame_v28', val);
+      renderArt();
+    }
+
+    function renderArt() {
+      const grid = document.getElementById('art-grid');
+      if (!state.art.length) {
+        grid.innerHTML = `<p style="color:var(--text-muted); font-size:0.86rem;">Your private gallery is empty. Upload artworks or couture photography above.</p>`;
+        return;
+      }
+      grid.innerHTML = state.art.map((a, idx) => {
+        const url = URL.createObjectURL(a.blob);
+        return `
+          <div class="media-card">
+            <img class="media-thumb ${state.galleryFrame}" src="${url}" onclick="openArtLightbox(${idx})" />
+            <div class="media-body">
+              <div class="media-title">${a.name}</div>
+              <div class="media-actions">
+                <button class="btn-gold" onclick="openArtLightbox(${idx})">🔍 Inspect</button>
+                <button class="btn-outline" onclick="deleteArt('${a.id}')">🗑</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openArtLightbox(idx) {
+      const a = state.art[idx];
+      if (!a) return;
+      const url = URL.createObjectURL(a.blob);
+      document.getElementById('modal-content').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h3 style="color:var(--gold-light);">${a.name}</h3>
+          <button class="btn-outline" onclick="closeModal()">✕ Close</button>
+        </div>
+        <div style="text-align:center;">
+          <img src="${url}" class="${state.galleryFrame}" style="max-width:100%; max-height:68vh; border-radius:8px;" />
+        </div>
+      `;
+      document.getElementById('universal-modal').classList.add('open');
+    }
+
+    let exhibitionTimer;
+    function startExhibition() {
+      if (!state.art.length) return;
+      let idx = 0;
+      openArtLightbox(idx);
+      clearInterval(exhibitionTimer);
+      exhibitionTimer = setInterval(() => {
+        if (!document.getElementById('universal-modal').classList.contains('open')) {
+          clearInterval(exhibitionTimer);
+          return;
+        }
+        idx = (idx + 1) % state.art.length;
+        openArtLightbox(idx);
+      }, 4500);
+    }
+
+    async function deleteArt(id) {
+      await dbDelete('art', id);
+      state.art = await dbGetAll('art');
+      renderArt();
+    }
+
+    /* AMBIENT LOUNGE AUDIO */
+    let synthPlaying = false;
+    let synthCtx, synthOsc;
+    async function handleAudioUpload(e) {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      const item = { id: 'aud_' + Date.now(), name: f.name, blob: f };
+      await dbPut('audio', item);
+      state.audio = await dbGetAll('audio');
+      const aud = document.getElementById('lounge-audio');
+      aud.src = URL.createObjectURL(f);
+      aud.loop = true;
+      aud.play();
+      document.getElementById('lounge-track-name').textContent = f.name;
+      document.getElementById('lounge-status').textContent = 'Playing';
+    }
+
+    function toggleLounge() {
+      const aud = document.getElementById('lounge-audio');
+      if (aud.src) {
+        if (aud.paused) { aud.volume = 0.6; aud.play(); document.getElementById('lounge-status').textContent = 'Playing'; }
+        else { aud.pause(); document.getElementById('lounge-status').textContent = 'Paused'; }
+        return;
+      }
+      if (!synthPlaying) {
+        synthCtx = new (window.AudioContext || window.webkitAudioContext)();
+        synthOsc = synthCtx.createOscillator();
+        const gain = synthCtx.createGain();
+        synthOsc.type = 'triangle';
+        synthOsc.frequency.value = 130.81;
+        gain.gain.value = 0.03;
+        synthOsc.connect(gain); gain.connect(synthCtx.destination);
+        synthOsc.start();
+        synthPlaying = true;
+        document.getElementById('lounge-status').textContent = 'Synth Active';
+      } else {
+        synthOsc.stop();
+        synthPlaying = false;
+        document.getElementById('lounge-status').textContent = 'Standby';
+      }
+    }
+
+    /* VALET & HANGAR */
+    function addValetEntry() {
+      const type = document.getElementById('valet-type').value.trim();
+      const tag = document.getElementById('valet-tag').value.trim();
+      const bay = document.getElementById('valet-bay').value.trim();
+      if (!type) return;
+      state.valet.unshift({ id: Date.now(), type, tag: tag || 'VIP-TAG', bay: bay || 'Bay 01' });
+      localStorage.setItem('mmcc_valet_v28', JSON.stringify(state.valet));
+      document.getElementById('valet-type').value = '';
+      document.getElementById('valet-tag').value = '';
+      document.getElementById('valet-bay').value = '';
+      renderValet();
+    }
+
+    function renderValet() {
+      document.getElementById('valet-list').innerHTML = state.valet.map(v => `
+        <div class="dept-card">
+          <div class="dept-num">${v.bay}</div>
+          <div class="dept-name">${v.type}</div>
+          <div class="dept-desc">Registry: ${v.tag}</div>
+        </div>
       `).join('');
     }
 
-    function addLedgerEntry() {
-      const category = document.getElementById('ledger-category').value;
-      const detail = document.getElementById('ledger-detail').value.trim();
-      const date = document.getElementById('ledger-date').value || new Date().toISOString().slice(0, 10);
-      const status = document.getElementById('ledger-status').value;
-      if (!detail) return;
-      state.ledger.unshift({ id: Date.now(), date, category, detail, status });
-      document.getElementById('ledger-detail').value = '';
-      persistState();
-      renderLedger();
+    /* VIP PASS & PNG EXPORT */
+    function renderVipCard() {
+      document.getElementById('card-name-display').textContent = document.getElementById('vip-name').value || 'SOVEREIGN MEMBER';
+      document.getElementById('card-tier-display').textContent = document.getElementById('vip-tier').value;
+      document.getElementById('card-code-display').textContent = 'ID: ' + (document.getElementById('vip-code').value || 'MMCC-001');
+      document.getElementById('card-date-display').textContent = document.getElementById('vip-date').value || 'PERPETUAL';
     }
 
-    function removeLedger(id) {
-      state.ledger = state.ledger.filter(x => x.id !== id);
-      persistState();
-      renderLedger();
-    }
-
-    /* --- 7. 24K COA & VIP PASS GENERATORS --- */
-    function drawGoldFrame(ctx, w, h) {
-      const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, '#2c050c');
-      grad.addColorStop(1, '#140104');
+    function downloadVipPng() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 900; canvas.height = 540;
+      const ctx = canvas.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 900, 540);
+      grad.addColorStop(0, '#3c0713'); grad.addColorStop(0.6, '#180207'); grad.addColorStop(1, '#4d380a');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, w, h);
+      ctx.fillRect(0, 0, 900, 540);
+      ctx.strokeStyle = '#d4af37'; ctx.lineWidth = 8;
+      ctx.strokeRect(20, 20, 860, 500);
 
-      ctx.strokeStyle = '#d4af37';
-      ctx.lineWidth = 6;
-      ctx.strokeRect(16, 16, w - 32, h - 32);
+      ctx.fillStyle = '#d4af37'; ctx.font = 'bold 22px Georgia';
+      ctx.fillText('MEVUNAI MOMENT™ COUNTRY CLUB, INC ®', 56, 85);
+      ctx.fillStyle = '#f5df96'; ctx.font = 'bold 34px Georgia';
+      ctx.fillText(document.getElementById('vip-tier').value, 56, 175);
+      ctx.fillStyle = '#fdf7ec'; ctx.font = '28px Georgia';
+      ctx.fillText(document.getElementById('vip-name').value, 56, 240);
+      ctx.fillStyle = '#cbb994'; ctx.font = '22px monospace';
+      ctx.fillText('ID: ' + document.getElementById('vip-code').value, 56, 455);
+      ctx.fillText(document.getElementById('vip-date').value, 560, 455);
 
-      ctx.strokeStyle = '#f6e27a';
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(26, 26, w - 52, h - 52);
-    }
-
-    function renderCOA() {
-      const canvas = document.getElementById('coa-canvas');
-      const ctx = canvas.getContext('2d');
-      drawGoldFrame(ctx, canvas.width, canvas.height);
-
-      const type = document.getElementById('coa-type').value;
-      const title = document.getElementById('coa-title').value || 'Sovereign Registered Asset';
-      const serial = document.getElementById('coa-serial').value || 'SN-MMCC-24K-0001';
-      const owner = document.getElementById('coa-owner').value || 'Verified Sovereign Member';
-
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#d4af37';
-      ctx.font = 'bold 15px Georgia';
-      ctx.fillText('MMCC SOVEREIGN REGISTRY • 24K GOLD SEAL', 350, 68);
-
-      ctx.fillStyle = '#f6e27a';
-      ctx.font = 'bold 28px Georgia';
-      ctx.fillText('CERTIFICATE OF AUTHENTICITY', 350, 112);
-
-      ctx.fillStyle = '#cbbba0';
-      ctx.font = '14px Georgia';
-      ctx.fillText(`CLASSIFICATION: ${type}`, 350, 146);
-
-      ctx.fillStyle = '#fdf8eb';
-      ctx.font = 'bold 22px Georgia';
-      ctx.fillText(title, 350, 205);
-
-      ctx.fillStyle = '#d4af37';
-      ctx.font = '16px Georgia';
-      ctx.fillText(`Provenance / Registry ID: ${serial}`, 350, 245);
-      ctx.fillText(`Custodian: ${owner}`, 350, 278);
-
-      // Gold Stamp Circle
-      ctx.beginPath();
-      ctx.arc(350, 355, 38, 0, Math.PI * 2);
-      ctx.strokeStyle = '#f6e27a';
-      ctx.lineWidth = 2.5;
-      ctx.stroke();
-      ctx.font = 'bold 12px Georgia';
-      ctx.fillText('24K GOLD', 350, 352);
-      ctx.fillText('VERIFIED', 350, 368);
-    }
-
-    function renderPass() {
-      const canvas = document.getElementById('pass-canvas');
-      const ctx = canvas.getContext('2d');
-      drawGoldFrame(ctx, canvas.width, canvas.height);
-
-      const tier = document.getElementById('pass-tier').value;
-      const name = document.getElementById('pass-name').value || 'Honored Sovereign Guest';
-      const hub = document.getElementById('pass-hub').value;
-
-      ctx.textAlign = 'left';
-      ctx.fillStyle = '#d4af37';
-      ctx.font = 'bold 14px Georgia';
-      ctx.fillText('MMCC PRIVATE CLUB SANCTUM • OFFICIAL CREDENTIAL', 48, 68);
-
-      ctx.fillStyle = '#f6e27a';
-      ctx.font = 'bold 26px Georgia';
-      ctx.fillText(tier, 48, 112);
-
-      ctx.fillStyle = '#fdf8eb';
-      ctx.font = 'bold 22px Georgia';
-      ctx.fillText(name, 48, 175);
-
-      ctx.fillStyle = '#cbbba0';
-      ctx.font = '16px Georgia';
-      ctx.fillText(`Authorized Hub: ${hub}`, 48, 215);
-      ctx.fillText(`Issued: ${new Date().toLocaleDateString()} • Status: ACTIVE`, 48, 248);
-
-      ctx.strokeStyle = '#d4af37';
-      ctx.strokeRect(540, 120, 105, 105);
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#f6e27a';
-      ctx.font = 'bold 13px Georgia';
-      ctx.fillText('VIP ACCESS', 592, 168);
-      ctx.fillText('MMCC-29', 592, 188);
-    }
-
-    function downloadCanvas(canvasId, filename) {
-      const canvas = document.getElementById(canvasId);
       const link = document.createElement('a');
-      link.download = filename;
+      link.download = 'MMCC-Sovereign-Pass.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
 
-    /* --- 8. .MMCC BACKUP & RESTORE --- */
-    function exportBackup() {
-      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
+    /* VAULT BACKUP & RESTORE */
+    function exportVaultBackup() {
+      const payload = {
+        version: 'v28',
+        exportedAt: new Date().toISOString(),
+        valet: state.valet,
+        deptNotes: state.deptNotes,
+        introDuration: state.introDuration,
+        galleryFrame: state.galleryFrame
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
-      a.href = url;
-      a.download = `MMCC-Vault-Backup-${new Date().toISOString().slice(0, 10)}.mmcc`;
+      a.href = URL.createObjectURL(blob);
+      a.download = 'MMCC-Sovereign-Vault-v28.mmcc';
       a.click();
     }
 
-    function importBackup(e) {
-      const file = e.target.files[0];
-      if (!file) return;
+    function importVaultBackup(e) {
+      const f = e.target.files?.[0];
+      if (!f) return;
       const reader = new FileReader();
-      reader.onload = (ev) => {
+      reader.onload = () => {
         try {
-          const parsed = JSON.parse(ev.target.result);
-          state = { ...state, ...parsed };
-          persistState();
-          renderDepartments();
-          renderLedger();
-          applyCinemaLayout();
-          alert('Sovereign .mmcc Vault restored successfully.');
-        } catch (err) {
-          alert('Invalid .mmcc backup file.');
-        }
+          const data = JSON.parse(reader.result);
+          if (data.valet) { state.valet = data.valet; localStorage.setItem('mmcc_valet_v28', JSON.stringify(state.valet)); }
+          if (data.deptNotes) { state.deptNotes = data.deptNotes; localStorage.setItem('mmcc_dept_notes_v28', JSON.stringify(state.deptNotes)); }
+          renderDepartments(); renderValet();
+          alert('Sovereign Vault backup restored.');
+        } catch (err) { alert('Invalid backup file.'); }
       };
-      reader.readAsText(file);
+      reader.readAsText(f);
     }
 
-    /* --- INIT --- */
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    function closeModal() {
+      clearInterval(exhibitionTimer);
+      document.getElementById('universal-modal').classList.remove('open');
     }
 
-    renderHubs();
-    renderDepartments();
-    renderLedger();
-    applyCinemaLayout();
-    renderCOA();
-    renderPass();
-
-    if (state.requirePinOnLaunch) {
-      lockVault();
-    }
-    startSplashAnimation(5000);
+    /* BOOT */
+    window.addEventListener('DOMContentLoaded', async () => {
+      if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+      await initDB();
+      state.videos = await dbGetAll('videos');
+      state.art = await dbGetAll('art');
+      state.audio = await dbGetAll('audio');
+      document.getElementById('intro-duration-select').value = String(state.introDuration);
+      document.getElementById('gallery-frame-select').value = state.galleryFrame;
+      renderDepartments();
+      renderVideos();
+      renderArt();
+      renderValet();
+      renderVipCard();
+      startSplash();
+    });
   </script>
 </body>
 </html>
