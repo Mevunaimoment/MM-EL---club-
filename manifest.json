@@ -1,18 +1,15 @@
 {
-  "name": "24K Gold Pyramid & Crimson Silk Motion Intro",
-  "short_name": "24K Intro",
-  "description": "Animated Eye of Horus and 24K Gold Pyramid splash intro with floating gold particles, skip/replay triggers, and custom .mp4 intro override support.",
+  "name": "Mevunai Moment™ Country Club, Inc ®",
+  "short_name": "MM'EL Club",
   "start_url": "./index.html",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#140206",
-  "theme_color": "#1a0308",
+  "background_color": "#24040b",
+  "theme_color": "#3a0712",
   "icons": [
     {
-      "src": "icon-512.png",
+      "src": "master-icon.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
