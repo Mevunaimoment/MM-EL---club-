@@ -1,16 +1,9 @@
 {
-  "name": "Mevunai Moment™ Country Club, Inc ®",
-  "short_name": "MMCC Sovereign",
-  "start_url": "index.html",
+  "name": "Mevunai Moment™ Country Club v25",
+  "short_name": "MMCC v25",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1a0207",
-  "theme_color": "#2b040c",
-  "icons": [
-    {
-      "src": "master-icon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#140407",
+  "theme_color": "#140407",
+  "description": "Mevunai Moment™ Country Club (M'M™ countryclub.inc) 13-Department Sovereign Portal v25"
 }
