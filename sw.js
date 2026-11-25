@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mmcc-13-depts-valet-hangar-v27-network-first';
+const CACHE_NAME = 'mmcc-13-depts-valet-hangar-v24-network-first';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
