@@ -1,10 +1,16 @@
-const CACHE_NAME = 'mmcc-ra109-dining-cinema-v10';
-const ASSETS = ['./', './index.html', './manifest.json', './emblem.png'];
+const CACHE_NAME = 'mmcc-ra109-logo-padlock-v12';
+const CORE_ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './emblem.png',
+  './master-icon.png'
+];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).catch(() => {})
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS).catch(() => {}))
   );
 });
 
@@ -21,8 +27,10 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
         return res;
       })
       .catch(() => caches.match(event.request))
