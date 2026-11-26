@@ -1,23 +1,22 @@
 {
-  "id": "/?source=pwa",
-  "name": "Mevunai Moment™ Country Club — RA 109",
+  "id": "/?source=pwa-ra109-v13",
+  "name": "Mevunai Moment\u2122 Country Club, Inc. \u00ae \u2014 RA 109 Portal",
   "short_name": "MMCC RA 109",
-  "description": "Sovereign Member Portal, Dining Cinema, Events Stage & 4-Digit Vault Lock",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#24040b",
-  "theme_color": "#3d0814",
+  "background_color": "#260409",
+  "theme_color": "#3d0710",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "./emblem.png",
+      "src": "emblem.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./master-icon.png",
+      "src": "master-icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"

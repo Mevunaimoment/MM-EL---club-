@@ -1,1024 +1,900 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#3d0814" />
-  <title>Mevunai Moment™ Country Club — RA 109</title>
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/png" href="./emblem.png" />
-  <link rel="apple-touch-icon" href="./emblem.png" />
-  <style>
-    :root {
-      --bg-deep: #22030a;
-      --bg-card: #380713;
-      --bg-card-2: #4b0b1b;
-      --gold: #d4af37;
-      --gold-light: #f6dc84;
-      --gold-dim: rgba(212, 175, 55, 0.35);
-      --emerald: #10784a;
-      --emerald-bright: #19a868;
-      --text-main: #fff8e7;
-      --text-muted: #d7c39a;
-      --danger: #ff6b6b;
-    }
-    body.theme-emerald {
-      --bg-deep: #041d13;
-      --bg-card: #093121;
-      --bg-card-2: #0f442e;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body {
-      margin: 0;
-      font-family: 'Georgia', 'Times New Roman', serif;
-      background: radial-gradient(circle at top, var(--bg-card-2), var(--bg-deep) 75%);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding-bottom: 86px;
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mevunai Moment™ Country Club, Inc. ® — RA 109 Portal</title>
+<meta name="theme-color" content="#3d0710">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="emblem.png">
+<link rel="apple-touch-icon" href="emblem.png">
+<style>
+  :root {
+    --bg-deep: #240409;
+    --bg-mid: #470914;
+    --bg-card: rgba(34, 6, 11, 0.88);
+    --gold: #e8c36e;
+    --gold-bright: #ffe39b;
+    --gold-dim: rgba(232, 195, 110, 0.34);
+    --emerald: #10b981;
+    --text-main: #fdf8ee;
+    --text-muted: #d5c3a3;
+  }
+  body.theme-emerald {
+    --bg-deep: #041d15;
+    --bg-mid: #0a3b2c;
+    --bg-card: rgba(5, 31, 23, 0.88);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
+    background: radial-gradient(circle at 50% 12%, var(--bg-mid), var(--bg-deep) 78%);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 92px;
+    overflow-x: hidden;
+  }
+  .serif { font-family: Georgia, "Times New Roman", serif; }
 
-    /* Universal Logo Wrapper with Built-in SVG Fallback */
-    .crest-frame {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      border: 2px solid var(--gold);
-      box-shadow: 0 0 22px rgba(212, 175, 55, 0.35);
-      background: #2b040d;
-      overflow: hidden;
-    }
-    .crest-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+  /* 13-Second Sparkle Splash Intro */
+  #splashScreen {
+    position: fixed; inset: 0; z-index: 9999;
+    background: radial-gradient(circle at 50% 38%, #590c19 0%, #240409 74%, #120104 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px; text-align: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #splashScreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  #sparkleCanvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .splash-content { position: relative; z-index: 2; max-width: 400px; width: 100%; }
+  .splash-ring {
+    width: 196px; height: 196px; margin: 0 auto 18px; border-radius: 34px; padding: 5px;
+    background: linear-gradient(135deg, #ffe39b, #b6892e, #10b981, #ffe39b);
+    box-shadow: 0 0 42px rgba(232, 195, 110, 0.5), 0 0 80px rgba(16, 185, 129, 0.2);
+    animation: haloPulse 3.2s ease-in-out infinite;
+  }
+  @keyframes haloPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 36px rgba(232, 195, 110, 0.45); }
+    50% { transform: scale(1.035); box-shadow: 0 0 58px rgba(255, 227, 155, 0.72); }
+  }
+  .splash-logo { width: 100%; height: 100%; object-fit: cover; border-radius: 30px; display: block; background: #1e0307; }
+  #customIntroVideo {
+    width: 100%; max-height: 240px; border-radius: 18px; border: 2px solid var(--gold);
+    display: none; margin-bottom: 14px; background: #000;
+  }
+  .splash-kicker {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+  }
+  .splash-title {
+    font-size: 24px; font-weight: 700; color: var(--gold-bright); letter-spacing: 0.6px; margin-bottom: 4px;
+  }
+  .splash-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+  .progress-wrap {
+    width: 100%; height: 5px; background: rgba(255,255,255,0.12); border-radius: 99px; overflow: hidden; margin-bottom: 8px;
+  }
+  .progress-bar {
+    height: 100%; width: 0%; background: linear-gradient(90deg, #b6892e, #ffe39b, #10b981);
+    transition: width 0.1s linear;
+  }
+  .splash-timer { font-size: 11px; color: var(--gold); margin-bottom: 16px; letter-spacing: 1px; }
+  .splash-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
-    /* 18-Second Cinematic Splash Intro */
-    #splash-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: radial-gradient(circle at center, #4d0a1a 0%, #190207 85%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-    #splash-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .letterbox-top, .letterbox-bottom {
-      position: fixed;
-      left: 0; right: 0;
-      height: 44px;
-      background: #0a0103;
-      border-bottom: 1px solid var(--gold-dim);
-      z-index: 10000;
-    }
-    .letterbox-bottom {
-      top: auto; bottom: 0;
-      border-bottom: none;
-      border-top: 1px solid var(--gold-dim);
-    }
-    #sparkle-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-    .splash-crest {
-      width: 168px;
-      height: 168px;
-      border-width: 3px;
-      animation: slowZoom 18s ease-in-out forwards, goldPulse 2.8s infinite alternate;
-      z-index: 2;
-    }
-    @keyframes slowZoom {
-      0% { transform: scale(0.88); }
-      100% { transform: scale(1.08); }
-    }
-    @keyframes goldPulse {
-      from { box-shadow: 0 0 20px rgba(212,175,55,0.35), 0 0 40px rgba(16,120,74,0.2); }
-      to { box-shadow: 0 0 38px rgba(246,220,132,0.75), 0 0 65px rgba(25,168,104,0.45); }
-    }
-    .splash-title {
-      margin: 20px 0 6px;
-      font-size: 1.45rem;
-      letter-spacing: 2px;
-      color: var(--gold-light);
-      text-transform: uppercase;
-      z-index: 2;
-    }
-    .splash-sub {
-      font-size: 0.85rem;
-      letter-spacing: 3px;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-      z-index: 2;
-    }
-    .progress-wrap {
-      width: min(300px, 82vw);
-      height: 6px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 99px;
-      overflow: hidden;
-      border: 1px solid var(--gold-dim);
-      z-index: 2;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--emerald-bright), var(--gold-light));
-      transition: width 0.2s linear;
-    }
-    .splash-controls {
-      display: flex;
-      gap: 10px;
-      margin-top: 18px;
-      z-index: 2;
-    }
+  /* 4-Digit Sovereign Vault Padlock */
+  #padlockScreen {
+    position: fixed; inset: 0; z-index: 9500;
+    background: radial-gradient(circle at 50% 25%, #4d0a16 0%, #1d0307 82%);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px; text-align: center;
+  }
+  #padlockScreen.active { display: flex; }
+  .lock-logo {
+    width: 86px; height: 86px; border-radius: 22px; border: 2px solid var(--gold);
+    object-fit: cover; margin-bottom: 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+  }
+  .pin-dots { display: flex; gap: 14px; justify-content: center; margin: 16px 0 10px; }
+  .pin-dot {
+    width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold);
+    background: transparent; transition: all 0.2s ease;
+  }
+  .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 12px var(--gold); }
+  .pin-msg { font-size: 12px; color: var(--text-muted); min-height: 18px; margin-bottom: 14px; }
+  .keypad {
+    display: grid; grid-template-columns: repeat(3, 74px); gap: 12px; justify-content: center;
+  }
+  .key-btn {
+    height: 62px; border-radius: 16px; border: 1px solid var(--gold-dim);
+    background: rgba(255, 255, 255, 0.05); color: var(--gold-bright);
+    font-size: 22px; font-weight: 600; cursor: pointer; transition: transform 0.1s, background 0.2s;
+  }
+  .key-btn:active { transform: scale(0.94); background: rgba(232, 195, 110, 0.24); }
+  .key-btn.fn { font-size: 13px; letter-spacing: 1px; color: var(--text-muted); }
 
-    /* 4-Digit Sovereign Vault Padlock Overlay */
-    #padlock-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 9000;
-      background: radial-gradient(circle at top, #440816 0%, #180207 90%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-    }
-    #padlock-screen.unlocked {
-      display: none;
-    }
-    .padlock-card {
-      width: min(360px, 94vw);
-      background: rgba(45, 6, 15, 0.92);
-      border: 1.5px solid var(--gold);
-      border-radius: 22px;
-      padding: 22px 18px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.75);
-    }
-    .pin-dots {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      margin: 16px 0 10px;
-    }
-    .pin-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid var(--gold);
-      background: transparent;
-      transition: all 0.15s ease;
-    }
-    .pin-dot.filled {
-      background: var(--gold-light);
-      box-shadow: 0 0 12px var(--gold-light);
-      transform: scale(1.12);
-    }
-    .pin-msg {
-      min-height: 20px;
-      font-size: 0.84rem;
-      color: var(--gold-light);
-      margin-bottom: 12px;
-    }
-    .keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      max-width: 270px;
-      margin: 0 auto;
-    }
-    .key-btn {
-      height: 56px;
-      border-radius: 14px;
-      border: 1px solid var(--gold-dim);
-      background: linear-gradient(180deg, rgba(212,175,55,0.16), rgba(212,175,55,0.05));
-      color: var(--text-main);
-      font-size: 1.35rem;
-      font-weight: bold;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .key-btn:active {
-      background: var(--gold);
-      color: #24040b;
-      transform: scale(0.96);
-    }
-    .key-btn.action-key {
-      font-size: 0.9rem;
-      color: var(--gold-light);
-    }
+  /* Header & Main Layout */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(26, 4, 8, 0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-dim);
+    padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  body.theme-emerald header { background: rgba(4, 24, 18, 0.92); }
+  .brand-wrap { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .header-logo {
+    width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--gold);
+    object-fit: cover; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.45);
+  }
+  .brand-title { font-size: 14px; font-weight: 700; color: var(--gold-bright); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.8px; }
+  .header-btns { display: flex; gap: 6px; flex-shrink: 0; }
 
-    /* Header & Layout */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(34, 3, 10, 0.94);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--gold-dim);
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .brand-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .header-logo {
-      width: 44px;
-      height: 44px;
-      flex-shrink: 0;
-    }
-    .brand-text h1 {
-      margin: 0;
-      font-size: 0.96rem;
-      color: var(--gold-light);
-      letter-spacing: 0.8px;
-    }
-    .brand-text span {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      letter-spacing: 1px;
-    }
-    .top-actions {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    .pill-btn {
-      background: rgba(212, 175, 55, 0.14);
-      border: 1px solid var(--gold-dim);
-      color: var(--gold-light);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 0.74rem;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .pill-btn.emerald {
-      background: rgba(16, 120, 74, 0.35);
-      border-color: var(--emerald-bright);
-      color: #b7ffdc;
-    }
-    .pill-btn.gold-solid {
-      background: linear-gradient(135deg, var(--gold-light), var(--gold));
-      color: #24040b;
-      font-weight: bold;
-      border: none;
-    }
+  .btn-gold {
+    background: linear-gradient(135deg, #f3d27a, #b9892b); color: #1f0508;
+    border: none; border-radius: 10px; padding: 8px 13px; font-size: 12px; font-weight: 700;
+    cursor: pointer; letter-spacing: 0.4px;
+  }
+  .btn-outline {
+    background: rgba(232, 195, 110, 0.1); color: var(--gold-bright);
+    border: 1px solid var(--gold-dim); border-radius: 10px; padding: 7px 11px;
+    font-size: 11px; font-weight: 600; cursor: pointer;
+  }
 
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 14px;
-    }
-    .card {
-      background: linear-gradient(160deg, var(--bg-card), rgba(24, 2, 7, 0.95));
-      border: 1px solid var(--gold-dim);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.45);
-    }
-    .welcome-hero {
-      text-align: center;
-      border: 1.5px solid var(--gold);
-    }
-    .hero-logo {
-      width: 96px;
-      height: 96px;
-      margin: 4px auto 10px;
-    }
-    .status-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: rgba(16, 120, 74, 0.3);
-      border: 1px solid var(--emerald-bright);
-      color: #9effcf;
-      font-size: 0.72rem;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-    }
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .quick-tile {
-      background: rgba(212, 175, 55, 0.09);
-      border: 1px solid var(--gold-dim);
-      border-radius: 14px;
-      padding: 12px;
-      text-align: left;
-      color: var(--text-main);
-      cursor: pointer;
-    }
-    .quick-tile strong {
-      display: block;
-      color: var(--gold-light);
-      font-size: 0.88rem;
-      margin-bottom: 3px;
-    }
-    .quick-tile small {
-      color: var(--text-muted);
-      font-size: 0.74rem;
-    }
+  main { max-width: 680px; margin: 0 auto; padding: 16px; }
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    .tab-section { display: none; }
-    .tab-section.active { display: block; }
+  .card {
+    background: var(--bg-card); border: 1px solid var(--gold-dim);
+    border-radius: 18px; padding: 16px; margin-bottom: 14px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  }
+  .hero-welcome { text-align: center; padding: 20px 16px; }
+  .hero-crest {
+    width: 112px; height: 112px; border-radius: 26px; border: 2px solid var(--gold);
+    object-fit: cover; margin: 0 auto 12px; display: block;
+    box-shadow: 0 8px 28px rgba(232, 195, 110, 0.32);
+  }
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
+    border-radius: 99px; font-size: 11px; font-weight: 600;
+    background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.45);
+    color: #6ee7b7; margin-bottom: 10px;
+  }
+  .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
+  .quick-tile {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--gold-dim);
+    border-radius: 14px; padding: 12px; text-align: left; cursor: pointer; color: var(--text-main);
+  }
+  .quick-tile strong { display: block; color: var(--gold-bright); font-size: 13px; margin-bottom: 3px; }
+  .quick-tile span { font-size: 11px; color: var(--text-muted); }
 
-    /* Cinema Screen (Dining & Events) */
-    .cinema-box {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #0d0104;
-      border: 1.5px solid var(--gold);
-      border-radius: 14px;
-      overflow: hidden;
-      margin: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .cinema-box video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
-    .cinema-placeholder {
-      text-align: center;
-      padding: 16px;
-    }
-    .cinema-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
+  /* VIP Pass Card */
+  .vip-card {
+    background: linear-gradient(145deg, #4b0915, #210308);
+    border: 1.5px solid var(--gold); border-radius: 20px; padding: 18px;
+    position: relative; overflow: hidden; margin-bottom: 14px;
+  }
+  body.theme-emerald .vip-card { background: linear-gradient(145deg, #0b4432, #041d15); }
+  .vip-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .vip-crest {
+    width: 68px; height: 68px; border-radius: 16px; border: 1.5px solid var(--gold); object-fit: cover; flex-shrink: 0;
+  }
+  .row-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 0; border-bottom: 1px solid rgba(232, 195, 110, 0.16);
+  }
+  .row-item:last-child { border-bottom: none; padding-bottom: 0; }
 
-    .list-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.16);
-    }
-    .list-item:last-child { border-bottom: none; }
+  /* Video Screen (Dining & Events) */
+  .cinema-box {
+    border: 1.5px solid var(--gold); border-radius: 16px; overflow: hidden;
+    background: #0d0204; margin-bottom: 12px; position: relative;
+  }
+  .cinema-video {
+    width: 100%; aspect-ratio: 16 / 9; display: block; object-fit: cover; background: #000;
+    transform: translateZ(0);
+  }
+  .cinema-fallback {
+    width: 100%; aspect-ratio: 16 / 9; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 16px; text-align: center;
+    background: radial-gradient(circle at 50% 45%, #550b18, #1a0206);
+  }
+  .cinema-fallback img {
+    width: 82px; height: 82px; border-radius: 18px; border: 1.5px solid var(--gold); margin-bottom: 8px;
+  }
+  .controls-bar {
+    display: flex; flex-wrap: wrap; gap: 6px; padding: 10px;
+    background: rgba(20, 3, 6, 0.95); border-top: 1px solid var(--gold-dim);
+  }
+  .chip-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .media-chip {
+    background: rgba(232,195,110,0.12); border: 1px solid var(--gold-dim);
+    color: var(--text-main); border-radius: 99px; padding: 5px 11px; font-size: 11px;
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  }
+  .media-chip.active { background: var(--gold); color: #240409; font-weight: 700; }
 
-    /* Bottom Navigation */
-    nav.bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 200;
-      background: rgba(26, 2, 8, 0.97);
-      border-top: 1px solid var(--gold-dim);
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      padding: 6px 4px 10px;
-    }
-    .nav-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 0.7rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      cursor: pointer;
-    }
-    .nav-btn.active {
-      color: var(--gold-light);
-      font-weight: bold;
-    }
-    .nav-btn span.ico { font-size: 1.15rem; }
+  /* Bottom Nav */
+  nav.bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 60;
+    background: rgba(22, 3, 7, 0.96); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--gold-dim);
+    display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 4px 12px;
+  }
+  body.theme-emerald nav.bottom-nav { background: rgba(4, 22, 16, 0.96); }
+  .nav-btn {
+    background: none; border: none; color: var(--text-muted);
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    font-size: 10px; font-weight: 600; cursor: pointer;
+  }
+  .nav-btn.active { color: var(--gold-bright); }
+  .nav-btn span.ico { font-size: 17px; }
 
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--gold-dim);
-      background: rgba(0,0,0,0.35);
-      color: var(--text-main);
-      font-family: inherit;
-      margin-top: 6px;
-    }
-  </style>
+  #toast {
+    position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%);
+    background: #1b0307; border: 1px solid var(--gold); color: var(--gold-bright);
+    padding: 9px 16px; border-radius: 99px; font-size: 12px; z-index: 99999;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s; white-space: nowrap;
+  }
+  #toast.show { opacity: 1; }
+</style>
 </head>
 <body>
 
-  <!-- 18-SECOND CINEMATIC SPLASH INTRO -->
-  <div id="splash-screen">
-    <div class="letterbox-top"></div>
-    <canvas id="sparkle-canvas"></canvas>
-    <div class="crest-frame splash-crest">
-      <img class="app-logo-img" src="./emblem.png" alt="Mevunai Moment RA 109 Crest" />
+<!-- 13-Second Sparkle Splash Intro featuring the Uploaded Gold Pyramid MMEL Crest -->
+<div id="splashScreen">
+  <canvas id="sparkleCanvas"></canvas>
+  <div class="splash-content">
+    <div class="splash-ring" id="defaultIntroArt">
+      <img src="emblem.png" alt="Mevunai Moment Country Club MMEL" class="splash-logo app-logo-img">
     </div>
-    <h2 class="splash-title">Mevunai Moment™</h2>
-    <div class="splash-sub">COUNTRY CLUB, INC. ® • RA 109</div>
-    <div class="progress-wrap">
-      <div class="progress-bar" id="splash-bar"></div>
-    </div>
-    <div id="splash-timer" style="margin-top:8px;font-size:0.78rem;color:var(--gold-light);z-index:2;">18.0s</div>
-    <div class="splash-controls">
-      <button class="pill-btn emerald" onclick="playGoldChime()">🔊 Gold Chime</button>
-      <button class="pill-btn gold-solid" onclick="finishIntro()">Enter Club ↗</button>
-    </div>
-    <div class="letterbox-bottom"></div>
-  </div>
-
-  <!-- 4-DIGIT SOVEREIGN VAULT PADLOCK -->
-  <div id="padlock-screen">
-    <div class="padlock-card">
-      <div class="crest-frame" style="width:78px;height:78px;margin:0 auto 10px;">
-        <img class="app-logo-img" src="./emblem.png" alt="RA 109 Lock Crest" />
-      </div>
-      <div style="font-size:0.74rem;letter-spacing:2px;color:var(--emerald-bright);font-weight:bold;">SOVEREIGN VAULT LOCK</div>
-      <h3 style="margin:4px 0 2px;color:var(--gold-light);">Enter 4-Digit Passcode</h3>
-      <div style="font-size:0.75rem;color:var(--text-muted);">Default Founder PIN: <strong>1325</strong></div>
-
-      <div class="pin-dots" id="pin-dots">
-        <div class="pin-dot"></div>
-        <div class="pin-dot"></div>
-        <div class="pin-dot"></div>
-        <div class="pin-dot"></div>
-      </div>
-      <div class="pin-msg" id="pin-msg"></div>
-
-      <div class="keypad">
-        <button class="key-btn" onclick="pressDigit('1')">1</button>
-        <button class="key-btn" onclick="pressDigit('2')">2</button>
-        <button class="key-btn" onclick="pressDigit('3')">3</button>
-        <button class="key-btn" onclick="pressDigit('4')">4</button>
-        <button class="key-btn" onclick="pressDigit('5')">5</button>
-        <button class="key-btn" onclick="pressDigit('6')">6</button>
-        <button class="key-btn" onclick="pressDigit('7')">7</button>
-        <button class="key-btn" onclick="pressDigit('8')">8</button>
-        <button class="key-btn" onclick="pressDigit('9')">9</button>
-        <button class="key-btn action-key" onclick="clearPin()">CLEAR</button>
-        <button class="key-btn" onclick="pressDigit('0')">0</button>
-        <button class="key-btn action-key" onclick="backspacePin()">⌫</button>
-      </div>
+    <video id="customIntroVideo" playsinline muted loop></video>
+    <div class="splash-kicker">SOVEREIGN MEMBER PORTAL • RA 109</div>
+    <div class="splash-title serif">Mevunai Moment™</div>
+    <div class="splash-sub">Country Club, Inc. ® • MMEL Private Sanctuary</div>
+    <div class="progress-wrap"><div class="progress-bar" id="splashProgress"></div></div>
+    <div class="splash-timer" id="splashTimerText">ENTERING SANCTUARY IN 13.0s</div>
+    <div class="splash-actions">
+      <button class="btn-outline" onclick="playGoldChime()">🔊 Gold Chime</button>
+      <label class="btn-outline" style="cursor:pointer;">
+        🎬 Custom Video
+        <input type="file" accept="video/*" style="display:none" onchange="uploadCustomIntro(event)">
+      </label>
+      <button class="btn-gold" onclick="finishIntro()">Enter Club ↗</button>
     </div>
   </div>
+</div>
 
-  <!-- TOP HEADER -->
-  <header>
-    <div class="brand-row">
-      <div class="crest-frame header-logo">
-        <img class="app-logo-img" src="./emblem.png" alt="RA 109 Emblem" />
+<!-- 4-Digit Sovereign Vault Padlock -->
+<div id="padlockScreen">
+  <img src="emblem.png" alt="MMEL Crest" class="lock-logo app-logo-img">
+  <div class="splash-kicker">PRIVATE ACCESS LOCK</div>
+  <h2 class="serif" style="color:var(--gold-bright);font-size:20px;">Sovereign Vault Padlock</h2>
+  <div class="pin-dots" id="pinDots">
+    <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+  </div>
+  <div class="pin-msg" id="pinMessage">Enter 4-Digit Member PIN (Default: 1325)</div>
+  <div class="keypad">
+    <button class="key-btn" onclick="pressPin('1')">1</button>
+    <button class="key-btn" onclick="pressPin('2')">2</button>
+    <button class="key-btn" onclick="pressPin('3')">3</button>
+    <button class="key-btn" onclick="pressPin('4')">4</button>
+    <button class="key-btn" onclick="pressPin('5')">5</button>
+    <button class="key-btn" onclick="pressPin('6')">6</button>
+    <button class="key-btn" onclick="pressPin('7')">7</button>
+    <button class="key-btn" onclick="pressPin('8')">8</button>
+    <button class="key-btn" onclick="pressPin('9')">9</button>
+    <button class="key-btn fn" onclick="clearPin()">CLEAR</button>
+    <button class="key-btn" onclick="pressPin('0')">0</button>
+    <button class="key-btn fn" onclick="backspacePin()">⌫</button>
+  </div>
+</div>
+
+<!-- Main Sticky Header -->
+<header>
+  <div class="brand-wrap">
+    <img src="emblem.png" alt="MMEL Logo" class="header-logo app-logo-img">
+    <div style="min-width:0;">
+      <div class="brand-title serif">Mevunai Moment™ Country Club</div>
+      <div class="brand-sub">MMEL • RA 109 SOVEREIGN PORTAL</div>
+    </div>
+  </div>
+  <div class="header-btns">
+    <button class="btn-outline" onclick="replayIntro()" title="Replay Intro">▶ Intro</button>
+    <button class="btn-outline" onclick="toggleTheme()" title="Switch Silk/Emerald">🎨</button>
+    <button class="btn-outline" onclick="lockVault()" title="Lock Padlock">🔒</button>
+  </div>
+</header>
+
+<main>
+  <!-- HOME / WELCOME LOUNGE -->
+  <section id="sec-home" class="section active">
+    <div class="card hero-welcome">
+      <div class="status-pill">● CRIMSON SILK LOUNGE & GROUNDS OPEN</div>
+      <img src="emblem.png" alt="Mevunai Moment Country Club MMEL" class="hero-crest app-logo-img">
+      <h1 class="serif" id="welcomeHeading" style="font-size:22px;color:var(--gold-bright);margin-bottom:6px;">
+        Welcome, Founder RA 109
+      </h1>
+      <p style="font-size:13px;color:var(--text-muted);line-height:1.5;margin-bottom:14px;">
+        Mevunai Moment™ Country Club, Inc. ® — Your private sanctuary for championship grounds, crimson silk dining, and sovereign gatherings.
+      </p>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-gold" onclick="playGoldChime()">✨ Play Welcome Chime</button>
+        <label class="btn-outline" style="cursor:pointer;">
+          📷 Swap Main Logo
+          <input type="file" accept="image/*" style="display:none" onchange="swapMainLogo(event)">
+        </label>
       </div>
-      <div class="brand-text">
-        <h1>Mevunai Moment™</h1>
-        <span>COUNTRY CLUB • RA 109</span>
+      <div class="quick-grid">
+        <div class="quick-tile" onclick="switchTab('pass')">
+          <strong>👑 Sovereign VIP Pass</strong>
+          <span>ID: MMCC-RA109-001 • Active</span>
+        </div>
+        <div class="quick-tile" onclick="switchTab('dining')">
+          <strong>🍷 Crimson Silk Dining</strong>
+          <span>Loop Cinema & Table Service</span>
+        </div>
+        <div class="quick-tile" onclick="switchTab('book')">
+          <strong>⛳ Grounds & Courts</strong>
+          <span>Golf, Clay Tennis & Padel</span>
+        </div>
+        <div class="quick-tile" onclick="switchTab('events')">
+          <strong>📺 Gala & Events</strong>
+          <span>Offline Video Vault & RSVPs</span>
+        </div>
       </div>
     </div>
-    <div class="top-actions">
-      <button class="pill-btn" onclick="replayIntro()">▶ Intro</button>
-      <button class="pill-btn emerald" onclick="toggleTheme()">✦ Silk/Emerald</button>
-      <button class="pill-btn gold-solid" onclick="lockVault()">🔒 Lock</button>
+  </section>
+
+  <!-- PASS & PADLOCK SETTINGS -->
+  <section id="sec-pass" class="section">
+    <div class="vip-card">
+      <div class="vip-top">
+        <img src="emblem.png" alt="MMEL Crest" class="vip-crest app-logo-img">
+        <div>
+          <div style="font-size:10px;letter-spacing:2px;color:var(--gold);">FOUNDING SOVEREIGN MEMBER</div>
+          <div class="serif" style="font-size:19px;font-weight:700;color:var(--gold-bright);">Founder RA 109</div>
+          <div style="font-size:11px;color:var(--text-muted);">ID: MMCC-RA109-001 • ALL-ACCESS</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;border-top:1px solid var(--gold-dim);padding-top:10px;">
+        <span>Mevunai Moment™ Country Club, Inc. ®</span>
+        <span style="color:#6ee7b7;font-weight:700;">● ACTIVE 2027</span>
+      </div>
     </div>
-  </header>
 
-  <main>
-    <!-- TAB 1: WELCOME LOUNGE -->
-    <section id="tab-home" class="tab-section active">
-      <div class="card welcome-hero">
-        <div class="status-badge">● CRIMSON SILK LOUNGE & GROUNDS OPEN</div>
-        <div class="crest-frame hero-logo">
-          <img class="app-logo-img" src="./emblem.png" alt="Founder Crest" />
-        </div>
-        <h2 id="greeting-text" style="margin:4px 0;color:var(--gold-light);">Welcome, Founder RA 109</h2>
-        <p style="margin:4px 0 12px;font-size:0.84rem;color:var(--text-muted);">
-          Mevunai Moment™ Country Club, Inc. ® • Private Member Sanctuary
-        </p>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-          <button class="pill-btn emerald" onclick="playGoldChime()">✨ Welcome Chime</button>
-          <label class="pill-btn" style="cursor:pointer;">
-            📷 Swap App Logo
-            <input type="file" accept="image/*" style="display:none;" onchange="handleLogoUpload(event)" />
-          </label>
-          <button class="pill-btn" onclick="resetCustomLogo()">↺ Reset Crest</button>
-        </div>
+    <div class="card">
+      <h3 class="serif" style="color:var(--gold-bright);font-size:16px;margin-bottom:8px;">🔐 4-Digit Vault Padlock Security</h3>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">
+        Protect your portal with a 4-digit PIN on launch or whenever you tap 🔒 in the header.
+      </p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <input type="password" id="newPinInput" maxlength="4" inputmode="numeric" placeholder="New 4-digit PIN"
+          style="background:rgba(0,0,0,0.4);border:1px solid var(--gold-dim);color:var(--gold-bright);padding:8px 12px;border-radius:10px;width:140px;font-size:14px;letter-spacing:4px;">
+        <button class="btn-gold" onclick="saveNewPin()">Save PIN</button>
+        <button class="btn-outline" id="toggleLockStartupBtn" onclick="toggleStartupLock()">Launch Lock: ON</button>
+      </div>
+    </div>
 
-        <div class="quick-grid">
-          <div class="quick-tile" onclick="switchTab('pass')">
-            <strong>👑 Sovereign Pass</strong>
-            <small>ID: MMCC-RA109-001 & PIN</small>
-          </div>
-          <div class="quick-tile" onclick="switchTab('dining')">
-            <strong>🍷 Dining Cinema</strong>
-            <small>Loop Culinary Videos & Menu</small>
-          </div>
-          <div class="quick-tile" onclick="switchTab('book')">
-            <strong>⛳ Grounds & Courts</strong>
-            <small>Golf, Tennis & Emerald Padel</small>
-          </div>
-          <div class="quick-tile" onclick="switchTab('events')">
-            <strong>📺 Gala Stage</strong>
-            <small>Exclusive Gatherings & Reels</small>
-          </div>
+    <div class="card">
+      <h3 class="serif" style="color:var(--gold-bright);font-size:16px;margin-bottom:6px;">🏛️ Sovereign Privileges</h3>
+      <div class="row-item">
+        <div><strong>Emerald Sanctuary Spa</strong><div style="font-size:11px;color:var(--text-muted);">Thermal suite & private massage</div></div>
+        <button class="btn-gold" onclick="showToast('Checked in at Emerald Sanctuary Spa')">Check In</button>
+      </div>
+      <div class="row-item">
+        <div><strong>RA 109 Private Lounge</strong><div style="font-size:11px;color:var(--text-muted);">Dedicated sommelier & concierge</div></div>
+        <button class="btn-outline" onclick="showToast('Concierge notified for RA 109 Lounge')">Notify</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK GROUNDS -->
+  <section id="sec-book" class="section">
+    <div class="card">
+      <h3 class="serif" style="color:var(--gold-bright);font-size:17px;margin-bottom:10px;">⛳ Book Tee Time or Court</h3>
+      <div class="row-item">
+        <div><strong>Championship Golf — 18 Holes</strong><div style="font-size:11px;color:var(--text-muted);">08:30 AM • Private Caddie Included</div></div>
+        <button class="btn-gold" onclick="showToast('Reserved: Championship Golf 08:30 AM')">Reserve</button>
+      </div>
+      <div class="row-item">
+        <div><strong>Royal Clay Tennis — Court 1</strong><div style="font-size:11px;color:var(--text-muted);">11:00 AM • Stadium Centre Court</div></div>
+        <button class="btn-gold" onclick="showToast('Reserved: Royal Clay Tennis 11:00 AM')">Reserve</button>
+      </div>
+      <div class="row-item">
+        <div><strong>Emerald Padel Pavilion</strong><div style="font-size:11px;color:var(--text-muted);">04:30 PM • Glass Court VIP</div></div>
+        <button class="btn-gold" onclick="showToast('Reserved: Emerald Padel 04:30 PM')">Reserve</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DINING + VIDEO LOOP SCREEN -->
+  <section id="sec-dining" class="section">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
+        <h3 class="serif" style="color:var(--gold-bright);font-size:16px;">🎬 Crimson Silk Dining Cinema</h3>
+        <label class="btn-gold" style="cursor:pointer;">
+          ＋ Add Video
+          <input type="file" accept="video/*" multiple style="display:none" onchange="addMediaFiles(event, 'dining')">
+        </label>
+      </div>
+      <div class="cinema-box">
+        <video id="diningVideo" class="cinema-video" playsinline loop muted style="display:none;"></video>
+        <div id="diningFallback" class="cinema-fallback">
+          <img src="emblem.png" alt="MMEL Crest" class="app-logo-img">
+          <div class="serif" style="color:var(--gold-bright);font-size:14px;">The Crimson Silk Dining Room</div>
+          <div style="font-size:11px;color:var(--text-muted);">Tap "+ Add Video" to loop culinary & lounge videos offline</div>
+        </div>
+        <div class="controls-bar">
+          <button class="btn-outline" onclick="togglePlay('dining')">⏯ Play/Pause</button>
+          <button class="btn-outline" id="diningLoopBtn" onclick="toggleLoop('dining')">🔁 Loop: ON</button>
+          <button class="btn-outline" id="diningMuteBtn" onclick="toggleMute('dining')">🔇 Muted</button>
+          <button class="btn-outline" onclick="nextMedia('dining')">⏭ Next</button>
         </div>
       </div>
+      <div class="chip-list" id="diningPlaylist"></div>
+    </div>
 
-      <div class="card">
-        <div style="font-size:0.75rem;letter-spacing:1.5px;color:var(--gold);margin-bottom:6px;">ESTATE DISPATCH</div>
-        <div id="dispatch-text" style="font-size:0.9rem;color:var(--text-main);">
-          ✦ Tonight in the Crimson Silk Dining Room: Gold-Leaf Wagyu & Live Harp Accompaniment.
+    <div class="card">
+      <h3 class="serif" style="color:var(--gold-bright);font-size:16px;margin-bottom:6px;">🍷 Private Table Menu</h3>
+      <div class="row-item">
+        <div><strong>Gold-Leaf Wagyu Ribeye</strong><div style="font-size:11px;color:var(--text-muted);">24K edible gold, black truffle jus • $95</div></div>
+        <button class="btn-gold" onclick="showToast('Ordered: Gold-Leaf Wagyu Ribeye')">Order</button>
+      </div>
+      <div class="row-item">
+        <div><strong>Emerald Reserve Martini</strong><div style="font-size:11px;color:var(--text-muted);">Botanical gin, chartreuse mist • $24</div></div>
+        <button class="btn-gold" onclick="showToast('Ordered: Emerald Reserve Martini')">Order</button>
+      </div>
+      <div class="row-item">
+        <div><strong>Saffron & Pistachio Baklava</strong><div style="font-size:11px;color:var(--text-muted);">Damask rose honey glaze • $19</div></div>
+        <button class="btn-gold" onclick="showToast('Ordered: Saffron & Pistachio Baklava')">Order</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS + OFFLINE VIDEO VAULT -->
+  <section id="sec-events" class="section">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
+        <h3 class="serif" style="color:var(--gold-bright);font-size:16px;">📺 Gala Stage & Offline Vault</h3>
+        <label class="btn-gold" style="cursor:pointer;">
+          ＋ Save Videos
+          <input type="file" accept="video/*" multiple style="display:none" onchange="addMediaFiles(event, 'events')">
+        </label>
+      </div>
+      <div class="cinema-box">
+        <video id="eventsVideo" class="cinema-video" playsinline loop muted style="display:none;"></video>
+        <div id="eventsFallback" class="cinema-fallback">
+          <img src="emblem.png" alt="MMEL Crest" class="app-logo-img">
+          <div class="serif" style="color:var(--gold-bright);font-size:14px;">RA 109 Sovereign Gala Broadcast</div>
+          <div style="font-size:11px;color:var(--text-muted);">Upload & store event reels offline in your permanent vault</div>
+        </div>
+        <div class="controls-bar">
+          <button class="btn-outline" onclick="togglePlay('events')">⏯ Play/Pause</button>
+          <button class="btn-outline" id="eventsLoopBtn" onclick="toggleLoop('events')">🔁 Loop: ON</button>
+          <button class="btn-outline" id="eventsMuteBtn" onclick="toggleMute('events')">🔇 Muted</button>
+          <button class="btn-outline" onclick="nextMedia('events')">⏭ Next</button>
         </div>
       </div>
-    </section>
+      <div class="chip-list" id="eventsPlaylist"></div>
+    </div>
 
-    <!-- TAB 2: PASS & 4-DIGIT PADLOCK SETTINGS -->
-    <section id="tab-pass" class="tab-section">
-      <div class="card" style="text-align:center;border:1.5px solid var(--gold);">
-        <div class="crest-frame" style="width:84px;height:84px;margin:0 auto 10px;">
-          <img class="app-logo-img" src="./emblem.png" alt="VIP Pass Crest" />
-        </div>
-        <div style="font-size:0.75rem;letter-spacing:2px;color:var(--emerald-bright);font-weight:bold;">● ACTIVE ALL-ACCESS</div>
-        <h2 style="margin:4px 0;color:var(--gold-light);">Founding Sovereign Member</h2>
-        <div style="font-size:0.84rem;color:var(--text-muted);">ID: MMCC-RA109-001 • Valid Through 2027</div>
-        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;">
-          <button class="pill-btn emerald" onclick="toast('Checked in at Emerald Sanctuary Spa')">✓ Spa Check-In</button>
-          <button class="pill-btn gold-solid" onclick="toast('RA 109 Private Lounge Notified')">✦ Notify Lounge</button>
-        </div>
+    <div class="card">
+      <h3 class="serif" style="color:var(--gold-bright);font-size:16px;margin-bottom:6px;">🥂 Exclusive Gatherings</h3>
+      <div class="row-item">
+        <div><strong>RA 109 Annual Sovereign Gala</strong><div style="font-size:11px;color:var(--text-muted);">Dec 18 • Grand Crimson Ballroom</div></div>
+        <button class="btn-gold" onclick="showToast('RSVP Confirmed: RA 109 Annual Gala')">RSVP</button>
       </div>
-
-      <div class="card">
-        <h3 style="margin:0 0 6px;color:var(--gold-light);">🔐 4-Digit Sovereign Padlock Settings</h3>
-        <p style="margin:0 0 10px;font-size:0.82rem;color:var(--text-muted);">
-          Set your personal 4-digit passcode and control automatic locking.
-        </p>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <input type="password" id="new-pin-input" maxlength="4" inputmode="numeric" placeholder="Enter new 4-digit PIN" />
-          <button class="pill-btn gold-solid" style="padding:10px 14px;white-space:nowrap;" onclick="saveNewPin()">Save PIN</button>
-        </div>
-        <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:0.84rem;">Require 4-Digit PIN on App Launch</span>
-          <button class="pill-btn emerald" id="lock-toggle-btn" onclick="toggleAutoLock()">ON</button>
-        </div>
+      <div class="row-item">
+        <div><strong>Midnight Emerald Cigar & Jazz</strong><div style="font-size:11px;color:var(--text-muted);">Dec 24 • Sky Terrace Conservatory</div></div>
+        <button class="btn-gold" onclick="showToast('RSVP Confirmed: Midnight Cigar & Jazz')">RSVP</button>
       </div>
-    </section>
+    </div>
+  </section>
+</main>
 
-    <!-- TAB 3: DINING WITH LOOPING VIDEO SCREEN -->
-    <section id="tab-dining" class="tab-section">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
-          <div>
-            <h3 style="margin:0;color:var(--gold-light);">🍷 Crimson Silk Dining Cinema</h3>
-            <small style="color:var(--text-muted);">Loop culinary & lounge ambiance videos offline</small>
-          </div>
-          <label class="pill-btn gold-solid" style="cursor:pointer;">
-            ＋ Add Dining Video
-            <input type="file" accept="video/*" multiple style="display:none;" onchange="handleDiningVideoUpload(event)" />
-          </label>
-        </div>
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="switchTab('home')"><span class="ico">🏛️</span><span>LOUNGE</span></button>
+  <button class="nav-btn" id="nav-pass" onclick="switchTab('pass')"><span class="ico">👑</span><span>PASS</span></button>
+  <button class="nav-btn" id="nav-book" onclick="switchTab('book')"><span class="ico">⛳</span><span>BOOK</span></button>
+  <button class="nav-btn" id="nav-dining" onclick="switchTab('dining')"><span class="ico">🍷</span><span>DINING</span></button>
+  <button class="nav-btn" id="nav-events" onclick="switchTab('events')"><span class="ico">📺</span><span>EVENTS</span></button>
+</nav>
 
-        <div class="cinema-box">
-          <video id="dining-video" playsinline loop muted></video>
-          <div id="dining-placeholder" class="cinema-placeholder">
-            <div class="crest-frame" style="width:68px;height:68px;margin:0 auto 8px;">
-              <img class="app-logo-img" src="./emblem.png" alt="Dining Crest" />
-            </div>
-            <div style="color:var(--gold-light);font-size:0.9rem;">Crimson Silk Dining Stage</div>
-            <small style="color:var(--text-muted);">Tap "+ Add Dining Video" to loop MP4/MOV clips</small>
-          </div>
-        </div>
+<div id="toast"></div>
 
-        <div class="cinema-controls">
-          <button class="pill-btn" onclick="toggleDiningPlay()">⏯ Play/Pause</button>
-          <button class="pill-btn emerald" id="dining-loop-btn" onclick="toggleDiningLoop()">🔁 Loop: ON</button>
-          <button class="pill-btn" id="dining-mute-btn" onclick="toggleDiningMute()">🔇 Muted</button>
-          <button class="pill-btn" onclick="nextDiningVideo()">⏭ Next Clip</button>
-        </div>
-        <div id="dining-playlist" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;"></div>
-      </div>
+<script>
+  // Request Persistent Storage Lock
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().catch(() => {});
+  }
 
-      <div class="card">
-        <h3 style="margin:0 0 8px;color:var(--gold-light);">Private Dining Menu</h3>
-        <div class="list-item">
-          <div><strong>Gold-Leaf Wagyu Ribeye</strong><br><small style="color:var(--text-muted);">24K edible gold leaf, black truffle jus • $95</small></div>
-          <button class="pill-btn gold-solid" onclick="toast('Ordered: Gold-Leaf Wagyu Ribeye')">Order</button>
-        </div>
-        <div class="list-item">
-          <div><strong>Emerald Reserve Martini</strong><br><small style="color:var(--text-muted);">Botanical gin, chartreuse mist, gold olive • $24</small></div>
-          <button class="pill-btn gold-solid" onclick="toast('Ordered: Emerald Reserve Martini')">Order</button>
-        </div>
-        <div class="list-item">
-          <div><strong>Saffron & Pistachio Baklava</strong><br><small style="color:var(--text-muted);">Wildflower honey, crushed Iranian pistachio • $19</small></div>
-          <button class="pill-btn gold-solid" onclick="toast('Ordered: Saffron & Pistachio Baklava')">Order</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 4: BOOK GROUNDS -->
-    <section id="tab-book" class="tab-section">
-      <div class="card">
-        <h3 style="margin:0 0 8px;color:var(--gold-light);">⛳ Reserve Tee Time or Court</h3>
-        <div class="list-item">
-          <div><strong>Championship Golf — 18 Holes</strong><br><small style="color:var(--text-muted);">Private Caddie & Sovereign Cart Included</small></div>
-          <button class="pill-btn gold-solid" onclick="toast('Reserved: Championship Golf 18 Holes')">Reserve</button>
-        </div>
-        <div class="list-item">
-          <div><strong>Royal Clay Tennis — Court 1</strong><br><small style="color:var(--text-muted);">Floodlit Evening Championship Court</small></div>
-          <button class="pill-btn gold-solid" onclick="toast('Reserved: Royal Clay Tennis Court 1')">Reserve</button>
-        </div>
-        <div class="list-item">
-          <div><strong>Emerald Padel Pavilion</strong><br><small style="color:var(--text-muted);">Glass-Walled Panorama Suite</small></div>
-          <button class="pill-btn gold-solid" onclick="toast('Reserved: Emerald Padel Pavilion')">Reserve</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 5: EVENTS -->
-    <section id="tab-events" class="tab-section">
-      <div class="card">
-        <h3 style="margin:0 0 8px;color:var(--gold-light);">📺 Exclusive Gatherings</h3>
-        <div class="list-item">
-          <div><strong>RA 109 Annual Sovereign Gala</strong><br><small style="color:var(--text-muted);">Dec 18 • Grand Crimson Ballroom • Black Tie</small></div>
-          <button class="pill-btn emerald" onclick="toast('RSVP Confirmed: RA 109 Annual Gala')">RSVP</button>
-        </div>
-        <div class="list-item">
-          <div><strong>Midnight Emerald Cigar & Jazz</strong><br><small style="color:var(--text-muted);">Dec 24 • Rooftop Terrace & Humidor Lounge</small></div>
-          <button class="pill-btn emerald" onclick="toast('RSVP Confirmed: Midnight Cigar & Jazz')">RSVP</button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="toast-box" style="position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#160206;border:1px solid var(--gold);color:var(--gold-light);padding:8px 16px;border-radius:999px;font-size:0.8rem;z-index:500;display:none;"></div>
-
-  <nav class="bottom-nav">
-    <button class="nav-btn active" data-tab="home" onclick="switchTab('home')"><span class="ico">🏛️</span><span>LOUNGE</span></button>
-    <button class="nav-btn" data-tab="pass" onclick="switchTab('pass')"><span class="ico">👑</span><span>PASS</span></button>
-    <button class="nav-btn" data-tab="dining" onclick="switchTab('dining')"><span class="ico">🍷</span><span>DINING</span></button>
-    <button class="nav-btn" data-tab="book" onclick="switchTab('book')"><span class="ico">⛳</span><span>BOOK</span></button>
-    <button class="nav-btn" data-tab="events" onclick="switchTab('events')"><span class="ico">📺</span><span>EVENTS</span></button>
-  </nav>
-
-  <script>
-    // Built-in SVG data URI fallback so logo NEVER breaks even if PNG is missing
-    const FALLBACK_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
-      '<circle cx="100" cy="100" r="96" fill="#2b040d" stroke="#d4af37" stroke-width="6"/>' +
-      '<polygon points="75,56 68,36 86,46 100,28 114,46 132,36 125,56" fill="#f6dc84"/>' +
-      '<polygon points="100,64 46,150 154,150" fill="#d4af37" stroke="#fff3c4" stroke-width="2"/>' +
-      '<rect x="64" y="116" width="72" height="24" rx="6" fill="#22030a" stroke="#d4af37" stroke-width="2"/>' +
-      '<text x="100" y="133" font-family="Georgia,serif" font-size="15" font-weight="bold" fill="#f6dc84" text-anchor="middle">RA 109</text>' +
-      '</svg>'
-    );
-
-    function applyLogoSource(src) {
-      document.querySelectorAll('.app-logo-img').forEach(img => {
-        img.onerror = () => { img.src = FALLBACK_SVG; };
-        img.src = src;
-      });
-    }
-
-    function initLogos() {
-      const saved = localStorage.getItem('mmcc_custom_logo');
-      applyLogoSource(saved || './emblem.png');
-    }
-
-    function handleLogoUpload(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        localStorage.setItem('mmcc_custom_logo', reader.result);
-        applyLogoSource(reader.result);
-        toast('Custom App Logo Saved Across All Screens');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function resetCustomLogo() {
-      localStorage.removeItem('mmcc_custom_logo');
-      applyLogoSource('./emblem.png');
-      toast('Restored Official RA 109 Crest');
-    }
-
-    // Greeting & Theme
-    function updateGreeting() {
-      const hr = new Date().getHours();
-      const period = hr < 12 ? 'Good Morning' : hr < 18 ? 'Good Afternoon' : 'Good Evening';
-      document.getElementById('greeting-text').textContent = period + ', Founder RA 109';
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle('theme-emerald');
-      toast(document.body.classList.contains('theme-emerald') ? 'Emerald Velvet Theme' : 'Royal Crimson Silk Theme');
-    }
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('tab-' + tabId).classList.add('active');
-      document.querySelector('.nav-btn[data-tab="' + tabId + '"]').classList.add('active');
-    }
-
-    function toast(msg) {
-      const box = document.getElementById('toast-box');
-      box.textContent = msg;
-      box.style.display = 'block';
-      clearTimeout(window._toastT);
-      window._toastT = setTimeout(() => { box.style.display = 'none'; }, 2600);
-    }
-
-    // 18-Second Sparkle Intro
-    let splashInterval = null;
-    function startIntro() {
-      const splash = document.getElementById('splash-screen');
-      const bar = document.getElementById('splash-bar');
-      const timerTxt = document.getElementById('splash-timer');
-      splash.classList.remove('hidden');
-      let elapsed = 0;
-      const total = 18000;
-      clearInterval(splashInterval);
-      splashInterval = setInterval(() => {
-        elapsed += 100;
-        const pct = Math.min(100, (elapsed / total) * 100);
-        bar.style.width = pct + '%';
-        const rem = Math.max(0, (total - elapsed) / 1000).toFixed(1);
-        timerTxt.textContent = rem + 's';
-        if (elapsed >= total) finishIntro();
-      }, 100);
-    }
-
-    function finishIntro() {
-      clearInterval(splashInterval);
-      document.getElementById('splash-screen').classList.add('hidden');
-    }
-
-    function replayIntro() {
-      startIntro();
-    }
-
-    // Sparkle Particle Canvas
-    (function initSparkles() {
-      const canvas = document.getElementById('sparkle-canvas');
-      const ctx = canvas.getContext('2d');
-      let w, h;
-      function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-      }
-      resize();
-      window.addEventListener('resize', resize);
-      const stars = Array.from({ length: 65 }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 2.4 + 0.8,
-        vy: -(Math.random() * 0.6 + 0.2),
-        a: Math.random(),
-        gold: Math.random() > 0.28
-      }));
-      function draw() {
-        ctx.clearRect(0, 0, w, h);
-        stars.forEach(s => {
-          s.y += s.vy;
-          s.a += 0.03;
-          if (s.y < 0) { s.y = h; s.x = Math.random() * w; }
-          const alpha = 0.35 + 0.65 * Math.abs(Math.sin(s.a));
-          ctx.fillStyle = s.gold ? `rgba(246,220,132,${alpha})` : `rgba(25,168,104,${alpha})`;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        requestAnimationFrame(draw);
-      }
-      draw();
-    })();
-
-    function playGoldChime() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.value = freq;
-          gain.gain.setValueAtTime(0.08, ctx.currentTime + idx * 0.14);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.14 + 1.1);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + idx * 0.14);
-          osc.stop(ctx.currentTime + idx * 0.14 + 1.15);
-        });
-      } catch (e) {}
-    }
-
-    // 4-Digit Sovereign Vault Padlock
-    let currentPinInput = '';
-    function getSavedPin() {
-      return localStorage.getItem('mmcc_vault_pin') || '1325';
-    }
-    function isAutoLockEnabled() {
-      return localStorage.getItem('mmcc_autolock') !== 'false';
-    }
-    function updatePinDots() {
-      const dots = document.querySelectorAll('#pin-dots .pin-dot');
-      dots.forEach((d, i) => d.classList.toggle('filled', i < currentPinInput.length));
-    }
-    function pressDigit(d) {
-      if (currentPinInput.length >= 4) return;
-      currentPinInput += d;
-      updatePinDots();
-      if (currentPinInput.length === 4) {
-        if (currentPinInput === getSavedPin()) {
-          document.getElementById('pin-msg').textContent = 'Access Granted';
-          setTimeout(() => {
-            document.getElementById('padlock-screen').classList.add('unlocked');
-            currentPinInput = '';
-            updatePinDots();
-            document.getElementById('pin-msg').textContent = '';
-          }, 180);
-        } else {
-          document.getElementById('pin-msg').textContent = 'Incorrect Passcode — Try Again';
-          setTimeout(() => {
-            currentPinInput = '';
-            updatePinDots();
-          }, 450);
-        }
-      }
-    }
-    function clearPin() {
-      currentPinInput = '';
-      updatePinDots();
-      document.getElementById('pin-msg').textContent = '';
-    }
-    function backspacePin() {
-      currentPinInput = currentPinInput.slice(0, -1);
-      updatePinDots();
-    }
-    function lockVault() {
-      currentPinInput = '';
-      updatePinDots();
-      document.getElementById('pin-msg').textContent = '';
-      document.getElementById('padlock-screen').classList.remove('unlocked');
-    }
-    function saveNewPin() {
-      const val = document.getElementById('new-pin-input').value.trim();
-      if (!/^\d{4}$/.test(val)) {
-        toast('Please enter exactly 4 digits');
-        return;
-      }
-      localStorage.setItem('mmcc_vault_pin', val);
-      document.getElementById('new-pin-input').value = '';
-      toast('New 4-Digit Vault PIN Saved');
-    }
-    function toggleAutoLock() {
-      const next = !isAutoLockEnabled();
-      localStorage.setItem('mmcc_autolock', next ? 'true' : 'false');
-      document.getElementById('lock-toggle-btn').textContent = next ? 'ON' : 'OFF';
-      toast('Launch Padlock: ' + (next ? 'ON' : 'OFF'));
-    }
-
-    // Dining Video Loop Vault (IndexedDB)
-    let diningVideos = [];
-    let currentDiningIdx = 0;
-    let diningLoop = true;
-
-    function openDiningDB() {
-      return new Promise((resolve, reject) => {
-        const req = indexedDB.open('MMCC_Dining_Cinema_DB', 1);
-        req.onupgradeneeded = () => {
-          req.result.createObjectStore('videos', { keyPath: 'id', autoIncrement: true });
-        };
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-    }
-
-    async function loadDiningVideos() {
-      try {
-        const db = await openDiningDB();
-        const tx = db.transaction('videos', 'readonly');
-        const store = tx.objectStore('videos');
-        const all = await new Promise(res => {
-          const r = store.getAll();
-          r.onsuccess = () => res(r.result || []);
-        });
-        diningVideos.forEach(v => URL.revokeObjectURL(v.url));
-        diningVideos = all.map(item => ({
-          id: item.id,
-          name: item.name,
-          url: URL.createObjectURL(item.blob)
-        }));
-        renderDiningPlaylist();
-        if (diningVideos.length > 0) playDiningIndex(0);
-      } catch (e) {}
-    }
-
-    async function handleDiningVideoUpload(e) {
-      const files = Array.from(e.target.files || []);
-      if (!files.length) return;
-      const db = await openDiningDB();
-      const tx = db.transaction('videos', 'readwrite');
-      const store = tx.objectStore('videos');
-      for (const f of files) {
-        store.add({ name: f.name, blob: f });
-      }
-      tx.oncomplete = () => {
-        toast('Saved ' + files.length + ' Dining Video(s) Offline');
-        loadDiningVideos();
-      };
-    }
-
-    function renderDiningPlaylist() {
-      const wrap = document.getElementById('dining-playlist');
-      wrap.innerHTML = '';
-      diningVideos.forEach((v, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'pill-btn' + (idx === currentDiningIdx ? ' gold-solid' : '');
-        btn.textContent = '🎬 ' + v.name.slice(0, 18);
-        btn.onclick = () => playDiningIndex(idx);
-        wrap.appendChild(btn);
-      });
-    }
-
-    function playDiningIndex(idx) {
-      if (!diningVideos.length) return;
-      currentDiningIdx = idx % diningVideos.length;
-      const vid = document.getElementById('dining-video');
-      const ph = document.getElementById('dining-placeholder');
-      ph.style.display = 'none';
-      vid.style.display = 'block';
-      vid.src = diningVideos[currentDiningIdx].url;
-      vid.loop = diningLoop;
-      vid.play().catch(() => {});
-      renderDiningPlaylist();
-    }
-
-    function toggleDiningPlay() {
-      const vid = document.getElementById('dining-video');
-      if (!vid.src) return;
-      vid.paused ? vid.play() : vid.pause();
-    }
-
-    function toggleDiningLoop() {
-      diningLoop = !diningLoop;
-      const vid = document.getElementById('dining-video');
-      vid.loop = diningLoop;
-      document.getElementById('dining-loop-btn').textContent = '🔁 Loop: ' + (diningLoop ? 'ON' : 'OFF');
-    }
-
-    function toggleDiningMute() {
-      const vid = document.getElementById('dining-video');
-      vid.muted = !vid.muted;
-      document.getElementById('dining-mute-btn').textContent = vid.muted ? '🔇 Muted' : '🔊 Sound';
-    }
-
-    function nextDiningVideo() {
-      if (diningVideos.length) playDiningIndex(currentDiningIdx + 1);
-    }
-
-    document.getElementById('dining-video').addEventListener('ended', () => {
-      if (!diningLoop && diningVideos.length > 1) nextDiningVideo();
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
     });
+  }
 
-    // Boot
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
+  // Time-of-day greeting
+  (function setGreeting() {
+    const h = new Date().getHours();
+    const part = h < 12 ? 'Good Morning' : (h < 18 ? 'Good Afternoon' : 'Good Evening');
+    document.getElementById('welcomeHeading').textContent = `${part}, Founder RA 109`;
+  })();
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('sec-' + tab).classList.add('active');
+    document.getElementById('nav-' + tab).classList.add('active');
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle('theme-emerald');
+    const isEm = document.body.classList.contains('theme-emerald');
+    localStorage.setItem('mmcc_theme', isEm ? 'emerald' : 'crimson');
+    showToast(isEm ? 'Emerald Velvet Theme Active' : 'Royal Crimson Silk Theme Active');
+  }
+  if (localStorage.getItem('mmcc_theme') === 'emerald') {
+    document.body.classList.add('theme-emerald');
+  }
+
+  // Harmonic Gold Chime
+  function playGoldChime() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [261.63, 329.63, 392.00, 523.25];
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.14);
+        gain.gain.setValueAtTime(0.001, ctx.currentTime + i * 0.14);
+        gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + i * 0.14 + 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.14 + 1.4);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + i * 0.14);
+        osc.stop(ctx.currentTime + i * 0.14 + 1.45);
+      });
+    } catch (e) {}
+  }
+
+  // Sparkle Canvas Animation for 13s Splash Intro
+  const canvas = document.getElementById('sparkleCanvas');
+  const ctx2d = canvas.getContext('2d');
+  let particles = [];
+  function initSparkles() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles = Array.from({ length: 72 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2.6 + 0.8,
+      vy: -(Math.random() * 0.7 + 0.25),
+      alpha: Math.random(),
+      da: (Math.random() * 0.025 + 0.008) * (Math.random() < 0.5 ? 1 : -1),
+      gold: Math.random() > 0.22
+    }));
+  }
+  initSparkles();
+  window.addEventListener('resize', initSparkles);
+
+  let splashActive = true;
+  function animateSparkles() {
+    if (!splashActive) return;
+    ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of particles) {
+      p.y += p.vy;
+      if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+      p.alpha += p.da;
+      if (p.alpha <= 0.1 || p.alpha >= 1) p.da *= -1;
+      ctx2d.save();
+      ctx2d.globalAlpha = Math.max(0.1, Math.min(1, p.alpha));
+      ctx2d.fillStyle = p.gold ? '#ffe39b' : '#34d399';
+      ctx2d.beginPath();
+      ctx2d.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx2d.fill();
+      ctx2d.restore();
     }
-    if (navigator.storage && navigator.storage.persist) {
-      navigator.storage.persist().catch(() => {});
+    requestAnimationFrame(animateSparkles);
+  }
+  animateSparkles();
+
+  // 13-Second Splash Timer
+  const INTRO_MS = 13000;
+  let introStart = Date.now();
+  let introInterval = null;
+
+  function startIntroTimer() {
+    splashActive = true;
+    animateSparkles();
+    document.getElementById('splashScreen').classList.remove('hidden');
+    introStart = Date.now();
+    clearInterval(introInterval);
+    introInterval = setInterval(() => {
+      const elapsed = Date.now() - introStart;
+      const pct = Math.min(100, (elapsed / INTRO_MS) * 100);
+      const rem = Math.max(0, (INTRO_MS - elapsed) / 1000).toFixed(1);
+      document.getElementById('splashProgress').style.width = pct + '%';
+      document.getElementById('splashTimerText').textContent = `ENTERING SANCTUARY IN ${rem}s`;
+      if (elapsed >= INTRO_MS) finishIntro();
+    }, 80);
+  }
+
+  function finishIntro() {
+    clearInterval(introInterval);
+    splashActive = false;
+    document.getElementById('splashScreen').classList.add('hidden');
+    const vid = document.getElementById('customIntroVideo');
+    if (vid.src) vid.pause();
+    if (localStorage.getItem('mmcc_lock_startup') !== 'false') {
+      lockVault();
     }
-    initLogos();
-    updateGreeting();
-    document.getElementById('lock-toggle-btn').textContent = isAutoLockEnabled() ? 'ON' : 'OFF';
-    if (!isAutoLockEnabled()) {
-      document.getElementById('padlock-screen').classList.add('unlocked');
+  }
+
+  function replayIntro() {
+    const vid = document.getElementById('customIntroVideo');
+    if (vid.src) { vid.currentTime = 0; vid.play().catch(() => {}); }
+    startIntroTimer();
+  }
+
+  // 4-Digit Sovereign Vault Padlock
+  let enteredPin = '';
+  function getSavedPin() { return localStorage.getItem('mmcc_vault_pin') || '1325'; }
+  function updateLockStartupUI() {
+    const on = localStorage.getItem('mmcc_lock_startup') !== 'false';
+    document.getElementById('toggleLockStartupBtn').textContent = `Launch Lock: ${on ? 'ON' : 'OFF'}`;
+  }
+  updateLockStartupUI();
+
+  function toggleStartupLock() {
+    const cur = localStorage.getItem('mmcc_lock_startup') !== 'false';
+    localStorage.setItem('mmcc_lock_startup', cur ? 'false' : 'true');
+    updateLockStartupUI();
+    showToast(`Launch Padlock ${!cur ? 'Enabled' : 'Disabled'}`);
+  }
+
+  function saveNewPin() {
+    const val = document.getElementById('newPinInput').value.trim();
+    if (!/^\d{4}$/.test(val)) {
+      showToast('Enter exactly 4 numbers');
+      return;
     }
-    loadDiningVideos();
-    startIntro();
-  </script>
+    localStorage.setItem('mmcc_vault_pin', val);
+    document.getElementById('newPinInput').value = '';
+    showToast('4-Digit Sovereign PIN Updated');
+  }
+
+  function lockVault() {
+    enteredPin = '';
+    renderPinDots();
+    document.getElementById('pinMessage').textContent = 'Enter 4-Digit Member PIN (Default: 1325)';
+    document.getElementById('padlockScreen').classList.add('active');
+  }
+
+  function renderPinDots() {
+    const dots = document.querySelectorAll('#pinDots .pin-dot');
+    dots.forEach((d, idx) => d.classList.toggle('filled', idx < enteredPin.length));
+  }
+
+  function pressPin(digit) {
+    if (enteredPin.length >= 4) return;
+    enteredPin += digit;
+    renderPinDots();
+    if (enteredPin.length === 4) {
+      if (enteredPin === getSavedPin()) {
+        document.getElementById('padlockScreen').classList.remove('active');
+        enteredPin = '';
+        renderPinDots();
+        showToast('Sovereign Vault Unlocked');
+      } else {
+        document.getElementById('pinMessage').textContent = 'Incorrect PIN — Try Again';
+        enteredPin = '';
+        setTimeout(renderPinDots, 300);
+      }
+    }
+  }
+  function clearPin() { enteredPin = ''; renderPinDots(); }
+  function backspacePin() { enteredPin = enteredPin.slice(0, -1); renderPinDots(); }
+
+  // IndexedDB Offline Storage for Logo, Intro Video, Dining Videos & Event Videos
+  const DB_NAME = 'MMCC_RA109_Vault_v13';
+  let dbInstance = null;
+
+  function openVaultDB() {
+    return new Promise((resolve, reject) => {
+      if (dbInstance) return resolve(dbInstance);
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('media')) {
+          db.createObjectStore('media', { keyPath: 'id', autoIncrement: true });
+        }
+        if (!db.objectStoreNames.contains('settings')) {
+          db.createObjectStore('settings', { keyPath: 'key' });
+        }
+      };
+      req.onsuccess = e => { dbInstance = e.target.result; resolve(dbInstance); };
+      req.onerror = e => reject(e);
+    });
+  }
+
+  async function saveSettingBlob(key, blob) {
+    const db = await openVaultDB();
+    return new Promise(resolve => {
+      const tx = db.transaction('settings', 'readwrite');
+      tx.objectStore('settings').put({ key, blob });
+      tx.oncomplete = () => resolve();
+    });
+  }
+
+  async function getSettingBlob(key) {
+    const db = await openVaultDB();
+    return new Promise(resolve => {
+      const tx = db.transaction('settings', 'readonly');
+      const req = tx.objectStore('settings').get(key);
+      req.onsuccess = () => resolve(req.result ? req.result.blob : null);
+      req.onerror = () => resolve(null);
+    });
+  }
+
+  async function swapMainLogo(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    await saveSettingBlob('customLogo', file);
+    applyCustomLogo(file);
+    showToast('Main Logo Updated & Saved Offline');
+  }
+
+  function applyCustomLogo(blob) {
+    const url = URL.createObjectURL(blob);
+    document.querySelectorAll('.app-logo-img').forEach(img => { img.src = url; });
+  }
+
+  async function uploadCustomIntro(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    await saveSettingBlob('customIntro', file);
+    applyCustomIntro(file);
+    showToast('Custom Intro Video Saved Offline');
+  }
+
+  function applyCustomIntro(blob) {
+    const url = URL.createObjectURL(blob);
+    const vid = document.getElementById('customIntroVideo');
+    document.getElementById('defaultIntroArt').style.display = 'none';
+    vid.src = url;
+    vid.style.display = 'block';
+    vid.play().catch(() => {});
+  }
+
+  // Dining & Events Offline Video Playlists
+  const playlists = { dining: [], events: [] };
+  const currentIdx = { dining: 0, events: 0 };
+  const activeUrls = { dining: null, events: null };
+
+  async function addMediaFiles(event, channel) {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) return;
+    const db = await openVaultDB();
+    const tx = db.transaction('media', 'readwrite');
+    const store = tx.objectStore('media');
+    for (const file of files) {
+      store.add({ channel, name: file.name, blob: file });
+    }
+    tx.oncomplete = async () => {
+      await loadPlaylists();
+      playMediaAt(channel, playlists[channel].length - 1);
+      showToast(`Saved ${files.length} video(s) offline`);
+    };
+  }
+
+  async function loadPlaylists() {
+    const db = await openVaultDB();
+    return new Promise(resolve => {
+      const tx = db.transaction('media', 'readonly');
+      const req = tx.objectStore('media').getAll();
+      req.onsuccess = () => {
+        const all = req.result || [];
+        playlists.dining = all.filter(item => item.channel === 'dining');
+        playlists.events = all.filter(item => item.channel === 'events');
+        renderPlaylistUI('dining');
+        renderPlaylistUI('events');
+        resolve();
+      };
+    });
+  }
+
+  function renderPlaylistUI(channel) {
+    const box = document.getElementById(channel + 'Playlist');
+    const list = playlists[channel];
+    if (!list.length) {
+      box.innerHTML = '';
+      return;
+    }
+    box.innerHTML = list.map((item, i) => `
+      <span class="media-chip ${i === currentIdx[channel] ? 'active' : ''}" onclick="playMediaAt('${channel}', ${i})">
+        🎬 ${item.name.slice(0, 20)}
+        <strong onclick="event.stopPropagation(); deleteMedia('${channel}', ${item.id})" style="margin-left:4px;opacity:0.75;">✕</strong>
+      </span>
+    `).join('');
+  }
+
+  function playMediaAt(channel, index) {
+    const list = playlists[channel];
+    const videoEl = document.getElementById(channel + 'Video');
+    const fallbackEl = document.getElementById(channel + 'Fallback');
+    if (!list.length) {
+      videoEl.pause();
+      videoEl.style.display = 'none';
+      fallbackEl.style.display = 'flex';
+      renderPlaylistUI(channel);
+      return;
+    }
+    currentIdx[channel] = (index + list.length) % list.length;
+    if (activeUrls[channel]) URL.revokeObjectURL(activeUrls[channel]);
+    const url = URL.createObjectURL(list[currentIdx[channel]].blob);
+    activeUrls[channel] = url;
+    fallbackEl.style.display = 'none';
+    videoEl.style.display = 'block';
+    videoEl.src = url;
+    videoEl.play().catch(() => {});
+    renderPlaylistUI(channel);
+  }
+
+  async function deleteMedia(channel, id) {
+    const db = await openVaultDB();
+    const tx = db.transaction('media', 'readwrite');
+    tx.objectStore('media').delete(id);
+    tx.oncomplete = async () => {
+      await loadPlaylists();
+      playMediaAt(channel, 0);
+      showToast('Removed video from vault');
+    };
+  }
+
+  function togglePlay(channel) {
+    const v = document.getElementById(channel + 'Video');
+    if (!v.src) return;
+    if (v.paused) v.play().catch(() => {}); else v.pause();
+  }
+  function toggleLoop(channel) {
+    const v = document.getElementById(channel + 'Video');
+    v.loop = !v.loop;
+    document.getElementById(channel + 'LoopBtn').textContent = `🔁 Loop: ${v.loop ? 'ON' : 'OFF'}`;
+  }
+  function toggleMute(channel) {
+    const v = document.getElementById(channel + 'Video');
+    v.muted = !v.muted;
+    document.getElementById(channel + 'MuteBtn').textContent = v.muted ? '🔇 Muted' : '🔊 Sound';
+  }
+  function nextMedia(channel) {
+    playMediaAt(channel, currentIdx[channel] + 1);
+  }
+
+  // Boot App
+  (async function boot() {
+    const savedLogo = await getSettingBlob('customLogo');
+    if (savedLogo) applyCustomLogo(savedLogo);
+    const savedIntro = await getSettingBlob('customIntro');
+    if (savedIntro) applyCustomIntro(savedIntro);
+    await loadPlaylists();
+    if (playlists.dining.length) playMediaAt('dining', 0);
+    if (playlists.events.length) playMediaAt('events', 0);
+    startIntroTimer();
+  })();
+</script>
 </body>
 </html>
