@@ -1,5 +1,11 @@
-const CACHE_NAME = 'mmcc-ra109-welcome-chime-v14-network-first';
-const ASSETS = ['/', '/index.html', '/manifest.json', '/emblem.png', '/master-icon.png'];
+const CACHE_NAME = 'mmcc-ra109-13s-audio-cutoff-v15-network-first';
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './emblem.png',
+  './master-icon.png'
+];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -20,12 +26,12 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
     fetch(event.request)
-      .then((response) => {
-        if (response && response.status === 200) {
-          const clone = response.clone();
+      .then((res) => {
+        if (res && res.status === 200 && res.type === 'basic') {
+          const clone = res.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
-        return response;
+        return res;
       })
       .catch(() => caches.match(event.request))
   );
