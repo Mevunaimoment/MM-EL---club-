@@ -3,75 +3,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Mevunai Moment™ Country Club — RA 109 Portal</title>
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" href="./emblem.png" />
-  <meta name="theme-color" content="#2b070e" />
+  <meta name="theme-color" content="#5c0818" />
+  <title>Mevunai Moment™ Country Club, Inc. ® — RA 109</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="emblem.png" />
+  <link rel="apple-touch-icon" href="emblem.png" />
   <style>
     :root {
-      --bg-deep: #180408;
-      --bg-panel: #2b0810;
-      --bg-card: #380b15;
-      --gold: #e2be58;
-      --gold-bright: #f7dc82;
-      --gold-dim: rgba(226, 190, 88, 0.28);
-      --text: #fff8ea;
-      --muted: #d6bfa0;
-      --accent: #186a4b;
+      --bg-primary: #24040b;
+      --bg-secondary: #3d0713;
+      --card-bg: rgba(45, 6, 15, 0.9);
+      --gold: #e5c158;
+      --gold-bright: #ffe38e;
+      --gold-dim: rgba(229, 193, 88, 0.35);
+      --emerald: #10b981;
+      --text-main: #fdf6e7;
+      --text-muted: #d6c3a5;
     }
-    body.emerald {
-      --bg-deep: #061c14;
-      --bg-panel: #0b2e21;
-      --bg-card: #103d2c;
-      --accent: #7a1426;
+    body.emerald-theme {
+      --bg-primary: #031f17;
+      --bg-secondary: #063829;
+      --card-bg: rgba(5, 42, 31, 0.92);
     }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
-      margin: 0;
-      font-family: Georgia, 'Times New Roman', serif;
-      background: radial-gradient(circle at top, var(--bg-panel), var(--bg-deep) 78%);
-      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
+      background: radial-gradient(circle at top, var(--bg-secondary), var(--bg-primary) 75%);
+      color: var(--text-main);
       min-height: 100vh;
-      padding-bottom: 84px;
+      padding-bottom: 86px;
+      overflow-x: hidden;
     }
-    .gold-border { border: 1px solid var(--gold-dim); }
-    .btn {
-      background: linear-gradient(135deg, #f3d479, #c4982c);
-      color: #1c0509;
-      border: none;
-      border-radius: 10px;
-      padding: 9px 14px;
-      font-weight: bold;
-      font-family: inherit;
-      cursor: pointer;
-      font-size: 13px;
+
+    /* 13-Second Splash Intro */
+    #splash-intro {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: radial-gradient(circle at center, #4a0817 0%, #140206 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.65s ease, visibility 0.65s ease;
     }
-    .btn-outline {
-      background: rgba(255,255,255,0.05);
-      color: var(--gold-bright);
-      border: 1px solid var(--gold);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-family: inherit;
-      cursor: pointer;
-      font-size: 12px;
+    #splash-intro.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #sparkle-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .intro-crest-wrap {
+      position: relative;
+      width: 190px;
+      height: 190px;
+      border-radius: 34px;
+      padding: 6px;
+      background: linear-gradient(135deg, #ffe38e, #b88928, #10b981, #ffe38e);
+      box-shadow: 0 0 45px rgba(229, 193, 88, 0.55);
+      animation: pulseGlow 3s ease-in-out infinite;
+      margin-bottom: 18px;
+      z-index: 2;
     }
-    .btn-sm { padding: 6px 10px; font-size: 11px; border-radius: 8px; }
-    input, select {
-      background: rgba(0,0,0,0.38);
-      border: 1px solid var(--gold-dim);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 13px;
+    .intro-crest-wrap img {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 28px;
+      display: block;
     }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 38px rgba(229, 193, 88, 0.5); }
+      50% { transform: scale(1.035); box-shadow: 0 0 60px rgba(255, 227, 142, 0.8); }
+    }
+    .intro-title {
+      font-size: 1.35rem;
+      letter-spacing: 2px;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      font-weight: 700;
+      z-index: 2;
+    }
+    .intro-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+      z-index: 2;
+    }
+    .intro-timer-bar {
+      width: min(300px, 82vw);
+      height: 6px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 16px 0 8px;
+      border: 1px solid var(--gold-dim);
+      z-index: 2;
+    }
+    #intro-progress {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--emerald), var(--gold-bright));
+      transition: width 0.1s linear;
+    }
+    .intro-countdown-label {
+      font-size: 0.78rem;
+      color: var(--gold);
+      margin-bottom: 16px;
+      z-index: 2;
+    }
+    .intro-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    /* 4-Digit Sovereign Padlock */
+    #padlock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: radial-gradient(circle at top, #3d0713, #120105 85%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+    #padlock-screen.active { display: flex; }
+    .lock-logo {
+      width: 84px;
+      height: 84px;
+      border-radius: 20px;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+      margin-bottom: 12px;
+      box-shadow: 0 0 24px rgba(229, 193, 88, 0.4);
+    }
+    .pin-dots { display: flex; gap: 14px; margin: 16px 0 22px; }
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: transparent;
+      transition: background 0.15s;
+    }
+    .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold); }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 72px);
+      gap: 12px;
+    }
+    .key-btn {
+      height: 62px;
+      border-radius: 16px;
+      border: 1px solid var(--gold-dim);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--gold-bright);
+      font-size: 1.35rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .key-btn:active { background: rgba(229, 193, 88, 0.25); }
+
+    /* Header & Buttons */
     header {
       position: sticky;
       top: 0;
-      z-index: 40;
-      background: rgba(24, 4, 8, 0.94);
+      z-index: 500;
+      background: rgba(26, 3, 8, 0.92);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--gold-dim);
       padding: 10px 14px;
       display: flex;
@@ -79,763 +183,846 @@
       justify-content: space-between;
       gap: 8px;
     }
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .brand img { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--gold); object-fit: cover; }
-    .brand-title { font-size: 13px; font-weight: bold; color: var(--gold-bright); letter-spacing: 0.5px; }
-    .brand-sub { font-size: 10px; color: var(--muted); }
-    .container { max-width: 680px; margin: 0 auto; padding: 14px; }
-    .card {
-      background: linear-gradient(160deg, var(--bg-card), var(--bg-panel));
-      border: 1px solid var(--gold-dim);
-      border-radius: 16px;
-      padding: 15px;
-      margin-bottom: 14px;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+    .brand-left { display: flex; align-items: center; gap: 10px; }
+    .brand-left img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid var(--gold);
+      object-fit: cover;
     }
-    .section-title {
+    .brand-title { font-size: 0.9rem; font-weight: 700; color: var(--gold-bright); line-height: 1.15; }
+    .brand-sub { font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.8px; }
+    .header-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .btn-gold {
+      background: linear-gradient(135deg, #f3d274, #b58424);
+      color: #1c0509;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 13px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.06);
       color: var(--gold-bright);
-      font-size: 15px;
-      letter-spacing: 0.6px;
-      margin: 0 0 10px 0;
+      border: 1px solid var(--gold-dim);
+      border-radius: 10px;
+      padding: 7px 11px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Main Content & Cards */
+    main { max-width: 680px; margin: 0 auto; padding: 14px; }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--gold-dim);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .hero-banner { text-align: center; }
+    .hero-crest {
+      width: 112px;
+      height: 112px;
+      border-radius: 24px;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+      margin: 0 auto 10px;
+      display: block;
+      box-shadow: 0 0 28px rgba(229, 193, 88, 0.38);
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.16);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      margin-bottom: 8px;
+    }
+    h1 { font-size: 1.25rem; color: var(--gold-bright); margin-bottom: 4px; }
+    h2 { font-size: 1.02rem; color: var(--gold-bright); margin-bottom: 10px; }
+    p.muted { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .quick-tile {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--gold-dim);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+    .quick-tile strong { display: block; color: var(--gold-bright); font-size: 0.85rem; margin-bottom: 3px; }
+    .quick-tile span { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* Cinema Screens (Dining & Events) */
+    .cinema-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0d0104;
+      border-radius: 14px;
+      border: 1.5px solid var(--gold);
+      overflow: hidden;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cinema-box video, .cinema-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 8px;
+    }
+    .list-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(229, 193, 88, 0.16);
     }
-    .pill {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-size: 10px;
-      border: 1px solid var(--gold-dim);
-      color: var(--gold-bright);
-      background: rgba(0,0,0,0.28);
-    }
-    .tab-page { display: none; }
-    .tab-page.active { display: block; }
+    .list-row:last-child { border-bottom: none; }
+
+    /* Bottom Navigation */
     nav.bottom-nav {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 45;
-      background: rgba(20, 3, 7, 0.97);
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 600;
+      background: rgba(22, 2, 7, 0.96);
       border-top: 1px solid var(--gold-dim);
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      padding: 6px 4px;
+      padding: 6px 4px 10px;
     }
     .nav-btn {
       background: none;
       border: none;
-      color: var(--muted);
-      font-family: inherit;
-      font-size: 10px;
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      font-weight: 600;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 3px;
-      padding: 5px 2px;
       cursor: pointer;
     }
-    .nav-btn.active { color: var(--gold-bright); font-weight: bold; }
-    .nav-btn span.ico { font-size: 17px; }
+    .nav-btn.active { color: var(--gold-bright); }
+    .nav-icon { font-size: 1.15rem; }
 
-    /* Splash Intro */
-    #splash {
-      position: fixed; inset: 0; z-index: 100;
-      background: radial-gradient(circle at center, #3b0b15, #120205 80%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 24px;
-    }
-    #splash.hidden { display: none; }
-    .splash-crest {
-      width: 148px; height: 148px; border-radius: 28px;
-      border: 2px solid var(--gold);
-      box-shadow: 0 0 38px rgba(226, 190, 88, 0.45);
-      margin-bottom: 16px;
-      animation: pulseCrest 3s ease-in-out infinite;
-    }
-    @keyframes pulseCrest {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.04); }
-    }
-    .progress-wrap {
-      width: 240px; height: 6px; background: rgba(255,255,255,0.12);
-      border-radius: 999px; overflow: hidden; margin: 14px auto;
-    }
-    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #c4982c, #f7dc82); }
-
-    /* Padlock */
-    #padlock {
-      position: fixed; inset: 0; z-index: 90;
-      background: radial-gradient(circle at top, #310912, #120205);
-      display: none; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; text-align: center;
-    }
-    #padlock.show { display: flex; }
-    .pin-dots { display: flex; gap: 12px; margin: 14px 0 20px; }
-    .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--gold); }
-    .pin-dot.filled { background: var(--gold-bright); }
-    .keypad { display: grid; grid-template-columns: repeat(3, 68px); gap: 12px; }
-    .key-btn {
-      height: 56px; border-radius: 14px; border: 1px solid var(--gold-dim);
-      background: rgba(255,255,255,0.06); color: var(--gold-bright);
-      font-size: 20px; font-weight: bold; font-family: inherit; cursor: pointer;
-    }
-
-    /* Chat Room */
-    .chat-box {
-      height: 290px;
-      overflow-y: auto;
-      background: rgba(0,0,0,0.34);
-      border: 1px solid var(--gold-dim);
-      border-radius: 12px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      margin-bottom: 10px;
-    }
-    .msg {
-      max-width: 82%;
-      padding: 8px 12px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.4;
-      background: rgba(226, 190, 88, 0.14);
-      border: 1px solid var(--gold-dim);
-      align-self: flex-start;
-    }
-    .msg.mine {
-      align-self: flex-end;
-      background: linear-gradient(135deg, rgba(226,190,88,0.32), rgba(196,152,44,0.22));
-      border-color: var(--gold);
-    }
-    .msg-meta { font-size: 10px; color: var(--gold-bright); margin-bottom: 3px; }
-    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .media-item {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 8px; padding: 9px 10px; border-radius: 10px;
-      background: rgba(0,0,0,0.28); border: 1px solid var(--gold-dim);
-      margin-top: 8px; font-size: 12px;
+    #toast {
+      position: fixed;
+      bottom: 84px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a0409;
+      color: var(--gold-bright);
+      border: 1px solid var(--gold);
+      padding: 9px 16px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      z-index: 99999;
+      display: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
 
-  <!-- 13-Second Sparkle Intro with Hard 13.0s Audio Cutoff -->
-  <div id="splash">
-    <img src="./emblem.png" alt="MMCC Crest" class="splash-crest" />
-    <div class="pill">MEVUNAI MOMENT™ COUNTRY CLUB, INC. ®</div>
-    <h2 style="color:var(--gold-bright); margin:10px 0 4px;">SOVEREIGN PORTAL • RA 109</h2>
-    <p id="splashTimerText" style="color:var(--muted); font-size:12px; margin:0;">Entering Velvet Lounge in 13.0s...</p>
-    <div class="progress-wrap"><div id="splashBar" class="progress-bar"></div></div>
-    <div class="row" style="justify-content:center; margin-top:8px;">
-      <button class="btn-outline btn-sm" onclick="playWelcomeChime()">🔔 Gold Chime</button>
-      <label class="btn-outline btn-sm" style="cursor:pointer;">
-        🎵 Upload 13s Intro Audio
-        <input type="file" accept="audio/*" hidden onchange="saveIntroAudio(event)" />
-      </label>
-      <button class="btn btn-sm" onclick="finishIntro()">Enter Club ➔</button>
+  <!-- 13-Second Sparkle Splash Intro (Strictly stops uploaded loop intro music at 13.0s) -->
+  <div id="splash-intro">
+    <canvas id="sparkle-canvas"></canvas>
+    <div class="intro-crest-wrap">
+      <img src="emblem.png" alt="Mevunai Moment Country Club MMEL Crest" onerror="this.src='master-icon.png'" />
     </div>
+    <div class="intro-title">Mevunai Moment™</div>
+    <div class="intro-sub">COUNTRY CLUB, INC. ® • RA 109 SOVEREIGN PORTAL</div>
+
+    <div class="intro-timer-bar"><div id="intro-progress"></div></div>
+    <div class="intro-countdown-label" id="intro-timer-text">Intro Audio & Sparkle Showcase • 13.0s remaining</div>
+
+    <div class="intro-actions">
+      <button class="btn-outline" onclick="playIntroAudioNow()">🔊 Play Intro Audio (13s Max)</button>
+      <label class="btn-outline" style="cursor:pointer;">
+        🎵 Upload Intro Music
+        <input type="file" id="intro-audio-input" accept="audio/*" style="display:none;" onchange="handleIntroAudioUpload(event)" />
+      </label>
+      <button class="btn-gold" onclick="finishSplashIntro()">Enter Club ➔</button>
+    </div>
+    <div id="intro-audio-status" style="font-size:0.72rem; color:#6ee7b7; margin-top:10px; z-index:2;"></div>
   </div>
 
   <!-- 4-Digit Sovereign Vault Padlock -->
-  <div id="padlock">
-    <img src="./emblem.png" alt="Crest" style="width:76px; height:76px; border-radius:18px; border:1px solid var(--gold); margin-bottom:10px;" />
-    <div style="color:var(--gold-bright); font-weight:bold; letter-spacing:1px;">SOVEREIGN VAULT PADLOCK</div>
-    <div id="pinHint" style="color:var(--muted); font-size:12px; margin-top:4px;">Enter 4-Digit PIN (Default: 1325)</div>
-    <div class="pin-dots" id="pinDots">
+  <div id="padlock-screen">
+    <img src="emblem.png" class="lock-logo" alt="MMEL Crest" onerror="this.src='master-icon.png'" />
+    <div style="color:var(--gold-bright); font-weight:700; letter-spacing:1.5px;">SOVEREIGN VAULT LOCKED</div>
+    <div style="font-size:0.76rem; color:var(--text-muted); margin-top:4px;">Enter 4-Digit Member PIN (Default: 1325)</div>
+    <div class="pin-dots" id="pin-dots">
       <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
     </div>
     <div class="keypad">
-      <button class="key-btn" onclick="pressPin('1')">1</button>
-      <button class="key-btn" onclick="pressPin('2')">2</button>
-      <button class="key-btn" onclick="pressPin('3')">3</button>
-      <button class="key-btn" onclick="pressPin('4')">4</button>
-      <button class="key-btn" onclick="pressPin('5')">5</button>
-      <button class="key-btn" onclick="pressPin('6')">6</button>
-      <button class="key-btn" onclick="pressPin('7')">7</button>
-      <button class="key-btn" onclick="pressPin('8')">8</button>
-      <button class="key-btn" onclick="pressPin('9')">9</button>
-      <button class="key-btn" onclick="clearPin()">C</button>
-      <button class="key-btn" onclick="pressPin('0')">0</button>
-      <button class="key-btn" onclick="unlockGuestView()">✕</button>
+      <button class="key-btn" onclick="pressKey('1')">1</button>
+      <button class="key-btn" onclick="pressKey('2')">2</button>
+      <button class="key-btn" onclick="pressKey('3')">3</button>
+      <button class="key-btn" onclick="pressKey('4')">4</button>
+      <button class="key-btn" onclick="pressKey('5')">5</button>
+      <button class="key-btn" onclick="pressKey('6')">6</button>
+      <button class="key-btn" onclick="pressKey('7')">7</button>
+      <button class="key-btn" onclick="pressKey('8')">8</button>
+      <button class="key-btn" onclick="pressKey('9')">9</button>
+      <button class="key-btn" onclick="clearPin()">⌫</button>
+      <button class="key-btn" onclick="pressKey('0')">0</button>
+      <button class="key-btn" onclick="unlockBypassDemo()">✓</button>
     </div>
   </div>
 
+  <!-- Sticky Header -->
   <header>
-    <div class="brand">
-      <img src="./emblem.png" alt="MMCC" />
+    <div class="brand-left">
+      <img src="emblem.png" alt="MMEL Logo" onerror="this.src='master-icon.png'" />
       <div>
-        <div class="brand-title">MEVUNAI MOMENT™</div>
-        <div class="brand-sub">COUNTRY CLUB, INC. ® • RA 109</div>
+        <div class="brand-title">Mevunai Moment™</div>
+        <div class="brand-sub">COUNTRY CLUB • MMEL RA 109</div>
       </div>
     </div>
-    <div class="row">
-      <button class="btn-outline btn-sm" onclick="toggleTheme()">Silk / Emerald</button>
-      <button class="btn-outline btn-sm" onclick="lockApp()">🔒 Lock</button>
+    <div class="header-actions">
+      <button class="btn-outline" onclick="replayIntro()">▶ 13s Intro</button>
+      <button class="btn-outline" onclick="toggleTheme()">🌿 Silk</button>
+      <button class="btn-outline" onclick="lockVault()">🔒 Lock</button>
     </div>
   </header>
 
-  <div class="container">
+  <main>
+    <!-- HOME / WELCOME LOUNGE -->
+    <section id="tab-home" class="tab-section active">
+      <div class="card hero-banner">
+        <span class="status-pill">● CRIMSON SILK LOUNGE & GROUNDS OPEN</span>
+        <img src="emblem.png" class="hero-crest" alt="MMEL Crest" onerror="this.src='master-icon.png'" />
+        <h1 id="greeting-heading">Welcome, Founder RA 109</h1>
+        <p class="muted">Mevunai Moment™ Country Club, Inc. ® • Private Member Sanctuary</p>
 
-    <!-- TAB 1: PASS & WELCOME LOUNGE -->
-    <div id="tab-pass" class="tab-page active">
+        <div class="quick-grid">
+          <div class="quick-tile" onclick="switchTab('pass')">
+            <strong>👑 Sovereign Pass</strong>
+            <span>ID: MMCC-RA109-001 • Active</span>
+          </div>
+          <div class="quick-tile" onclick="switchTab('dining')">
+            <strong>🍷 Crimson Dining</strong>
+            <span>Looping Cinema & Table Service</span>
+          </div>
+          <div class="quick-tile" onclick="switchTab('events')">
+            <strong>🎬 Gala Cinema</strong>
+            <span>Offline Video Vault & RSVPs</span>
+          </div>
+          <div class="quick-tile" onclick="switchTab('book')">
+            <strong>⛳ Grounds & Courts</strong>
+            <span>18-Hole Golf, Tennis & Padel</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASS & INTRO STUDIO -->
+    <section id="tab-pass" class="tab-section">
       <div class="card">
-        <div class="row" style="justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+          <img src="emblem.png" style="width:62px; height:62px; border-radius:14px; border:1.5px solid var(--gold);" alt="Crest" />
           <div>
-            <span class="pill">● LOUNGE OPEN • PERMANENT STORAGE</span>
-            <h2 id="welcomeGreeting" style="color:var(--gold-bright); margin:8px 0 4px; font-size:19px;">Welcome, Founder RA 109</h2>
-            <p style="color:var(--muted); font-size:12px; margin:0;">ID: MMCC-RA109-001 • ALL-ACCESS SOVEREIGN KEY</p>
+            <div style="font-size:0.72rem; color:var(--emerald); font-weight:700;">● FOUNDING SOVEREIGN MEMBER</div>
+            <div style="font-size:1.05rem; font-weight:700; color:var(--gold-bright);">ID: MMCC-RA109-001</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">ALL-ACCESS • VALID THROUGH 2027</div>
           </div>
-          <img src="./emblem.png" alt="Crest" style="width:62px; height:62px; border-radius:14px; border:1px solid var(--gold);" />
         </div>
-        <div class="row" style="margin-top:12px;">
-          <button class="btn btn-sm" onclick="switchTab('chat')">💬 Invite-Only Chat</button>
-          <button class="btn-outline btn-sm" onclick="switchTab('events')">🎵 Events & MP3 Vault</button>
-          <button class="btn-outline btn-sm" onclick="switchTab('dining')">🍽 Dining Cinema</button>
+        <div class="controls-row">
+          <button class="btn-gold" onclick="showToast('Checked in at Emerald Sanctuary Spa')">Check In: Spa</button>
+          <button class="btn-outline" onclick="showToast('RA 109 Private Lounge Notified')">Notify Lounge</button>
         </div>
       </div>
 
       <div class="card">
-        <div class="section-title"><span>🔐 4-Digit Padlock & 13s Intro Controls</span></div>
-        <div class="row">
-          <input id="newPinInput" maxlength="4" placeholder="Set New 4-Digit PIN" style="max-width:170px;" />
-          <button class="btn btn-sm" onclick="updatePin()">Save PIN</button>
-          <button class="btn-outline btn-sm" onclick="replayIntro()">▶ Replay 13s Intro</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 2: INVITE-ONLY LINK CHAT ROOM -->
-    <div id="tab-chat" class="tab-page">
-      <div class="card">
-        <div class="section-title">
-          <span>💬 PRIVATE LINK-ONLY LOUNGE CHAT</span>
-          <span class="pill" id="roomBadge">NO ROOM</span>
-        </div>
-
-        <!-- Gate shown when user has no invite link -->
-        <div id="chatLockedGate" style="text-align:center; padding:14px 6px;">
-          <p style="color:var(--gold-bright); font-weight:bold; margin:0 0 6px;">🔒 Invite Link Required to Enter</p>
-          <p style="color:var(--muted); font-size:12px; margin:0 0 12px;">
-            Only guests holding a secret <strong>?room=...</strong> invite link can read or send messages in this private salon.
-          </p>
-          <div class="row" style="justify-content:center; margin-bottom:10px;">
-            <button class="btn" onclick="createSecretRoom()">＋ Generate Secret Invite Link</button>
-          </div>
-          <div class="row">
-            <input id="pasteInviteInput" placeholder="Or paste an invite link / room code here..." />
-            <button class="btn-outline" onclick="joinFromInput()">Enter Room</button>
-          </div>
-        </div>
-
-        <!-- Active Invite-Only Chat Room -->
-        <div id="chatActiveRoom" style="display:none;">
-          <div class="row" style="justify-content:space-between; margin-bottom:8px;">
-            <input id="memberAlias" placeholder="Your Callsign (e.g. Founder RA 109)" style="max-width:210px;" onchange="saveAlias()" />
-            <div class="row">
-              <button class="btn btn-sm" onclick="copyInviteLink()">🔗 Copy Invite Link</button>
-              <button class="btn-outline btn-sm" onclick="leaveRoom()">Leave</button>
-            </div>
-          </div>
-          <div id="inviteUrlDisplay" style="font-size:11px; color:var(--gold-bright); background:rgba(0,0,0,0.35); padding:7px 10px; border-radius:8px; margin-bottom:10px; word-break:break-all;"></div>
-
-          <div id="chatMessages" class="chat-box"></div>
-
-          <div class="row">
-            <input id="chatInput" placeholder="Write a private message to invited guests..." onkeydown="if(event.key==='Enter') sendChatMessage()" />
-            <button class="btn" onclick="sendChatMessage()">Send</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 3: EVENTS + MP3 PLAYER & OFFLINE AUDIO FOLDER -->
-    <div id="tab-events" class="tab-page">
-      <div class="card">
-        <div class="section-title">
-          <span>🎵 EVENTS MP3 PLAYER & AUDIO FOLDER</span>
-          <span class="pill" id="audioCountPill">0 SAVED</span>
-        </div>
-        <div style="background:rgba(0,0,0,0.35); border:1px solid var(--gold-dim); border-radius:12px; padding:12px; margin-bottom:10px;">
-          <div id="nowPlayingLabel" style="color:var(--gold-bright); font-size:13px; font-weight:bold; margin-bottom:8px;">Select or upload an MP3 track below</div>
-          <audio id="eventsAudioPlayer" controls style="width:100%; height:38px;"></audio>
-        </div>
-        <div class="row">
-          <label class="btn btn-sm" style="cursor:pointer;">
-            ＋ Save MP3 / Audio to Folder
-            <input type="file" accept="audio/*" multiple hidden onchange="saveAudioFiles(event)" />
+        <h2>🎵 13-Second Intro Music Controller</h2>
+        <p class="muted" style="margin-bottom:10px;">
+          Upload a looping intro track below. Even if the track is set to loop, playback is strictly cut off and faded out at <strong>13.0 seconds</strong> so it never plays past the intro.
+        </p>
+        <div class="controls-row">
+          <label class="btn-gold" style="cursor:pointer;">
+            ＋ Upload Loop Intro Music (.mp3 / .wav)
+            <input type="file" accept="audio/*" style="display:none;" onchange="handleIntroAudioUpload(event)" />
           </label>
-          <button class="btn-outline btn-sm" onclick="playNextAudio()">⏭ Next Track</button>
+          <button class="btn-outline" onclick="replayIntro()">▶ Test 13s Intro</button>
+          <button class="btn-outline" onclick="clearCustomIntroAudio()">↺ Use Built-in Chime</button>
         </div>
-        <div id="savedAudioList" style="margin-top:10px;"></div>
+        <div id="pass-audio-label" style="font-size:0.76rem; color:var(--gold); margin-top:10px;">Active Audio: Built-in Royal Gold Harmonic Chime (13s auto-stop)</div>
       </div>
 
       <div class="card">
-        <div class="section-title"><span>✨ EXCLUSIVE GATHERINGS</span></div>
-        <div class="media-item">
-          <div><strong style="color:var(--gold-bright);">RA 109 Annual Sovereign Gala</strong><br><span style="color:var(--muted);">Dec 18 • Grand Crimson Ballroom</span></div>
-          <button class="btn btn-sm" onclick="this.textContent='✓ RSVP Confirmed'">RSVP</button>
-        </div>
-        <div class="media-item">
-          <div><strong style="color:var(--gold-bright);">Midnight Emerald Cigar & Jazz</strong><br><span style="color:var(--muted);">Dec 24 • Terrace Pavilion</span></div>
-          <button class="btn btn-sm" onclick="this.textContent='✓ RSVP Confirmed'">RSVP</button>
+        <h2>🔐 4-Digit Sovereign Padlock</h2>
+        <div class="controls-row">
+          <input type="password" id="new-pin-input" maxlength="4" inputmode="numeric" placeholder="New 4-digit PIN"
+            style="background:rgba(0,0,0,0.35); border:1px solid var(--gold-dim); color:#fff; padding:8px 12px; border-radius:10px; width:145px;" />
+          <button class="btn-gold" onclick="saveNewPin()">Save PIN</button>
+          <button class="btn-outline" id="lock-toggle-btn" onclick="toggleLaunchLock()">Launch Lock: ON</button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- TAB 4: DINING CINEMA LOOP SCREEN -->
-    <div id="tab-dining" class="tab-page">
+    <!-- BOOK GROUNDS -->
+    <section id="tab-book" class="tab-section">
       <div class="card">
-        <div class="section-title"><span>🍽 CRIMSON SILK DINING LOOP SCREEN</span></div>
-        <video id="diningVideo" controls loop playsinline style="width:100%; border-radius:12px; border:1px solid var(--gold-dim); background:#000; max-height:220px;"></video>
-        <div class="row" style="margin-top:8px;">
-          <label class="btn btn-sm" style="cursor:pointer;">
-            ＋ Save Loop Video Offline
-            <input type="file" accept="video/*" hidden onchange="saveDiningVideo(event)" />
+        <h2>⛳ Championship Grounds & Courts</h2>
+        <div class="list-row">
+          <div><strong>Championship Golf — 18 Holes</strong><br><span class="muted">Tee Times Open • Caddy Staged</span></div>
+          <button class="btn-gold" onclick="showToast('Reserved Championship Golf Tee Time')">Reserve</button>
+        </div>
+        <div class="list-row">
+          <div><strong>Royal Clay Tennis — Court 1</strong><br><span class="muted">Private Floodlit Pavilion</span></div>
+          <button class="btn-gold" onclick="showToast('Reserved Royal Clay Tennis Court 1')">Reserve</button>
+        </div>
+        <div class="list-row">
+          <div><strong>Emerald Padel Pavilion</strong><br><span class="muted">VIP Glass Court</span></div>
+          <button class="btn-gold" onclick="showToast('Reserved Emerald Padel Pavilion')">Reserve</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DINING WITH LOOPING VIDEO SCREEN -->
+    <section id="tab-dining" class="tab-section">
+      <div class="card">
+        <h2>🍷 Crimson Silk Dining Cinema (Loop Screen)</h2>
+        <div class="cinema-box">
+          <video id="dining-video" playsinline loop muted></video>
+          <img id="dining-fallback-img" src="emblem.png" alt="Crimson Silk Dining" style="object-fit:contain; padding:18px;" />
+        </div>
+        <div class="controls-row">
+          <label class="btn-gold" style="cursor:pointer;">
+            ＋ Add Dining Video
+            <input type="file" accept="video/*" multiple style="display:none;" onchange="saveMediaToStore('dining', event)" />
           </label>
-          <button class="btn-outline btn-sm" onclick="toggleDiningLoop()">🔁 Toggle Loop</button>
+          <button class="btn-outline" onclick="toggleVideoPlay('dining-video')">⏯ Play/Pause</button>
+          <button class="btn-outline" id="dining-loop-btn" onclick="toggleVideoLoop('dining-video', 'dining-loop-btn')">🔁 Loop: ON</button>
+          <button class="btn-outline" id="dining-mute-btn" onclick="toggleVideoMute('dining-video', 'dining-mute-btn')">🔇 Muted</button>
+          <button class="btn-outline" onclick="nextStoredVideo('dining')">⏭ Next</button>
         </div>
+        <div id="dining-video-list" class="controls-row" style="margin-top:10px;"></div>
       </div>
-      <div class="card">
-        <div class="section-title"><span>🥂 PRIVATE TABLE MENU</span></div>
-        <div class="media-item">
-          <div><strong style="color:var(--gold-bright);">Gold-Leaf Wagyu Ribeye</strong><br><span style="color:var(--muted);">$95 • Chef's Reserve</span></div>
-          <button class="btn btn-sm" onclick="this.textContent='✓ Ordered'">Order</button>
-        </div>
-        <div class="media-item">
-          <div><strong style="color:var(--gold-bright);">Emerald Reserve Martini</strong><br><span style="color:var(--muted);">$24 • Botanical Gin & Gold Flake</span></div>
-          <button class="btn btn-sm" onclick="this.textContent='✓ Ordered'">Order</button>
-        </div>
-      </div>
-    </div>
 
-    <!-- TAB 5: GROUNDS & BOOKING -->
-    <div id="tab-book" class="tab-page">
       <div class="card">
-        <div class="section-title"><span>⛳ CHAMPIONSHIP GROUNDS & COURTS</span></div>
-        <div class="media-item">
-          <div><strong style="color:var(--gold-bright);">Championship Golf — 18 Holes</strong><br><span style="color:var(--muted);">Morning & Twilight Tee Times</span></div>
-          <button class="btn btn-sm" onclick="this.textContent='✓ Reserved'">Reserve</button>
+        <h2>Private Dining Room Service</h2>
+        <div class="list-row">
+          <div><strong>Gold-Leaf Wagyu Ribeye — $95</strong><br><span class="muted">24K Edible Gold • Truffle Jus</span></div>
+          <button class="btn-gold" onclick="showToast('Ordered Gold-Leaf Wagyu Ribeye')">Order</button>
         </div>
-        <div class="media-item">
-          <div><strong style="color:var(--gold-bright);">Royal Clay Tennis — Court 1</strong><br><span style="color:var(--muted);">Private Ball Machine & Pro</span></div>
-          <button class="btn btn-sm" onclick="this.textContent='✓ Reserved'">Reserve</button>
+        <div class="list-row">
+          <div><strong>Emerald Reserve Martini — $24</strong><br><span class="muted">Botanical Reserve • Gold Olive</span></div>
+          <button class="btn-gold" onclick="showToast('Ordered Emerald Reserve Martini')">Order</button>
+        </div>
+        <div class="list-row">
+          <div><strong>Saffron & Pistachio Baklava — $19</strong><br><span class="muted">Royal Honey Glaze</span></div>
+          <button class="btn-gold" onclick="showToast('Ordered Saffron & Pistachio Baklava')">Order</button>
         </div>
       </div>
-    </div>
+    </section>
 
-  </div>
+    <!-- EVENTS & OFFLINE VIDEO VAULT -->
+    <section id="tab-events" class="tab-section">
+      <div class="card">
+        <h2>🎬 Gala Stage & Offline Video Folder</h2>
+        <div class="cinema-box">
+          <video id="events-video" playsinline loop muted></video>
+          <img id="events-fallback-img" src="emblem.png" alt="Gala Stage" style="object-fit:contain; padding:18px;" />
+        </div>
+        <div class="controls-row">
+          <label class="btn-gold" style="cursor:pointer;">
+            ＋ Save Videos Offline
+            <input type="file" accept="video/*" multiple style="display:none;" onchange="saveMediaToStore('events', event)" />
+          </label>
+          <button class="btn-outline" onclick="toggleVideoPlay('events-video')">⏯ Play/Pause</button>
+          <button class="btn-outline" id="events-mute-btn" onclick="toggleVideoMute('events-video', 'events-mute-btn')">🔇 Muted</button>
+          <button class="btn-outline" onclick="nextStoredVideo('events')">⏭ Next</button>
+        </div>
+        <div id="events-video-list" class="controls-row" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="card">
+        <h2>Exclusive Gatherings</h2>
+        <div class="list-row">
+          <div><strong>RA 109 Annual Gala — Dec 18</strong><br><span class="muted">Black Tie • Crimson Silk Ballroom</span></div>
+          <button class="btn-gold" onclick="showToast('RSVP Confirmed: RA 109 Annual Gala')">RSVP</button>
+        </div>
+        <div class="list-row">
+          <div><strong>Midnight Emerald Cigar & Jazz — Dec 24</strong><br><span class="muted">Live Quartet • Terrace Lounge</span></div>
+          <button class="btn-gold" onclick="showToast('RSVP Confirmed: Midnight Cigar & Jazz')">RSVP</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <nav class="bottom-nav">
-    <button class="nav-btn active" id="nav-pass" onclick="switchTab('pass')"><span class="ico">👑</span>PASS</button>
-    <button class="nav-btn" id="nav-chat" onclick="switchTab('chat')"><span class="ico">💬</span>CHAT</button>
-    <button class="nav-btn" id="nav-events" onclick="switchTab('events')"><span class="ico">🎵</span>EVENTS</button>
-    <button class="nav-btn" id="nav-dining" onclick="switchTab('dining')"><span class="ico">🍽</span>DINING</button>
-    <button class="nav-btn" id="nav-book" onclick="switchTab('book')"><span class="ico">⛳</span>BOOK</button>
+    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')"><span class="nav-icon">🏛️</span>Lounge</button>
+    <button class="nav-btn" id="nav-pass" onclick="switchTab('pass')"><span class="nav-icon">👑</span>Pass</button>
+    <button class="nav-btn" id="nav-book" onclick="switchTab('book')"><span class="nav-icon">⛳</span>Book</button>
+    <button class="nav-btn" id="nav-dining" onclick="switchTab('dining')"><span class="nav-icon">🍷</span>Dining</button>
+    <button class="nav-btn" id="nav-events" onclick="switchTab('events')"><span class="nav-icon">🎬</span>Events</button>
   </nav>
 
+  <div id="toast"></div>
+
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    }
-    if (navigator.storage && navigator.storage.persist) {
-      navigator.storage.persist().catch(() => {});
-    }
+    // --- IndexedDB for Permanent Offline Intro Audio & Videos ---
+    const DB_NAME = 'MMCC_RA109_Vault_v15';
+    let dbPromise = null;
 
-    // Greeting
-    const hr = new Date().getHours();
-    const greet = hr < 12 ? 'Good Morning' : hr < 18 ? 'Good Afternoon' : 'Good Evening';
-    document.getElementById('welcomeGreeting').textContent = `${greet}, Founder RA 109`;
-
-    function toggleTheme() { document.body.classList.toggle('emerald'); }
-
-    function switchTab(name) {
-      document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('tab-' + name).classList.add('active');
-      document.getElementById('nav-' + name).classList.add('active');
-    }
-
-    // IndexedDB Helper
-    const DB_NAME = 'MMCC_RA109_Vault_v16';
     function openVaultDB() {
-      return new Promise((resolve, reject) => {
+      if (dbPromise) return dbPromise;
+      dbPromise = new Promise((resolve, reject) => {
         const req = indexedDB.open(DB_NAME, 1);
-        req.onupgradeneeded = () => {
-          const db = req.result;
-          if (!db.objectStoreNames.contains('media')) db.createObjectStore('media', { keyPath: 'id' });
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('media')) {
+            db.createObjectStore('media', { keyPath: 'id' });
+          }
         };
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
       });
+      return dbPromise;
     }
-    async function dbPut(item) {
+
+    async function putVaultItem(record) {
       const db = await openVaultDB();
-      return new Promise((res, rej) => {
+      return new Promise((resolve, reject) => {
         const tx = db.transaction('media', 'readwrite');
-        tx.objectStore('media').put(item);
-        tx.oncomplete = () => res();
-        tx.onerror = () => rej(tx.error);
+        tx.objectStore('media').put(record);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
       });
     }
-    async function dbGetAll() {
+
+    async function getVaultItem(id) {
       const db = await openVaultDB();
-      return new Promise((res) => {
+      return new Promise((resolve) => {
+        const tx = db.transaction('media', 'readonly');
+        const req = tx.objectStore('media').get(id);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    async function getAllVaultItems() {
+      const db = await openVaultDB();
+      return new Promise((resolve) => {
         const tx = db.transaction('media', 'readonly');
         const req = tx.objectStore('media').getAll();
-        req.onsuccess = () => res(req.result || []);
-        req.onerror = () => res([]);
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => resolve([]);
       });
     }
-    async function dbDelete(id) {
+
+    async function deleteVaultItem(id) {
       const db = await openVaultDB();
-      return new Promise((res) => {
+      return new Promise((resolve) => {
         const tx = db.transaction('media', 'readwrite');
         tx.objectStore('media').delete(id);
-        tx.oncomplete = () => res();
+        tx.oncomplete = () => resolve();
       });
     }
 
-    // 13-Second Splash Intro + Strict 13.0s Audio Cutoff
-    let introTimer = null;
-    let introAudioEl = null;
-    let introFadeTimer = null;
+    // --- 13-Second Intro & Hard 13-Second Loop Music Cutoff ---
+    const INTRO_DURATION_MS = 13000;
+    let introStartTime = 0;
+    let introAnimFrame = null;
+    let introStopTimeout = null;
+    let introFadeInterval = null;
+    let activeIntroAudioEl = null;
+    let activeIntroAudioUrl = null;
+    let activeAudioCtx = null;
 
-    function playWelcomeChime() {
+    function stopIntroAudioImmediately() {
+      if (introStopTimeout) {
+        clearTimeout(introStopTimeout);
+        introStopTimeout = null;
+      }
+      if (introFadeInterval) {
+        clearInterval(introFadeInterval);
+        introFadeInterval = null;
+      }
+      if (activeIntroAudioEl) {
+        try {
+          activeIntroAudioEl.pause();
+          activeIntroAudioEl.loop = false;
+          activeIntroAudioEl.currentTime = 0;
+          activeIntroAudioEl.src = '';
+        } catch (e) {}
+        activeIntroAudioEl = null;
+      }
+      if (activeIntroAudioUrl) {
+        URL.revokeObjectURL(activeIntroAudioUrl);
+        activeIntroAudioUrl = null;
+      }
+      if (activeAudioCtx) {
+        try { activeAudioCtx.close(); } catch (e) {}
+        activeAudioCtx = null;
+      }
+    }
+
+    function playBuiltInChime(maxMs) {
+      stopIntroAudioImmediately();
       try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        activeAudioCtx = ctx;
+        const notes = [261.63, 329.63, 392.00, 493.88, 587.33];
+        notes.forEach((freq, idx) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'sine';
-          osc.frequency.value = freq;
-          gain.gain.setValueAtTime(0.001, ctx.currentTime + i * 0.14);
-          gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + i * 0.14 + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.14 + 1.6);
-          osc.connect(gain); gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + i * 0.14);
-          osc.stop(ctx.currentTime + i * 0.14 + 1.7);
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.22);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.22);
+          gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + idx * 0.22 + 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + Math.min(maxMs / 1000, idx * 0.22 + 3.2));
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.22);
+          osc.stop(ctx.currentTime + Math.min(maxMs / 1000, idx * 0.22 + 3.3));
         });
+        introStopTimeout = setTimeout(() => stopIntroAudioImmediately(), maxMs);
       } catch (e) {}
     }
 
-    async function saveIntroAudio(e) {
-      const file = e.target.files[0];
+    async function startIntroAudioWith13sLimit(remainingMs = INTRO_DURATION_MS) {
+      stopIntroAudioImmediately();
+      if (remainingMs <= 150) return;
+
+      const saved = await getVaultItem('custom_intro_audio');
+      if (saved && saved.blob) {
+        activeIntroAudioUrl = URL.createObjectURL(saved.blob);
+        const audio = new Audio(activeIntroAudioUrl);
+        // Even if the uploaded track is set to loop, enforce hard stop at 13.0s
+        audio.loop = true;
+        audio.volume = 1.0;
+        activeIntroAudioEl = audio;
+
+        // Smoothly fade out during the final 1.2s before the 13s mark
+        const fadeStartMs = Math.max(0, remainingMs - 1200);
+        setTimeout(() => {
+          if (!activeIntroAudioEl) return;
+          introFadeInterval = setInterval(() => {
+            if (!activeIntroAudioEl) {
+              clearInterval(introFadeInterval);
+              return;
+            }
+            activeIntroAudioEl.volume = Math.max(0, activeIntroAudioEl.volume - 0.12);
+          }, 120);
+        }, fadeStartMs);
+
+        // Hard cutoff right at the 13-second mark
+        introStopTimeout = setTimeout(() => {
+          stopIntroAudioImmediately();
+        }, remainingMs);
+
+        audio.play().catch(() => {
+          const statusEl = document.getElementById('intro-audio-status');
+          if (statusEl) statusEl.textContent = 'Tap anywhere or press "Play Intro Audio" to start your 13s loop track';
+        });
+      } else {
+        playBuiltInChime(remainingMs);
+      }
+    }
+
+    function playIntroAudioNow() {
+      const elapsed = performance.now() - introStartTime;
+      const remaining = Math.max(0, INTRO_DURATION_MS - elapsed);
+      if (remaining > 0) {
+        startIntroAudioWith13sLimit(remaining);
+      } else {
+        replayIntro();
+      }
+    }
+
+    async function handleIntroAudioUpload(event) {
+      const file = event.target.files && event.target.files[0];
       if (!file) return;
-      await dbPut({ id: 'intro_audio', kind: 'intro', name: file.name, blob: file });
-      alert('Saved 13s looping intro audio offline: ' + file.name);
-      startIntro();
+      await putVaultItem({ id: 'custom_intro_audio', name: file.name, blob: file });
+      updateIntroAudioLabel();
+      showToast('Saved intro music (auto-stops at 13s)');
+      replayIntro();
     }
 
-    function stopIntroAudioHard() {
-      clearTimeout(introFadeTimer);
-      if (introAudioEl) {
-        try { introAudioEl.pause(); introAudioEl.currentTime = 0; } catch (e) {}
-        introAudioEl = null;
+    async function clearCustomIntroAudio() {
+      await deleteVaultItem('custom_intro_audio');
+      updateIntroAudioLabel();
+      showToast('Restored built-in welcome chime');
+    }
+
+    async function updateIntroAudioLabel() {
+      const saved = await getVaultItem('custom_intro_audio');
+      const label = document.getElementById('pass-audio-label');
+      const status = document.getElementById('intro-audio-status');
+      if (saved && saved.name) {
+        if (label) label.textContent = `Active Intro Loop: ${saved.name} (Auto-stops at 13.0s)`;
+        if (status) status.textContent = `Loaded: ${saved.name} • Auto-stops at 13.0s`;
+      } else {
+        if (label) label.textContent = 'Active Audio: Built-in Royal Gold Harmonic Chime (13s auto-stop)';
+        if (status) status.textContent = '';
       }
     }
 
-    async function startIntro() {
-      clearInterval(introTimer);
-      stopIntroAudioHard();
-      const splash = document.getElementById('splash');
-      const bar = document.getElementById('splashBar');
-      const txt = document.getElementById('splashTimerText');
+    function startSparkles() {
+      const canvas = document.getElementById('sparkle-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const sparks = Array.from({ length: 55 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2.4 + 0.8,
+        vy: -(Math.random() * 0.7 + 0.25),
+        gold: Math.random() > 0.25
+      }));
+
+      function draw() {
+        const splash = document.getElementById('splash-intro');
+        if (!splash || splash.classList.contains('hidden')) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const s of sparks) {
+          s.y += s.vy;
+          if (s.y < 0) s.y = canvas.height;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = s.gold ? 'rgba(255, 227, 142, 0.85)' : 'rgba(16, 185, 129, 0.85)';
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    function runSplashIntro() {
+      const splash = document.getElementById('splash-intro');
+      const progress = document.getElementById('intro-progress');
+      const timerText = document.getElementById('intro-timer-text');
       splash.classList.remove('hidden');
+      introStartTime = performance.now();
+      startSparkles();
+      startIntroAudioWith13sLimit(INTRO_DURATION_MS);
 
-      const all = await dbGetAll();
-      const customIntro = all.find(x => x.id === 'intro_audio');
-      if (customIntro && customIntro.blob) {
-        introAudioEl = new Audio(URL.createObjectURL(customIntro.blob));
-        introAudioEl.loop = true;
-        introAudioEl.volume = 0.85;
-        introAudioEl.play().catch(() => {});
-        introFadeTimer = setTimeout(() => {
-          if (introAudioEl) introAudioEl.volume = 0.25;
-        }, 11800);
+      if (introAnimFrame) cancelAnimationFrame(introAnimFrame);
+      function tick(now) {
+        const elapsed = now - introStartTime;
+        const remaining = Math.max(0, INTRO_DURATION_MS - elapsed);
+        const pct = (remaining / INTRO_DURATION_MS) * 100;
+        progress.style.width = pct + '%';
+        timerText.textContent = `Intro Audio & Sparkle Showcase • ${(remaining / 1000).toFixed(1)}s remaining`;
+        if (remaining > 0 && !splash.classList.contains('hidden')) {
+          introAnimFrame = requestAnimationFrame(tick);
+        } else {
+          finishSplashIntro();
+        }
       }
-
-      const start = Date.now();
-      const duration = 13000;
-      introTimer = setInterval(() => {
-        const elapsed = Date.now() - start;
-        const pct = Math.min(100, (elapsed / duration) * 100);
-        const rem = Math.max(0, (duration - elapsed) / 1000).toFixed(1);
-        bar.style.width = pct + '%';
-        txt.textContent = `Entering Velvet Lounge in ${rem}s...`;
-        if (elapsed >= duration) finishIntro();
-      }, 80);
+      introAnimFrame = requestAnimationFrame(tick);
     }
 
-    function finishIntro() {
-      clearInterval(introTimer);
-      stopIntroAudioHard();
-      document.getElementById('splash').classList.add('hidden');
-      if (localStorage.getItem('mmcc_unlocked') !== '1') {
-        document.getElementById('padlock').classList.add('show');
+    function finishSplashIntro() {
+      stopIntroAudioImmediately();
+      if (introAnimFrame) cancelAnimationFrame(introAnimFrame);
+      document.getElementById('splash-intro').classList.add('hidden');
+      if (localStorage.getItem('mmcc_launch_lock') !== 'off') {
+        document.getElementById('padlock-screen').classList.add('active');
       }
     }
 
     function replayIntro() {
-      localStorage.removeItem('mmcc_unlocked');
-      startIntro();
+      document.getElementById('padlock-screen').classList.remove('active');
+      runSplashIntro();
     }
 
-    // 4-Digit Padlock
+    // Unlock audio on first screen touch if browser suspended autoplay
+    document.getElementById('splash-intro').addEventListener('pointerdown', (e) => {
+      if (e.target.tagName === 'BUTTON' || e.target.tagName === 'LABEL' || e.target.tagName === 'INPUT') return;
+      if (!activeIntroAudioEl && !activeAudioCtx) {
+        playIntroAudioNow();
+      }
+    });
+
+    // --- 4-Digit Sovereign Padlock ---
     let enteredPin = '';
     function getSavedPin() { return localStorage.getItem('mmcc_pin') || '1325'; }
-    function updatePinDots() {
-      document.querySelectorAll('#pinDots .pin-dot').forEach((d, idx) => {
-        d.classList.toggle('filled', idx < enteredPin.length);
-      });
+    function updateDots() {
+      const dots = document.querySelectorAll('#pin-dots .pin-dot');
+      dots.forEach((d, i) => d.classList.toggle('filled', i < enteredPin.length));
     }
-    function pressPin(digit) {
+    function pressKey(digit) {
       if (enteredPin.length >= 4) return;
       enteredPin += digit;
-      updatePinDots();
+      updateDots();
       if (enteredPin.length === 4) {
         if (enteredPin === getSavedPin()) {
-          localStorage.setItem('mmcc_unlocked', '1');
-          document.getElementById('padlock').classList.remove('show');
           enteredPin = '';
-          updatePinDots();
+          updateDots();
+          document.getElementById('padlock-screen').classList.remove('active');
+          showToast('Sovereign Vault Unlocked');
         } else {
-          document.getElementById('pinHint').textContent = 'Incorrect PIN — Try Again';
-          setTimeout(() => { enteredPin = ''; updatePinDots(); }, 350);
+          showToast('Incorrect PIN (Default: 1325)');
+          enteredPin = '';
+          setTimeout(updateDots, 250);
         }
       }
     }
-    function clearPin() { enteredPin = ''; updatePinDots(); }
-    function lockApp() {
-      localStorage.removeItem('mmcc_unlocked');
-      enteredPin = ''; updatePinDots();
-      document.getElementById('padlock').classList.add('show');
-    }
-    function unlockGuestView() {
-      // Allows opening directly into Invite-Only Chat if arriving via ?room= link
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('room')) {
-        document.getElementById('padlock').classList.remove('show');
-        switchTab('chat');
-      } else {
-        document.getElementById('pinHint').textContent = 'Enter 4-Digit PIN (Default: 1325)';
+    function clearPin() { enteredPin = enteredPin.slice(0, -1); updateDots(); }
+    function unlockBypassDemo() {
+      if (enteredPin === getSavedPin() || enteredPin.length === 0) {
+        enteredPin = '';
+        updateDots();
+        document.getElementById('padlock-screen').classList.remove('active');
       }
     }
-    function updatePin() {
-      const val = document.getElementById('newPinInput').value.trim();
-      if (!/^\d{4}$/.test(val)) return alert('Please enter exactly 4 digits.');
+    function lockVault() {
+      enteredPin = '';
+      updateDots();
+      document.getElementById('padlock-screen').classList.add('active');
+    }
+    function saveNewPin() {
+      const val = document.getElementById('new-pin-input').value.trim();
+      if (!/^\d{4}$/.test(val)) { showToast('Enter a valid 4-digit number'); return; }
       localStorage.setItem('mmcc_pin', val);
-      document.getElementById('newPinInput').value = '';
-      alert('4-Digit Sovereign PIN updated!');
+      document.getElementById('new-pin-input').value = '';
+      showToast('New 4-Digit PIN Saved');
+    }
+    function toggleLaunchLock() {
+      const curr = localStorage.getItem('mmcc_launch_lock') !== 'off';
+      localStorage.setItem('mmcc_launch_lock', curr ? 'off' : 'on');
+      document.getElementById('lock-toggle-btn').textContent = `Launch Lock: ${!curr ? 'ON' : 'OFF'}`;
     }
 
-    // Invite-Only Link Chat Room
-    let currentRoom = '';
-    let chatPollTimer = null;
-    const channelBus = ('BroadcastChannel' in window) ? new BroadcastChannel('mmcc_private_chat') : null;
+    // --- Dining & Events Offline Video Loopers ---
+    const videoQueues = { dining: [], events: [] };
+    const videoIndex = { dining: 0, events: 0 };
 
-    function initChatRoom() {
-      const savedAlias = localStorage.getItem('mmcc_alias') || 'Founder RA 109';
-      document.getElementById('memberAlias').value = savedAlias;
-      const params = new URLSearchParams(window.location.search);
-      const urlRoom = params.get('room');
-      if (urlRoom) {
-        enterRoom(urlRoom.trim());
-      }
-    }
-
-    function saveAlias() {
-      localStorage.setItem('mmcc_alias', document.getElementById('memberAlias').value.trim() || 'Guest');
-    }
-
-    function createSecretRoom() {
-      const code = 'RA109-' + Math.random().toString(36).substring(2, 7).toUpperCase() + '-' + Math.floor(1000 + Math.random() * 9000);
-      const newUrl = `${window.location.origin}${window.location.pathname}?room=${encodeURIComponent(code)}`;
-      window.history.replaceState({}, '', newUrl);
-      enterRoom(code);
-    }
-
-    function joinFromInput() {
-      let raw = document.getElementById('pasteInviteInput').value.trim();
-      if (!raw) return;
-      if (raw.includes('room=')) {
-        try {
-          const u = new URL(raw);
-          raw = u.searchParams.get('room') || raw;
-        } catch (e) {
-          raw = raw.split('room=')[1].split('&')[0];
-        }
-      }
-      const newUrl = `${window.location.origin}${window.location.pathname}?room=${encodeURIComponent(raw)}`;
-      window.history.replaceState({}, '', newUrl);
-      enterRoom(raw);
-    }
-
-    function enterRoom(roomCode) {
-      currentRoom = roomCode;
-      document.getElementById('roomBadge').textContent = 'INVITE ONLY • ' + roomCode;
-      document.getElementById('chatLockedGate').style.display = 'none';
-      document.getElementById('chatActiveRoom').style.display = 'block';
-      const inviteLink = `${window.location.origin}${window.location.pathname}?room=${encodeURIComponent(roomCode)}`;
-      document.getElementById('inviteUrlDisplay').textContent = 'Secret Invite Link: ' + inviteLink;
-      renderChatMessages();
-      clearInterval(chatPollTimer);
-      chatPollTimer = setInterval(renderChatMessages, 1500);
-    }
-
-    function leaveRoom() {
-      currentRoom = '';
-      clearInterval(chatPollTimer);
-      window.history.replaceState({}, '', window.location.pathname);
-      document.getElementById('roomBadge').textContent = 'NO ROOM';
-      document.getElementById('chatActiveRoom').style.display = 'none';
-      document.getElementById('chatLockedGate').style.display = 'block';
-    }
-
-    function copyInviteLink() {
-      const inviteLink = `${window.location.origin}${window.location.pathname}?room=${encodeURIComponent(currentRoom)}`;
-      navigator.clipboard.writeText(inviteLink).then(() => {
-        alert('Secret Invite Link copied! Only people you send this link to can enter this chat room.');
-      }).catch(() => {
-        prompt('Copy your secret invite link:', inviteLink);
-      });
-    }
-
-    function getRoomMessages(room) {
-      try {
-        return JSON.parse(localStorage.getItem('mmcc_chat_' + room) || '[]');
-      } catch (e) { return []; }
-    }
-
-    function sendChatMessage() {
-      if (!currentRoom) return;
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const sender = document.getElementById('memberAlias').value.trim() || 'Guest';
-      const msgs = getRoomMessages(currentRoom);
-      const entry = {
-        id: Date.now() + '_' + Math.random(),
-        sender,
-        text,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      msgs.push(entry);
-      localStorage.setItem('mmcc_chat_' + currentRoom, JSON.stringify(msgs.slice(-100)));
-      if (channelBus) channelBus.postMessage({ room: currentRoom, entry });
-      input.value = '';
-      renderChatMessages();
-    }
-
-    if (channelBus) {
-      channelBus.onmessage = (ev) => {
-        if (ev.data && ev.data.room === currentRoom) renderChatMessages();
-      };
-    }
-
-    function renderChatMessages() {
-      if (!currentRoom) return;
-      const box = document.getElementById('chatMessages');
-      const myName = document.getElementById('memberAlias').value.trim() || 'Founder RA 109';
-      const msgs = getRoomMessages(currentRoom);
-      if (!msgs.length) {
-        box.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center; margin-top:90px;">Welcome to Private Salon <strong>${currentRoom}</strong>.<br>Share your invite link so guests can join and message here.</div>`;
-        return;
-      }
-      box.innerHTML = msgs.map(m => {
-        const mine = m.sender === myName ? 'mine' : '';
-        return `<div class="msg ${mine}"><div class="msg-meta">${m.sender} • ${m.time}</div><div>${m.text.replace(/</g, '&lt;')}</div></div>`;
-      }).join('');
-      box.scrollTop = box.scrollHeight;
-    }
-
-    // Events MP3 Player & Offline Audio Folder
-    let savedTracks = [];
-    let currentTrackIndex = -1;
-
-    async function saveAudioFiles(e) {
-      const files = Array.from(e.target.files || []);
+    async function saveMediaToStore(category, event) {
+      const files = Array.from(event.target.files || []);
       for (const f of files) {
-        await dbPut({ id: 'audio_' + Date.now() + '_' + f.name, kind: 'audio', name: f.name, blob: f });
+        const id = `${category}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+        await putVaultItem({ id, category, name: f.name, blob: f });
       }
-      await loadSavedAudioFolder();
+      await refreshCategoryVideos(category);
+      showToast(`Saved ${files.length} video(s) offline`);
     }
 
-    async function loadSavedAudioFolder() {
-      const all = await dbGetAll();
-      savedTracks = all.filter(x => x.kind === 'audio');
-      document.getElementById('audioCountPill').textContent = `${savedTracks.length} SAVED`;
-      const list = document.getElementById('savedAudioList');
-      if (!savedTracks.length) {
-        list.innerHTML = `<div style="color:var(--muted); font-size:12px;">Your offline MP3 folder is empty. Tap <strong>＋ Save MP3 / Audio to Folder</strong> above.</div>`;
-        return;
-      }
-      list.innerHTML = savedTracks.map((t, idx) => `
-        <div class="media-item">
-          <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🎵 ${t.name}</div>
-          <div class="row" style="flex-shrink:0;">
-            <button class="btn btn-sm" onclick="playAudioTrack(${idx})">▶ Play</button>
-            <button class="btn-outline btn-sm" onclick="deleteMediaItem('${t.id}')">✕</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function playAudioTrack(idx) {
-      if (!savedTracks[idx]) return;
-      currentTrackIndex = idx;
-      const track = savedTracks[idx];
-      const player = document.getElementById('eventsAudioPlayer');
-      player.src = URL.createObjectURL(track.blob);
-      document.getElementById('nowPlayingLabel').textContent = 'Now Playing: ' + track.name;
-      player.play().catch(() => {});
-    }
-
-    function playNextAudio() {
-      if (!savedTracks.length) return;
-      const next = (currentTrackIndex + 1) % savedTracks.length;
-      playAudioTrack(next);
-    }
-
-    async function deleteMediaItem(id) {
-      await dbDelete(id);
-      await loadSavedAudioFolder();
-    }
-
-    // Dining Video Looper
-    async function saveDiningVideo(e) {
-      const f = e.target.files[0];
-      if (!f) return;
-      await dbPut({ id: 'dining_video', kind: 'dining', name: f.name, blob: f });
-      loadDiningVideo();
-    }
-
-    async function loadDiningVideo() {
-      const all = await dbGetAll();
-      const vid = all.find(x => x.id === 'dining_video');
-      if (vid && vid.blob) {
-        const el = document.getElementById('diningVideo');
-        el.src = URL.createObjectURL(vid.blob);
+    async function refreshCategoryVideos(category) {
+      const all = await getAllVaultItems();
+      videoQueues[category] = all.filter((item) => item.category === category);
+      const listEl = document.getElementById(`${category}-video-list`);
+      listEl.innerHTML = '';
+      videoQueues[category].forEach((item, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-outline';
+        btn.textContent = `🎬 ${item.name.slice(0, 18)}`;
+        btn.onclick = () => loadVideoAt(category, idx);
+        listEl.appendChild(btn);
+      });
+      if (videoQueues[category].length > 0) {
+        loadVideoAt(category, Math.min(videoIndex[category], videoQueues[category].length - 1));
       }
     }
 
-    function toggleDiningLoop() {
-      const el = document.getElementById('diningVideo');
-      el.loop = !el.loop;
-      alert('Dining Cinema Loop: ' + (el.loop ? 'ON' : 'OFF'));
+    function loadVideoAt(category, idx) {
+      const list = videoQueues[category];
+      if (!list.length) return;
+      videoIndex[category] = idx % list.length;
+      const vid = document.getElementById(`${category}-video`);
+      const fallback = document.getElementById(`${category}-fallback-img`);
+      if (vid.dataset.blobUrl) URL.revokeObjectURL(vid.dataset.blobUrl);
+      const url = URL.createObjectURL(list[videoIndex[category]].blob);
+      vid.dataset.blobUrl = url;
+      vid.src = url;
+      vid.style.display = 'block';
+      fallback.style.display = 'none';
+      vid.play().catch(() => {});
     }
 
-    // Boot
-    initChatRoom();
-    loadSavedAudioFolder();
-    loadDiningVideo();
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('room')) {
-      document.getElementById('splash').classList.add('hidden');
-      switchTab('chat');
-    } else {
-      startIntro();
+    function nextStoredVideo(category) {
+      if (!videoQueues[category].length) return;
+      loadVideoAt(category, videoIndex[category] + 1);
+    }
+
+    function toggleVideoPlay(vidId) {
+      const v = document.getElementById(vidId);
+      if (v.paused) v.play().catch(() => {}); else v.pause();
+    }
+
+    function toggleVideoLoop(vidId, btnId) {
+      const v = document.getElementById(vidId);
+      v.loop = !v.loop;
+      document.getElementById(btnId).textContent = `🔁 Loop: ${v.loop ? 'ON' : 'OFF'}`;
+    }
+
+    function toggleVideoMute(vidId, btnId) {
+      const v = document.getElementById(vidId);
+      v.muted = !v.muted;
+      document.getElementById(btnId).textContent = v.muted ? '🔇 Muted' : '🔊 Sound';
+    }
+
+    // --- Navigation & Utilities ---
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-section').forEach((s) => s.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach((b) => b.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById(`nav-${tab}`).classList.add('active');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('emerald-theme');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => { t.style.display = 'none'; }, 2400);
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      if (navigator.storage && navigator.storage.persist) {
+        navigator.storage.persist().catch(() => {});
+      }
+      const hr = new Date().getHours();
+      const greet = hr < 12 ? 'Good Morning' : hr < 18 ? 'Good Afternoon' : 'Good Evening';
+      document.getElementById('greeting-heading').textContent = `${greet}, Founder RA 109`;
+      document.getElementById('lock-toggle-btn').textContent = `Launch Lock: ${localStorage.getItem('mmcc_launch_lock') !== 'off' ? 'ON' : 'OFF'}`;
+      await updateIntroAudioLabel();
+      await refreshCategoryVideos('dining');
+      await refreshCategoryVideos('events');
+      runSplashIntro();
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
   </script>
 </body>

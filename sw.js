@@ -1,28 +1,38 @@
-const CACHE_NAME = 'mmcc-ra109-invite-chat-mp3-v16-network-first';
-const ASSETS = ['./', './index.html', './manifest.json', './emblem.png', './master-icon.png'];
+const CACHE_NAME = 'mmcc-ra109-13s-audio-cutoff-v15-network-first';
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './emblem.png',
+  './master-icon.png'
+];
 
-self.addEventListener('install', (e) => {
+self.addEventListener('install', (event) => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS).catch(() => {})));
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).catch(() => {})
+  );
 });
 
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(
-    fetch(e.request)
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    fetch(event.request)
       .then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then((c) => c.put(e.request, copy)).catch(() => {});
+        if (res && res.status === 200 && res.type === 'basic') {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
         return res;
       })
-      .catch(() => caches.match(e.request))
+      .catch(() => caches.match(event.request))
   );
 });
