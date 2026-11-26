@@ -1,12 +1,12 @@
 {
-  "id": "/?source=pwa-ra109-v13",
-  "name": "Mevunai Moment\u2122 Country Club, Inc. \u00ae \u2014 RA 109 Portal",
+  "name": "Mevunai Moment\u2122 Country Club \u2014 RA 109 Portal",
   "short_name": "MMCC RA 109",
-  "start_url": "/index.html",
+  "description": "Mevunai Moment\u2122 Country Club, Inc. \u00ae \u2014 Sovereign Member Portal",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#260409",
-  "theme_color": "#3d0710",
+  "background_color": "#28050b",
+  "theme_color": "#420913",
   "orientation": "portrait-primary",
   "icons": [
     {
