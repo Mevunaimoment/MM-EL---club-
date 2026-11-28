@@ -1,30 +1,12 @@
-const CACHE_NAME = 'mmcc-estate-atelier-v10';
-const ASSETS = [
-  './',
-  './index.html',
-  './manifest.json'
-];
+const CACHE_NAME = 'mevunai-moment-cc-v10';
+const ASSETS = ['./', './index.html', './manifest.json'];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  );
-  self.skipWaiting();
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request))
+    caches.match(event.request).then(cached => cached || fetch(event.request))
   );
 });
