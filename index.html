@@ -1,992 +1,923 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#072a1c" />
-  <title>M'M™ Country Club — Clothing, Bags & Accessories</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" href="icon-512.png" />
-  <link rel="apple-touch-icon" href="icon-512.png" />
-  <style>
-    :root {
-      --bg-deep: #041911;
-      --bg-card: #0a2e20;
-      --bg-card-alt: #0d3a29;
-      --gold: #e5c158;
-      --gold-bright: #ffe082;
-      --gold-dim: rgba(229, 193, 88, 0.28);
-      --crimson: #5c0818;
-      --text-main: #f9f5eb;
-      --text-muted: #c8be9f;
-      --accent: #14533a;
-    }
-    body.theme-crimson {
-      --bg-deep: #180308;
-      --bg-card: #2c0711;
-      --bg-card-alt: #3b0a17;
-      --accent: #5c0818;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
-      background: radial-gradient(circle at top, var(--bg-card) 0%, var(--bg-deep) 75%);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding-bottom: 92px;
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#5c0818" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>M'M™ Country Club — Clothing, Bags & Accessories</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/png" href="icon-512.png" />
+<link rel="apple-touch-icon" href="icon-512.png" />
+<style>
+  :root {
+    --bg-deep: #180307;
+    --bg-card: #2c060e;
+    --bg-card-2: #3b0914;
+    --accent: #5c0818;
+    --gold: #e5c158;
+    --gold-bright: #ffe28a;
+    --gold-dim: #9d7d28;
+    --text-main: #fff8e7;
+    --text-muted: #d9c39e;
+    --border-gold: rgba(229, 193, 88, 0.35);
+    --shadow-gold: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 18px rgba(229, 193, 88, 0.16);
+  }
+  body.theme-emerald {
+    --bg-deep: #041710;
+    --bg-card: #08291d;
+    --bg-card-2: #0d3b2a;
+    --accent: #0f4c35;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    background: radial-gradient(circle at top, var(--bg-card-2), var(--bg-deep) 72%);
+    color: var(--text-main);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  button, input, select { font-family: inherit; }
 
-    /* 15-Second Sparkle Splash Intro */
-    #splash-intro {
-      position: fixed; inset: 0; z-index: 9999;
-      background: radial-gradient(circle at center, #0e3d2b 0%, #03120c 85%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; text-align: center;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    #splash-intro.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    #sparkle-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-    .intro-emblem-wrap {
-      position: relative; z-index: 2; width: 170px; height: 170px; border-radius: 32px;
-      padding: 4px; background: linear-gradient(135deg, #ffe082, #b8860b, #ffe082);
-      box-shadow: 0 0 45px rgba(229, 193, 88, 0.55);
-      animation: pulseGlow 3s infinite ease-in-out;
-    }
-    .intro-emblem-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 28px; display: block; }
-    @keyframes pulseGlow {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 35px rgba(229, 193, 88, 0.45); }
-      50% { transform: scale(1.04); box-shadow: 0 0 60px rgba(255, 224, 130, 0.8); }
-    }
-    .intro-title {
-      position: relative; z-index: 2; margin-top: 18px;
-      font-size: 1.35rem; letter-spacing: 3px; color: var(--gold-bright); font-weight: 700;
-    }
-    .intro-sub {
-      position: relative; z-index: 2; margin-top: 6px;
-      font-size: 0.78rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase;
-    }
-    .intro-bar-wrap {
-      position: relative; z-index: 2; width: 240px; height: 6px;
-      background: rgba(255,255,255,0.12); border-radius: 99px; overflow: hidden; margin-top: 16px;
-      border: 1px solid var(--gold-dim);
-    }
-    .intro-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #b8860b, #ffe082); }
-    .intro-timer { position: relative; z-index: 2; font-size: 0.75rem; color: var(--gold); margin-top: 6px; }
-    .intro-actions {
-      position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px;
-    }
+  /* SPLASH INTRO */
+  #splash-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: radial-gradient(circle at center, #460714 0%, #160206 85%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px; text-align: center;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #splash-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  #sparkle-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+  }
+  .intro-content {
+    position: relative; z-index: 2; max-width: 420px; width: 100%;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .intro-crest-ring {
+    width: 175px; height: 175px; border-radius: 34px; padding: 5px;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold-dim), var(--gold-bright));
+    box-shadow: 0 0 42px rgba(229, 193, 88, 0.55);
+    animation: floatCrest 3.2s ease-in-out infinite;
+    margin-bottom: 16px;
+  }
+  .intro-crest-ring img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 30px; display: block;
+  }
+  @keyframes floatCrest {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.02); }
+  }
+  .intro-title {
+    font-size: 1.35rem; letter-spacing: 2px; color: var(--gold-bright);
+    text-transform: uppercase; margin: 4px 0;
+    text-shadow: 0 2px 12px rgba(229, 193, 88, 0.45);
+  }
+  .intro-sub {
+    font-size: 0.78rem; letter-spacing: 2.5px; color: var(--text-muted);
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .intro-progress-wrap {
+    width: 100%; max-width: 290px; height: 6px; border-radius: 99px;
+    background: rgba(255,255,255,0.12); overflow: hidden; margin-bottom: 6px;
+    border: 1px solid var(--border-gold);
+  }
+  .intro-progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+    transition: width 0.1s linear;
+  }
+  .intro-timer-label {
+    font-size: 0.74rem; color: var(--gold); letter-spacing: 1px; margin-bottom: 14px;
+  }
+  .intro-controls {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 14px;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, #f3d274, #b88c28);
+    color: #1c0508; border: none; border-radius: 999px;
+    padding: 9px 16px; font-weight: bold; font-size: 0.8rem;
+    letter-spacing: 0.8px; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+  }
+  .btn-outline {
+    background: rgba(28, 4, 9, 0.78);
+    color: var(--gold-bright); border: 1px solid var(--border-gold);
+    border-radius: 999px; padding: 8px 14px; font-size: 0.78rem;
+    letter-spacing: 0.6px; cursor: pointer;
+  }
+  .btn-gold:active, .btn-outline:active { transform: scale(0.97); }
 
-    /* 4-Digit Sovereign Padlock */
-    #padlock-screen {
-      position: fixed; inset: 0; z-index: 9990;
-      background: radial-gradient(circle at top, #0c3525 0%, #03110b 85%);
-      display: none; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; text-align: center;
-    }
-    #padlock-screen.active { display: flex; }
-    .lock-logo {
-      width: 86px; height: 86px; border-radius: 22px; border: 2px solid var(--gold);
-      object-fit: cover; box-shadow: 0 0 25px rgba(229,193,88,0.4); margin-bottom: 12px;
-    }
-    .pin-dots { display: flex; gap: 14px; margin: 16px 0; }
-    .pin-dot {
-      width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold);
-      background: transparent; transition: background 0.2s;
-    }
-    .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold); }
-    .keypad {
-      display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; margin-top: 6px;
-    }
-    .key-btn {
-      height: 58px; border-radius: 16px; border: 1px solid var(--gold-dim);
-      background: rgba(255,255,255,0.06); color: var(--gold-bright);
-      font-size: 1.3rem; font-weight: 700; cursor: pointer;
-    }
-    .key-btn:active { background: var(--gold); color: #051c12; }
+  /* 4-DIGIT PADLOCK */
+  #padlock-overlay {
+    position: fixed; inset: 0; z-index: 9998;
+    background: radial-gradient(circle at top, #3d0611 0%, #120104 88%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px; text-align: center;
+  }
+  #padlock-overlay.hidden { display: none; }
+  .lock-card {
+    width: 100%; max-width: 340px;
+    background: rgba(36, 5, 11, 0.92);
+    border: 1px solid var(--border-gold);
+    border-radius: 26px; padding: 22px 18px;
+    box-shadow: var(--shadow-gold);
+  }
+  .lock-logo {
+    width: 76px; height: 76px; border-radius: 20px; object-fit: cover;
+    border: 2px solid var(--gold); margin-bottom: 10px;
+  }
+  .pin-dots {
+    display: flex; justify-content: center; gap: 14px; margin: 16px 0;
+  }
+  .pin-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid var(--gold); background: transparent;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .pin-dot.filled { background: var(--gold-bright); transform: scale(1.15); }
+  .keypad {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    max-width: 260px; margin: 0 auto;
+  }
+  .key-btn {
+    height: 54px; border-radius: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-gold);
+    color: var(--gold-bright); font-size: 1.25rem; font-weight: bold;
+    cursor: pointer;
+  }
+  .key-btn:active { background: rgba(229, 193, 88, 0.28); }
+  .lock-msg { min-height: 20px; font-size: 0.78rem; color: #ff8a8a; margin-top: 8px; }
 
-    /* Header & Buttons */
-    header {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(4, 25, 17, 0.92); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--gold-dim);
-      padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    }
-    .brand-left { display: flex; align-items: center; gap: 10px; }
-    .brand-left img {
-      width: 42px; height: 42px; border-radius: 12px; border: 1.5px solid var(--gold); object-fit: cover;
-    }
-    .brand-title { font-size: 0.95rem; font-weight: 700; color: var(--gold-bright); letter-spacing: 0.5px; }
-    .brand-sub { font-size: 0.68rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
-    .header-btns { display: flex; gap: 6px; align-items: center; }
+  /* HEADER & MAIN APP */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(24, 3, 7, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-gold);
+    padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  body.theme-emerald header { background: rgba(4, 23, 16, 0.92); }
+  .brand-wrap { display: flex; align-items: center; gap: 10px; }
+  .brand-icon {
+    width: 40px; height: 40px; border-radius: 11px; object-fit: cover;
+    border: 1.5px solid var(--gold);
+  }
+  .brand-title { font-size: 0.92rem; font-weight: bold; color: var(--gold-bright); letter-spacing: 0.8px; }
+  .brand-sub { font-size: 0.66rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .header-actions { display: flex; gap: 6px; }
+  .icon-pill {
+    background: rgba(229, 193, 88, 0.12);
+    border: 1px solid var(--border-gold);
+    color: var(--gold-bright); border-radius: 999px;
+    padding: 6px 10px; font-size: 0.72rem; cursor: pointer;
+  }
 
-    .btn-gold {
-      background: linear-gradient(135deg, #d4af37, #f5d77f); color: #061f14;
-      border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.78rem;
-      font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
-    }
-    .btn-outline {
-      background: rgba(229, 193, 88, 0.1); color: var(--gold-bright);
-      border: 1px solid var(--gold-dim); border-radius: 10px; padding: 7px 10px;
-      font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
-    }
-    .btn-outline.active {
-      background: var(--gold); color: #061f14; border-color: var(--gold-bright);
-    }
+  main { max-width: 780px; margin: 0 auto; padding: 14px 14px 92px; }
+  .section { display: none; }
+  .section.active { display: block; }
 
-    main { max-width: 960px; margin: 0 auto; padding: 16px; }
-    .page-section { display: none; }
-    .page-section.active { display: block; }
+  /* HERO BANNER */
+  .hero-card {
+    background: linear-gradient(145deg, var(--bg-card), var(--bg-card-2));
+    border: 1px solid var(--border-gold);
+    border-radius: 22px; padding: 16px;
+    box-shadow: var(--shadow-gold);
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 16px;
+  }
+  .hero-photo {
+    width: 96px; height: 96px; border-radius: 20px; object-fit: cover;
+    border: 2px solid var(--gold); flex-shrink: 0;
+  }
+  .hero-info h1 { margin: 0 0 4px; font-size: 1.08rem; color: var(--gold-bright); }
+  .hero-info p { margin: 0 0 10px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; }
+  .hero-btns { display: flex; flex-wrap: wrap; gap: 6px; }
 
-    /* Hero Banner */
-    .hero-card {
-      background: linear-gradient(145deg, var(--bg-card-alt), var(--bg-card));
-      border: 1px solid var(--gold-dim); border-radius: 20px; padding: 18px;
-      display: flex; align-items: center; gap: 16px; margin-bottom: 18px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-    }
-    .hero-card img {
-      width: 84px; height: 84px; border-radius: 18px; border: 2px solid var(--gold); object-fit: cover; flex-shrink: 0;
-    }
-    .hero-card h2 { font-size: 1.15rem; color: var(--gold-bright); margin-bottom: 4px; }
-    .hero-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
+  /* CATEGORY PILLS */
+  .cat-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
+  .cat-pill {
+    white-space: nowrap; padding: 7px 14px; border-radius: 999px;
+    border: 1px solid var(--border-gold); background: rgba(255,255,255,0.04);
+    color: var(--text-muted); font-size: 0.78rem; cursor: pointer;
+  }
+  .cat-pill.active {
+    background: linear-gradient(135deg, #f3d274, #b88c28);
+    color: #1c0508; font-weight: bold;
+  }
 
-    /* 3 HQ Video Players Showcase */
-    .hq-cinema-section {
-      margin-bottom: 22px;
-    }
-    .section-head {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
-    }
-    .section-head h3 {
-      font-size: 1rem; color: var(--gold-bright); letter-spacing: 1px; text-transform: uppercase;
-    }
-    .hq-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
-    }
-    .hq-player-card {
-      background: var(--bg-card); border: 1.5px solid var(--gold-dim); border-radius: 18px;
-      overflow: hidden; box-shadow: 0 10px 26px rgba(0,0,0,0.4);
-      display: flex; flex-direction: column;
-    }
-    .hq-player-top {
-      padding: 10px 12px; background: rgba(0,0,0,0.28); border-bottom: 1px solid var(--gold-dim);
-      display: flex; align-items: center; justify-content: space-between; gap: 6px;
-    }
-    .hq-badge {
-      font-size: 0.68rem; font-weight: 800; letter-spacing: 1px; color: #051c12;
-      background: linear-gradient(135deg, #ffe082, #d4af37); padding: 3px 8px; border-radius: 6px;
-    }
-    .hq-title { font-size: 0.82rem; font-weight: 700; color: var(--gold-bright); }
-    .hq-screen {
-      position: relative; width: 100%; aspect-ratio: 16 / 9; background: #020b07;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .hq-screen video {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      transform: translateZ(0);
-    }
-    .hq-placeholder {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; padding: 14px; text-align: center;
-      background: radial-gradient(circle at center, rgba(20,83,58,0.45), rgba(2,11,7,0.92));
-    }
-    .hq-placeholder img {
-      width: 52px; height: 52px; border-radius: 12px; border: 1px solid var(--gold);
-      margin-bottom: 8px; object-fit: cover;
-    }
-    .hq-placeholder span { font-size: 0.76rem; color: var(--text-muted); }
-    .hq-scrubber-row {
-      padding: 8px 12px 2px; background: rgba(0,0,0,0.25);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .hq-scrubber {
-      flex: 1; accent-color: var(--gold); height: 4px; cursor: pointer;
-    }
-    .hq-time { font-size: 0.68rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
-    .hq-controls {
-      padding: 10px 12px 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: space-between;
-    }
-    .hq-ctrl-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  /* PRODUCT GRID */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .item-card {
+    background: var(--bg-card); border: 1px solid var(--border-gold);
+    border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-gold);
+    display: flex; flex-direction: column;
+  }
+  .item-media {
+    position: relative; height: 180px; background: #120205;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .item-media img { width: 100%; height: 100%; object-fit: cover; }
+  .swap-badge {
+    position: absolute; bottom: 8px; right: 8px;
+    background: rgba(18, 2, 5, 0.85); color: var(--gold-bright);
+    border: 1px solid var(--border-gold); border-radius: 999px;
+    padding: 4px 10px; font-size: 0.7rem; cursor: pointer;
+  }
+  .item-body { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .item-cat { font-size: 0.66rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+  .item-title { font-size: 0.94rem; font-weight: bold; margin: 3px 0; color: var(--text-main); }
+  .item-price { font-size: 0.86rem; color: var(--gold-bright); margin-bottom: 10px; }
 
-    /* Boutique Catalog */
-    .filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 14px; }
-    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
-    .item-card {
-      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: 16px;
-      overflow: hidden; display: flex; flex-direction: column;
-    }
-    .item-img-wrap { position: relative; width: 100%; height: 190px; background: #03130c; }
-    .item-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .swap-photo-btn {
-      position: absolute; bottom: 8px; right: 8px; background: rgba(4, 25, 17, 0.85);
-      color: var(--gold-bright); border: 1px solid var(--gold); border-radius: 8px;
-      padding: 4px 8px; font-size: 0.7rem; cursor: pointer;
-    }
-    .item-body { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .item-cat { font-size: 0.66rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
-    .item-name { font-size: 0.92rem; font-weight: 700; margin: 4px 0; }
-    .item-price { font-size: 0.88rem; color: var(--gold-bright); font-weight: 700; margin-bottom: 10px; }
+  /* SETTINGS & VAULT CARDS */
+  .panel-card {
+    background: var(--bg-card); border: 1px solid var(--border-gold);
+    border-radius: 18px; padding: 16px; margin-bottom: 14px;
+    box-shadow: var(--shadow-gold);
+  }
+  .panel-card h2 { margin: 0 0 8px; font-size: 1rem; color: var(--gold-bright); }
+  .panel-card p { margin: 0 0 12px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+  .form-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .input-gold {
+    flex: 1; min-width: 140px; padding: 9px 12px; border-radius: 12px;
+    border: 1px solid var(--border-gold); background: rgba(0,0,0,0.35);
+    color: var(--text-main); font-size: 0.82rem;
+  }
 
-    /* Settings & Bag Cards */
-    .panel-card {
-      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: 18px;
-      padding: 16px; margin-bottom: 14px;
-    }
-    .panel-card h3 { color: var(--gold-bright); font-size: 1rem; margin-bottom: 8px; }
-    .input-dark {
-      width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--gold-dim);
-      background: rgba(0,0,0,0.3); color: var(--text-main); font-size: 0.85rem; margin-bottom: 10px;
-    }
-
-    /* Bottom Nav */
-    nav.bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(4, 25, 17, 0.96); backdrop-filter: blur(12px);
-      border-top: 1px solid var(--gold-dim);
-      display: flex; justify-content: space-around; padding: 8px 4px;
-    }
-    .nav-btn {
-      background: none; border: none; color: var(--text-muted); font-size: 0.72rem;
-      display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 8px;
-    }
-    .nav-btn.active { color: var(--gold-bright); font-weight: 700; }
-    .nav-icon { font-size: 1.15rem; }
-
-    .toast {
-      position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%);
-      background: var(--gold); color: #051c12; padding: 8px 16px; border-radius: 99px;
-      font-size: 0.78rem; font-weight: 700; z-index: 10000; display: none; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    }
-  </style>
+  /* BOTTOM NAV */
+  nav.bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(20, 2, 6, 0.95);
+    border-top: 1px solid var(--border-gold);
+    display: flex; justify-content: space-around; padding: 8px 6px;
+  }
+  body.theme-emerald nav.bottom-nav { background: rgba(4, 20, 14, 0.95); }
+  .nav-btn {
+    background: none; border: none; color: var(--text-muted);
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    font-size: 0.7rem; cursor: pointer; padding: 4px 10px;
+  }
+  .nav-btn.active { color: var(--gold-bright); font-weight: bold; }
+  .toast {
+    position: fixed; bottom: 74px; left: 50%; transform: translateX(-50%);
+    background: #1c0508; color: var(--gold-bright); border: 1px solid var(--gold);
+    padding: 8px 16px; border-radius: 999px; font-size: 0.78rem;
+    z-index: 99999; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .toast.show { opacity: 1; }
+</style>
 </head>
 <body>
 
-  <!-- 15-Second Sparkle Splash Intro -->
-  <div id="splash-intro">
-    <canvas id="sparkle-canvas"></canvas>
-    <div class="intro-emblem-wrap">
-      <img id="intro-logo-img" src="icon-512.png" alt="MMCC Crest" />
+<!-- 15-SECOND SPARKLE SPLASH INTRO -->
+<div id="splash-overlay">
+  <canvas id="sparkle-canvas"></canvas>
+  <div class="intro-content">
+    <div class="intro-crest-ring">
+      <img id="intro-main-logo" src="icon-512.png" alt="Mevunai Moment Country Club" />
     </div>
-    <div class="intro-title">M'M™ COUNTRY CLUB ®</div>
-    <div class="intro-sub">Clothing, Bags & Sovereign Accessories</div>
-    <div class="intro-bar-wrap"><div class="intro-bar-fill" id="intro-bar"></div></div>
-    <div class="intro-timer" id="intro-timer">15.0s</div>
-    <div class="intro-actions">
-      <button class="btn-outline" onclick="playChime()">🔊 Play Chime</button>
+    <div class="intro-title">M'M™ Country Club</div>
+    <div class="intro-sub">Couture Clothing • Sovereign Bags • Accessories</div>
+    <div class="intro-progress-wrap">
+      <div id="intro-progress-bar" class="intro-progress-bar"></div>
+    </div>
+    <div id="intro-timer-label" class="intro-timer-label">Intro Audio & Sparkle Stage • 15.0s</div>
+    <div class="intro-controls">
+      <button class="btn-outline" id="btn-play-intro-audio">🔊 Play Chime / MP3</button>
       <label class="btn-outline" style="cursor:pointer;">
         🎶 Swap Chime (MP3/WAV)
-        <input type="file" accept="audio/*" style="display:none" onchange="uploadIntroChime(event)" />
+        <input type="file" id="intro-audio-input" accept="audio/*" hidden />
       </label>
-      <button class="btn-gold" onclick="finishIntro()">Enter Atelier ➔</button>
+      <button class="btn-outline" id="btn-reset-intro-audio">↺ Default Chime</button>
     </div>
+    <div id="intro-audio-status" style="font-size:0.72rem;color:var(--text-muted);margin-bottom:12px;">
+      Active Intro Audio: Built-In Royal Gold Chime (Stops at 15.0s)
+    </div>
+    <button class="btn-gold" id="btn-enter-atelier">Enter Atelier ➔</button>
   </div>
+</div>
 
-  <!-- 4-Digit Sovereign Vault Padlock -->
-  <div id="padlock-screen">
-    <img id="lock-logo-img" class="lock-logo" src="icon-512.png" alt="Lock Crest" />
-    <div style="font-size:1.05rem;font-weight:700;color:var(--gold-bright);letter-spacing:2px;">SOVEREIGN ATELIER VAULT</div>
-    <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Enter 4-Digit Passcode (Default: 1325)</div>
+<!-- 4-DIGIT SOVEREIGN VAULT PADLOCK -->
+<div id="padlock-overlay" class="hidden">
+  <div class="lock-card">
+    <img id="lock-main-logo" class="lock-logo" src="icon-512.png" alt="MMEL Crest" />
+    <div style="font-size:1rem;color:var(--gold-bright);font-weight:bold;letter-spacing:1px;">Sovereign Atelier Vault</div>
+    <div style="font-size:0.74rem;color:var(--text-muted);margin-top:3px;">Enter 4-Digit Passcode (Default: 1325)</div>
     <div class="pin-dots" id="pin-dots">
       <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
     </div>
-    <div id="pin-error" style="color:#ff8a80;font-size:0.75rem;height:18px;margin-bottom:4px;"></div>
-    <div class="keypad">
-      <button class="key-btn" onclick="pressPin('1')">1</button>
-      <button class="key-btn" onclick="pressPin('2')">2</button>
-      <button class="key-btn" onclick="pressPin('3')">3</button>
-      <button class="key-btn" onclick="pressPin('4')">4</button>
-      <button class="key-btn" onclick="pressPin('5')">5</button>
-      <button class="key-btn" onclick="pressPin('6')">6</button>
-      <button class="key-btn" onclick="pressPin('7')">7</button>
-      <button class="key-btn" onclick="pressPin('8')">8</button>
-      <button class="key-btn" onclick="pressPin('9')">9</button>
-      <button class="key-btn" onclick="clearPin()" style="font-size:0.85rem;">CLR</button>
-      <button class="key-btn" onclick="pressPin('0')">0</button>
-      <button class="key-btn" onclick="backPin()" style="font-size:0.95rem;">⌫</button>
+    <div class="keypad" id="keypad">
+      <button class="key-btn" data-key="1">1</button>
+      <button class="key-btn" data-key="2">2</button>
+      <button class="key-btn" data-key="3">3</button>
+      <button class="key-btn" data-key="4">4</button>
+      <button class="key-btn" data-key="5">5</button>
+      <button class="key-btn" data-key="6">6</button>
+      <button class="key-btn" data-key="7">7</button>
+      <button class="key-btn" data-key="8">8</button>
+      <button class="key-btn" data-key="9">9</button>
+      <button class="key-btn" data-key="C" style="font-size:0.88rem;">CLR</button>
+      <button class="key-btn" data-key="0">0</button>
+      <button class="key-btn" data-key="B" style="font-size:0.95rem;">⌫</button>
+    </div>
+    <div class="lock-msg" id="lock-msg"></div>
+  </div>
+</div>
+
+<header>
+  <div class="brand-wrap">
+    <img id="header-main-logo" class="brand-icon" src="icon-512.png" alt="MMEL" />
+    <div>
+      <div class="brand-title">M'M™ Country Club ®</div>
+      <div class="brand-sub">Clothing • Bags • Accessories</div>
     </div>
   </div>
+  <div class="header-actions">
+    <button class="icon-pill" id="btn-replay-intro">▶ Intro</button>
+    <button class="icon-pill" id="btn-theme-toggle">Emerald / Silk</button>
+    <button class="icon-pill" id="btn-lock-now">🔒 Lock</button>
+  </div>
+</header>
 
-  <!-- Header -->
-  <header>
-    <div class="brand-left">
-      <img id="header-logo-img" src="icon-512.png" alt="Logo" />
-      <div>
-        <div class="brand-title">M'M™ COUNTRY CLUB ®</div>
-        <div class="brand-sub">Clothing • Bags • Accessories</div>
-      </div>
-    </div>
-    <div class="header-btns">
-      <button class="btn-outline" onclick="toggleTheme()">🎨 Theme</button>
-      <button class="btn-outline" onclick="lockApp()">🔒 Lock</button>
-    </div>
-  </header>
-
-  <main>
-    <!-- TAB 1: ATELIER & 3 HQ VIDEO PLAYERS -->
-    <section id="tab-atelier" class="page-section active">
-      <div class="hero-card">
-        <img id="hero-logo-img" src="icon-512.png" alt="Atelier Emblem" />
-        <div>
-          <h2>Flagship Couture, Bags & Accessories</h2>
-          <p>Curated royal garments, bespoke leather trunks, and 24K gold hardware—paired with 3 HQ Runway & Lookbook Cinema Screens saved offline.</p>
-          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
-            <label class="btn-outline" style="cursor:pointer;">
-              📷 Swap App Icon
-              <input type="file" accept="image/*" style="display:none" onchange="swapMainIcon(event)" />
-            </label>
-            <button class="btn-outline" onclick="replayIntro()">✨ Replay 15s Intro</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3 HQ VIDEO PLAYERS SECTION -->
-      <div class="hq-cinema-section">
-        <div class="section-head">
-          <h3>🎬 3 HQ Runway & Atelier Cinema Screens</h3>
-          <span style="font-size:0.72rem;color:var(--text-muted);">Offline IndexedDB • Individual Controls & Loop</span>
-        </div>
-        <div class="hq-grid" id="hq-players-container"></div>
-      </div>
-
-      <!-- BOUTIQUE COLLECTION -->
-      <div class="section-head">
-        <h3>👜 Sovereign Collection</h3>
-        <button class="btn-gold" onclick="switchTab('tab-add')">＋ Add Piece</button>
-      </div>
-      <div class="filter-row">
-        <button class="btn-outline active" onclick="filterCatalog('ALL', this)">All Pieces</button>
-        <button class="btn-outline" onclick="filterCatalog('Clothing', this)">Couture Clothing</button>
-        <button class="btn-outline" onclick="filterCatalog('Bags', this)">Sovereign Bags</button>
-        <button class="btn-outline" onclick="filterCatalog('Accessories', this)">Gold Accessories</button>
-      </div>
-      <div class="catalog-grid" id="catalog-grid"></div>
-    </section>
-
-    <!-- TAB 2: ADD NEW PIECE -->
-    <section id="tab-add" class="page-section">
-      <div class="panel-card">
-        <h3>＋ Add Custom Clothing, Bag, or Accessory</h3>
-        <input id="new-item-name" class="input-dark" placeholder="Piece Name (e.g., Emerald Silk Trench)" />
-        <select id="new-item-cat" class="input-dark">
-          <option value="Clothing">Couture Clothing</option>
-          <option value="Bags">Sovereign Bags</option>
-          <option value="Accessories">Gold Accessories</option>
-        </select>
-        <input id="new-item-price" class="input-dark" placeholder="Price (e.g., $2,450)" />
-        <label class="btn-outline" style="width:100%;justify-content:center;margin-bottom:12px;cursor:pointer;">
-          📷 Select Piece Photo
-          <input type="file" id="new-item-file" accept="image/*" style="display:none" />
-        </label>
-        <button class="btn-gold" style="width:100%;justify-content:center;" onclick="addNewCatalogItem()">Save Piece to Atelier</button>
-      </div>
-    </section>
-
-    <!-- TAB 3: RESERVATION BAG -->
-    <section id="tab-bag" class="page-section">
-      <div class="panel-card">
-        <h3>🛍️ Private Atelier Reservation Bag</h3>
-        <div id="bag-list" style="font-size:0.84rem;color:var(--text-muted);margin:10px 0;">Your reservation bag is currently empty.</div>
-        <button class="btn-gold" style="width:100%;justify-content:center;" onclick="checkoutBag()">Request Private Fitting & Concierge Delivery</button>
-      </div>
-    </section>
-
-    <!-- TAB 4: VAULT & INTRO SETTINGS -->
-    <section id="tab-vault" class="page-section">
-      <div class="panel-card">
-        <h3>🔐 4-Digit Sovereign Padlock Settings</h3>
-        <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">Customize your 4-digit access PIN or toggle padlock on launch.</p>
-        <input id="custom-pin-input" class="input-dark" maxlength="4" inputmode="numeric" placeholder="Enter New 4-Digit PIN" />
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn-gold" onclick="saveNewPin()">Update 4-Digit PIN</button>
-          <button class="btn-outline" id="toggle-lock-launch-btn" onclick="toggleLaunchLock()">Launch Lock: ON</button>
-        </div>
-      </div>
-
-      <div class="panel-card">
-        <h3>🎶 15-Second Intro Audio & Icon Studio</h3>
-        <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">Uploaded intro MP3/WAV tracks automatically fade and stop at 15.0 seconds.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+<main>
+  <!-- BOUTIQUE SHOWCASE -->
+  <section id="sec-boutique" class="section active">
+    <div class="hero-card">
+      <img id="hero-main-logo" class="hero-photo" src="icon-512.png" alt="Main App Photo" />
+      <div class="hero-info">
+        <h1>Flagship Couture & Sovereign Bags</h1>
+        <p>Private member showcase for 1325 bespoke garments, crocodile trunks, and 24K gold accessories.</p>
+        <div class="hero-btns">
           <label class="btn-gold" style="cursor:pointer;">
-            🎶 Upload 15s Intro MP3
-            <input type="file" accept="audio/*" style="display:none" onchange="uploadIntroChime(event)" />
+            📷 Swap Main App Photo
+            <input type="file" id="main-logo-input" accept="image/*" hidden />
           </label>
-          <button class="btn-outline" onclick="resetIntroChime()">↺ Reset Default Chime</button>
-          <button class="btn-outline" onclick="resetMainIcon()">↺ Restore Emerald Pyramid Icon</button>
+          <button class="btn-outline" id="btn-open-add-piece">＋ Add Piece</button>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <nav class="bottom-nav">
-    <button class="nav-btn active" onclick="switchTab('tab-atelier', this)"><span class="nav-icon">🏛️</span>Atelier & HQ</button>
-    <button class="nav-btn" onclick="switchTab('tab-add', this)"><span class="nav-icon">➕</span>Add Piece</button>
-    <button class="nav-btn" onclick="switchTab('tab-bag', this)"><span class="nav-icon">🛍️</span>Bag (<span id="bag-count">0</span>)</button>
-    <button class="nav-btn" onclick="switchTab('tab-vault', this)"><span class="nav-icon">🔐</span>Vault & Intro</button>
-  </nav>
+    <div class="cat-bar" id="cat-bar">
+      <button class="cat-pill active" data-cat="ALL">All Creations</button>
+      <button class="cat-pill" data-cat="CLOTHING">Couture Clothing</button>
+      <button class="cat-pill" data-cat="BAGS">Sovereign Bags</button>
+      <button class="cat-pill" data-cat="ACCESSORIES">Gold Accessories</button>
+    </div>
 
-  <div class="toast" id="toast"></div>
+    <div class="grid" id="product-grid"></div>
+  </section>
 
-  <script>
-    const DB_NAME = 'MMCC_Clothing_Bags_HQ_DB_v6';
-    const STORE_NAME = 'media_blobs';
-    let db = null;
+  <!-- ADD PIECE -->
+  <section id="sec-add" class="section">
+    <div class="panel-card">
+      <h2>＋ Add New Couture, Bag or Accessory</h2>
+      <p>Upload a photo from your device and save a new creation directly into your offline boutique catalog.</p>
+      <div class="form-row">
+        <input class="input-gold" id="new-title" placeholder="Piece Name (e.g., RA 109 Crimson Trench)" />
+        <select class="input-gold" id="new-cat">
+          <option value="CLOTHING">Couture Clothing</option>
+          <option value="BAGS">Sovereign Bags</option>
+          <option value="ACCESSORIES">Gold Accessories</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input class="input-gold" id="new-price" placeholder="Price / Edition (e.g., $4,800 • Edition of 12)" />
+        <label class="btn-outline" style="cursor:pointer;display:flex;align-items:center;">
+          📷 Choose Piece Photo
+          <input type="file" id="new-photo" accept="image/*" hidden />
+        </label>
+      </div>
+      <button class="btn-gold" id="btn-save-piece">Save Piece to Boutique</button>
+    </div>
+  </section>
 
-    function openDB() {
-      return new Promise((resolve) => {
-        if (navigator.storage && navigator.storage.persist) {
-          navigator.storage.persist().catch(() => {});
-        }
-        const req = indexedDB.open(DB_NAME, 1);
-        req.onupgradeneeded = (e) => {
-          const d = e.target.result;
-          if (!d.objectStoreNames.contains(STORE_NAME)) d.createObjectStore(STORE_NAME);
-        };
-        req.onsuccess = (e) => { db = e.target.result; resolve(db); };
-        req.onerror = () => resolve(null);
-      });
-    }
+  <!-- RESERVATION BAG -->
+  <section id="sec-bag" class="section">
+    <div class="panel-card">
+      <h2>🛍 Sovereign Atelier Reservation Bag</h2>
+      <p>Selected pieces are reserved for private fitting or armored courier dispatch.</p>
+      <div id="bag-list"></div>
+      <button class="btn-gold" id="btn-confirm-bag" style="margin-top:10px;">Confirm Atelier Reservation</button>
+    </div>
+  </section>
 
-    function saveBlob(key, blob) {
-      return new Promise((resolve) => {
-        if (!db) return resolve(false);
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        tx.objectStore(STORE_NAME).put(blob, key);
-        tx.oncomplete = () => resolve(true);
-        tx.onerror = () => resolve(false);
-      });
-    }
+  <!-- VAULT & INTRO STUDIO -->
+  <section id="sec-vault" class="section">
+    <div class="panel-card">
+      <h2>🎶 15-Second Intro & MP3 Chime Studio</h2>
+      <p>Upload any `.mp3` or `.wav` track to loop during the splash intro—it automatically fades and stops after exactly 15.0 seconds.</p>
+      <div class="form-row">
+        <label class="btn-gold" style="cursor:pointer;">
+          🎶 Upload Intro MP3 / Audio
+          <input type="file" id="studio-audio-input" accept="audio/*" hidden />
+        </label>
+        <button class="btn-outline" id="btn-studio-test-audio">▶ Test 15s Intro Audio</button>
+        <button class="btn-outline" id="btn-studio-clear-audio">↺ Reset to Default Chime</button>
+      </div>
+      <div id="studio-audio-name" style="font-size:0.76rem;color:var(--gold);">Current Track: Built-In Royal Gold Chime</div>
+    </div>
 
-    function getBlob(key) {
-      return new Promise((resolve) => {
-        if (!db) return resolve(null);
-        const tx = db.transaction(STORE_NAME, 'readonly');
-        const req = tx.objectStore(STORE_NAME).get(key);
-        req.onsuccess = () => resolve(req.result || null);
-        req.onerror = () => resolve(null);
-      });
-    }
+    <div class="panel-card">
+      <h2>🔐 4-Digit Sovereign Padlock Settings</h2>
+      <p>Protect your private boutique catalog with your custom 4-digit passcode.</p>
+      <div class="form-row">
+        <input class="input-gold" id="new-pin-input" maxlength="4" inputmode="numeric" placeholder="Enter new 4-digit PIN" />
+        <button class="btn-gold" id="btn-update-pin">Update 4-Digit PIN</button>
+      </div>
+      <div class="form-row">
+        <button class="btn-outline" id="btn-toggle-lock-enabled">Launch Padlock: ON</button>
+        <button class="btn-outline" id="btn-restore-default-logo">↺ Restore Pyramid Crest Logo</button>
+      </div>
+    </div>
+  </section>
+</main>
 
-    function deleteBlob(key) {
-      return new Promise((resolve) => {
-        if (!db) return resolve();
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        tx.objectStore(STORE_NAME).delete(key);
-        tx.oncomplete = () => resolve();
-      });
-    }
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="sec-boutique"><span>👗</span><span>Boutique</span></button>
+  <button class="nav-btn" data-tab="sec-add"><span>＋</span><span>Add Piece</span></button>
+  <button class="nav-btn" data-tab="sec-bag"><span>🛍</span><span>Bag (<span id="bag-count">0</span>)</span></button>
+  <button class="nav-btn" data-tab="sec-vault"><span>🔐</span><span>Vault & Intro</span></button>
+</nav>
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.style.display = 'block';
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => { t.style.display = 'none'; }, 2400);
-    }
+<div class="toast" id="toast"></div>
 
-    /* 3 HQ VIDEO PLAYERS SYSTEM */
-    const HQ_SLOTS = [
-      { id: 1, title: 'HQ Screen 01 · Couture Runway', subtitle: 'Load HD/4K Runway Video (.mp4 / .mov)' },
-      { id: 2, title: 'HQ Screen 02 · Sovereign Bags', subtitle: 'Load Leather Atelier Showcase Video' },
-      { id: 3, title: 'HQ Screen 03 · Gold Hardware', subtitle: 'Load 24K Accessories Campaign Reel' }
-    ];
-    const hqState = {
-      1: { loop: true, muted: true, speed: 1, url: null },
-      2: { loop: true, muted: true, speed: 1, url: null },
-      3: { loop: true, muted: true, speed: 1, url: null }
+<script>
+const INTRO_DURATION_MS = 15000;
+const DB_NAME = 'MMCC_Clothing_Bags_Vault_v4';
+let db = null;
+
+function openDB() {
+  return new Promise((resolve) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = (e) => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('media')) d.createObjectStore('media');
     };
+    req.onsuccess = (e) => { db = e.target.result; resolve(db); };
+    req.onerror = () => resolve(null);
+  });
+}
 
-    function renderHQPlayers() {
-      const container = document.getElementById('hq-players-container');
-      container.innerHTML = HQ_SLOTS.map(s => `
-        <div class="hq-player-card">
-          <div class="hq-player-top">
-            <span class="hq-title">${s.title}</span>
-            <span class="hq-badge">HQ 1080p/4K</span>
-          </div>
-          <div class="hq-screen" id="hq-screen-${s.id}">
-            <video id="hq-vid-${s.id}" playsinline loop muted preload="metadata" style="display:none;"></video>
-            <div class="hq-placeholder" id="hq-ph-${s.id}">
-              <img src="icon-512.png" alt="HQ Preview" />
-              <span>${s.subtitle}</span>
-            </div>
-          </div>
-          <div class="hq-scrubber-row">
-            <span class="hq-time" id="hq-cur-${s.id}">0:00</span>
-            <input type="range" class="hq-scrubber" id="hq-seek-${s.id}" min="0" max="100" value="0" oninput="seekHQ(${s.id}, this.value)" />
-            <span class="hq-time" id="hq-dur-${s.id}">0:00</span>
-          </div>
-          <div class="hq-controls">
-            <div class="hq-ctrl-group">
-              <button class="btn-gold" id="hq-play-btn-${s.id}" onclick="togglePlayHQ(${s.id})">▶ Play</button>
-              <button class="btn-outline" id="hq-mute-btn-${s.id}" onclick="toggleMuteHQ(${s.id})">🔇 Muted</button>
-              <button class="btn-outline active" id="hq-loop-btn-${s.id}" onclick="toggleLoopHQ(${s.id})">🔁 Loop: ON</button>
-              <button class="btn-outline" id="hq-spd-btn-${s.id}" onclick="cycleSpeedHQ(${s.id})">1.0x</button>
-              <button class="btn-outline" onclick="fullscreenHQ(${s.id})">⛶</button>
-            </div>
-            <label class="btn-outline" style="cursor:pointer;">
-              🎬 Load HQ Video
-              <input type="file" accept="video/*" style="display:none" onchange="uploadHQVideo(${s.id}, event)" />
-            </label>
-          </div>
-        </div>
-      `).join('');
+function dbPut(key, val) {
+  return new Promise((resolve) => {
+    if (!db) return resolve();
+    const tx = db.transaction('media', 'readwrite');
+    tx.objectStore('media').put(val, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => resolve();
+  });
+}
+
+function dbGet(key) {
+  return new Promise((resolve) => {
+    if (!db) return resolve(null);
+    const tx = db.transaction('media', 'readonly');
+    const req = tx.objectStore('media').get(key);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => resolve(null);
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* SPARKLE CANVAS */
+const canvas = document.getElementById('sparkle-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+for (let i = 0; i < 65; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2.4 + 0.8,
+    vy: -(Math.random() * 0.65 + 0.25),
+    a: Math.random(),
+    emerald: i % 5 === 0
+  });
+}
+function animateSparkles() {
+  if (!document.getElementById('splash-overlay').classList.contains('hidden')) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of particles) {
+      p.y += p.vy;
+      p.a += 0.03;
+      if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+      const alpha = 0.35 + 0.65 * Math.abs(Math.sin(p.a));
+      ctx.fillStyle = p.emerald ? `rgba(46, 204, 113, ${alpha})` : `rgba(255, 226, 138, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
     }
+  }
+  requestAnimationFrame(animateSparkles);
+}
+animateSparkles();
 
-    function fmtTime(sec) {
-      if (!isFinite(sec) || sec < 0) return '0:00';
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return m + ':' + (s < 10 ? '0' : '') + s;
-    }
+/* 15-SECOND INTRO & STRICT 15.0s AUDIO STOP */
+let introTimer = null;
+let introCutoffTimeout = null;
+let introFadeTimeout = null;
+let introAudioEl = null;
+let introAudioUrl = null;
+let introAudioName = null;
+let audioCtx = null;
 
-    async function loadSavedHQVideos() {
-      for (const s of HQ_SLOTS) {
-        const blob = await getBlob('hq_video_' + s.id);
-        if (blob) {
-          attachHQBlob(s.id, blob, false);
-        }
+function stopAllIntroAudio() {
+  if (introCutoffTimeout) { clearTimeout(introCutoffTimeout); introCutoffTimeout = null; }
+  if (introFadeTimeout) { clearTimeout(introFadeTimeout); introFadeTimeout = null; }
+  if (introAudioEl) {
+    try {
+      introAudioEl.pause();
+      introAudioEl.currentTime = 0;
+      introAudioEl.volume = 1;
+    } catch (e) {}
+  }
+}
+
+function playSynthChime() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+    notes.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.14);
+      gain.gain.setValueAtTime(0.0001, audioCtx.currentTime + idx * 0.14);
+      gain.gain.exponentialRampToValueAtTime(0.14, audioCtx.currentTime + idx * 0.14 + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + idx * 0.14 + 1.8);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(audioCtx.currentTime + idx * 0.14);
+      osc.stop(audioCtx.currentTime + idx * 0.14 + 1.9);
+    });
+  } catch (e) {}
+}
+
+function startIntroAudioFor15s() {
+  stopAllIntroAudio();
+  if (introAudioUrl) {
+    if (!introAudioEl) introAudioEl = new Audio();
+    introAudioEl.src = introAudioUrl;
+    introAudioEl.loop = true;
+    introAudioEl.volume = 1.0;
+    introAudioEl.currentTime = 0;
+    introAudioEl.play().catch(() => {});
+
+    // Smooth fade out starting at 13.8s, hard stop at exactly 15.0s
+    introFadeTimeout = setTimeout(() => {
+      if (introAudioEl && !introAudioEl.paused) {
+        let vol = 1.0;
+        const fadeStep = setInterval(() => {
+          vol = Math.max(0, vol - 0.1);
+          if (introAudioEl) introAudioEl.volume = vol;
+          if (vol <= 0) clearInterval(fadeStep);
+        }, 110);
       }
+    }, INTRO_DURATION_MS - 1200);
+
+    introCutoffTimeout = setTimeout(() => {
+      stopAllIntroAudio();
+    }, INTRO_DURATION_MS);
+  } else {
+    playSynthChime();
+  }
+}
+
+function finishIntro() {
+  if (introTimer) { clearInterval(introTimer); introTimer = null; }
+  stopAllIntroAudio();
+  document.getElementById('splash-overlay').classList.add('hidden');
+  if (localStorage.getItem('mmcc_lock_enabled') !== 'false') {
+    document.getElementById('padlock-overlay').classList.remove('hidden');
+  }
+}
+
+function startIntroSequence() {
+  const splash = document.getElementById('splash-overlay');
+  const bar = document.getElementById('intro-progress-bar');
+  const label = document.getElementById('intro-timer-label');
+  splash.classList.remove('hidden');
+  if (introTimer) clearInterval(introTimer);
+  startIntroAudioFor15s();
+
+  const start = Date.now();
+  introTimer = setInterval(() => {
+    const elapsed = Date.now() - start;
+    const pct = Math.min(100, (elapsed / INTRO_DURATION_MS) * 100);
+    const rem = Math.max(0, (INTRO_DURATION_MS - elapsed) / 1000).toFixed(1);
+    bar.style.width = pct + '%';
+    label.textContent = `Intro Audio & Sparkle Stage • ${rem}s`;
+    if (elapsed >= INTRO_DURATION_MS) {
+      finishIntro();
     }
+  }, 100);
+}
 
-    function attachHQBlob(id, blob, autoPlay) {
-      const vid = document.getElementById('hq-vid-' + id);
-      const ph = document.getElementById('hq-ph-' + id);
-      if (hqState[id].url) URL.revokeObjectURL(hqState[id].url);
-      const url = URL.createObjectURL(blob);
-      hqState[id].url = url;
-      vid.src = url;
-      vid.loop = hqState[id].loop;
-      vid.muted = hqState[id].muted;
-      vid.playbackRate = hqState[id].speed;
-      vid.style.display = 'block';
-      ph.style.display = 'none';
+document.getElementById('btn-enter-atelier').addEventListener('click', finishIntro);
+document.getElementById('btn-replay-intro').addEventListener('click', startIntroSequence);
+document.getElementById('btn-play-intro-audio').addEventListener('click', startIntroAudioFor15s);
+document.getElementById('btn-studio-test-audio').addEventListener('click', startIntroAudioFor15s);
 
-      vid.onloadedmetadata = () => {
-        document.getElementById('hq-dur-' + id).textContent = fmtTime(vid.duration);
-      };
-      vid.ontimeupdate = () => {
-        if (vid.duration) {
-          document.getElementById('hq-seek-' + id).value = (vid.currentTime / vid.duration) * 100;
-          document.getElementById('hq-cur-' + id).textContent = fmtTime(vid.currentTime);
-        }
-      };
-      vid.onended = () => {
-        if (!hqState[id].loop) {
-          document.getElementById('hq-play-btn-' + id).textContent = '▶ Play';
-        }
-      };
-      if (autoPlay) {
-        vid.play().then(() => {
-          document.getElementById('hq-play-btn-' + id).textContent = '⏸ Pause';
-        }).catch(() => {});
-      }
-    }
+async function handleIntroAudioUpload(file) {
+  if (!file) return;
+  await dbPut('customIntroAudio', { blob: file, name: file.name });
+  if (introAudioUrl) URL.revokeObjectURL(introAudioUrl);
+  introAudioUrl = URL.createObjectURL(file);
+  introAudioName = file.name;
+  updateAudioLabels();
+  startIntroAudioFor15s();
+  showToast('Intro MP3 saved (auto-stops at 15.0s)');
+}
 
-    async function uploadHQVideo(id, e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      await saveBlob('hq_video_' + id, file);
-      attachHQBlob(id, file, true);
-      showToast('HQ Screen 0' + id + ' saved offline!');
-    }
+async function resetIntroAudio() {
+  await dbPut('customIntroAudio', null);
+  if (introAudioUrl) URL.revokeObjectURL(introAudioUrl);
+  introAudioUrl = null;
+  introAudioName = null;
+  stopAllIntroAudio();
+  updateAudioLabels();
+  showToast('Restored default Royal Gold Chime');
+}
 
-    function togglePlayHQ(id) {
-      const vid = document.getElementById('hq-vid-' + id);
-      if (!hqState[id].url) { showToast('Tap "Load HQ Video" first'); return; }
-      const btn = document.getElementById('hq-play-btn-' + id);
-      if (vid.paused) {
-        vid.play().then(() => { btn.textContent = '⏸ Pause'; }).catch(() => {});
+function updateAudioLabels() {
+  const txt = introAudioName
+    ? `Custom Track: ${introAudioName} (Auto-stops at 15.0s)`
+    : 'Built-In Royal Gold Chime (Stops at 15.0s)';
+  document.getElementById('intro-audio-status').textContent = 'Active Intro Audio: ' + txt;
+  document.getElementById('studio-audio-name').textContent = 'Current Track: ' + txt;
+}
+
+document.getElementById('intro-audio-input').addEventListener('change', (e) => handleIntroAudioUpload(e.target.files[0]));
+document.getElementById('studio-audio-input').addEventListener('change', (e) => handleIntroAudioUpload(e.target.files[0]));
+document.getElementById('btn-reset-intro-audio').addEventListener('click', resetIntroAudio);
+document.getElementById('btn-studio-clear-audio').addEventListener('click', resetIntroAudio);
+
+/* 4-DIGIT PADLOCK */
+let enteredPin = '';
+function getSavedPin() { return localStorage.getItem('mmcc_vault_pin') || '1325'; }
+function renderPinDots() {
+  const dots = document.querySelectorAll('#pin-dots .pin-dot');
+  dots.forEach((d, i) => d.classList.toggle('filled', i < enteredPin.length));
+}
+document.getElementById('keypad').addEventListener('click', (e) => {
+  const btn = e.target.closest('.key-btn');
+  if (!btn) return;
+  const k = btn.dataset.key;
+  const msg = document.getElementById('lock-msg');
+  msg.textContent = '';
+  if (k === 'C') { enteredPin = ''; renderPinDots(); return; }
+  if (k === 'B') { enteredPin = enteredPin.slice(0, -1); renderPinDots(); return; }
+  if (enteredPin.length < 4) {
+    enteredPin += k;
+    renderPinDots();
+    if (enteredPin.length === 4) {
+      if (enteredPin === getSavedPin()) {
+        enteredPin = '';
+        renderPinDots();
+        document.getElementById('padlock-overlay').classList.add('hidden');
+        showToast('Sovereign Vault Unlocked');
       } else {
-        vid.pause();
-        btn.textContent = '▶ Play';
+        msg.textContent = 'Incorrect Passcode — Try Again';
+        enteredPin = '';
+        setTimeout(renderPinDots, 250);
       }
     }
+  }
+});
 
-    function toggleMuteHQ(id) {
-      const vid = document.getElementById('hq-vid-' + id);
-      hqState[id].muted = !hqState[id].muted;
-      vid.muted = hqState[id].muted;
-      const btn = document.getElementById('hq-mute-btn-' + id);
-      btn.textContent = hqState[id].muted ? '🔇 Muted' : '🔊 Sound';
-      btn.classList.toggle('active', !hqState[id].muted);
+document.getElementById('btn-lock-now').addEventListener('click', () => {
+  enteredPin = '';
+  renderPinDots();
+  document.getElementById('padlock-overlay').classList.remove('hidden');
+});
+
+document.getElementById('btn-update-pin').addEventListener('click', () => {
+  const val = document.getElementById('new-pin-input').value.trim();
+  if (!/^\d{4}$/.test(val)) { showToast('Enter exactly 4 digits'); return; }
+  localStorage.setItem('mmcc_vault_pin', val);
+  document.getElementById('new-pin-input').value = '';
+  showToast('4-Digit Vault PIN Updated');
+});
+
+function refreshLockToggleText() {
+  const on = localStorage.getItem('mmcc_lock_enabled') !== 'false';
+  document.getElementById('btn-toggle-lock-enabled').textContent = `Launch Padlock: ${on ? 'ON' : 'OFF'}`;
+}
+document.getElementById('btn-toggle-lock-enabled').addEventListener('click', () => {
+  const cur = localStorage.getItem('mmcc_lock_enabled') !== 'false';
+  localStorage.setItem('mmcc_lock_enabled', (!cur).toString());
+  refreshLockToggleText();
+  showToast(`Launch Padlock ${!cur ? 'Enabled' : 'Disabled'}`);
+});
+
+/* MAIN LOGO SWAPPER */
+function applyMainLogo(src) {
+  ['intro-main-logo', 'lock-main-logo', 'header-main-logo', 'hero-main-logo'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.src = src;
+  });
+}
+document.getElementById('main-logo-input').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  await dbPut('customMainLogo', file);
+  applyMainLogo(URL.createObjectURL(file));
+  showToast('Main App Photo Updated');
+});
+document.getElementById('btn-restore-default-logo').addEventListener('click', async () => {
+  await dbPut('customMainLogo', null);
+  applyMainLogo('icon-512.png');
+  showToast('Pyramid Crest Restored');
+});
+
+/* BOUTIQUE CATALOG & PHOTO SWAPPER */
+const DEFAULT_ITEMS = [
+  { id: 'p1', title: 'RA 109 Crimson Silk Sovereign Coat', cat: 'CLOTHING', price: '$6,400 • Bespoke 1325', img: 'icon-512.png' },
+  { id: 'p2', title: 'MMEL 24K Gold-Clasp Crocodile Trunk', cat: 'BAGS', price: '$12,900 • Numbered Edition', img: 'icon-512.png' },
+  { id: 'p3', title: 'Eye of Horus Signet & Diamond Cuff', cat: 'ACCESSORIES', price: '$4,250 • Solid 18K Gold', img: 'icon-512.png' },
+  { id: 'p4', title: 'Emerald Velvet Atelier Evening Cape', cat: 'CLOTHING', price: '$5,800 • Couture Salon', img: 'icon-512.png' },
+  { id: 'p5', title: 'Sovereign Weekender Duffel Bag', cat: 'BAGS', price: '$7,500 • Hand-Stitched', img: 'icon-512.png' },
+  { id: 'p6', title: 'Mevunai Moment™ Crown Timepiece', cat: 'ACCESSORIES', price: '$18,500 • Tourbillon', img: 'icon-512.png' }
+];
+let items = JSON.parse(localStorage.getItem('mmcc_cb_items') || 'null') || DEFAULT_ITEMS;
+let activeCat = 'ALL';
+let bag = JSON.parse(localStorage.getItem('mmcc_cb_bag') || '[]');
+let customItemUrls = {};
+
+async function renderCatalog() {
+  const grid = document.getElementById('product-grid');
+  grid.innerHTML = '';
+  const filtered = activeCat === 'ALL' ? items : items.filter(x => x.cat === activeCat);
+  for (const item of filtered) {
+    let imgSrc = customItemUrls[item.id];
+    if (!imgSrc) {
+      const blob = await dbGet('item_img_' + item.id);
+      if (blob) { imgSrc = URL.createObjectURL(blob); customItemUrls[item.id] = imgSrc; }
+      else imgSrc = item.img || 'icon-512.png';
     }
-
-    function toggleLoopHQ(id) {
-      const vid = document.getElementById('hq-vid-' + id);
-      hqState[id].loop = !hqState[id].loop;
-      vid.loop = hqState[id].loop;
-      const btn = document.getElementById('hq-loop-btn-' + id);
-      btn.textContent = hqState[id].loop ? '🔁 Loop: ON' : '🔁 Loop: OFF';
-      btn.classList.toggle('active', hqState[id].loop);
-    }
-
-    function cycleSpeedHQ(id) {
-      const speeds = [1, 1.25, 1.5, 2, 0.75];
-      const next = speeds[(speeds.indexOf(hqState[id].speed) + 1) % speeds.length];
-      hqState[id].speed = next;
-      document.getElementById('hq-vid-' + id).playbackRate = next;
-      document.getElementById('hq-spd-btn-' + id).textContent = next.toFixed(2).replace('.00', '.0') + 'x';
-    }
-
-    function seekHQ(id, pct) {
-      const vid = document.getElementById('hq-vid-' + id);
-      if (vid.duration) vid.currentTime = (pct / 100) * vid.duration;
-    }
-
-    function fullscreenHQ(id) {
-      const vid = document.getElementById('hq-vid-' + id);
-      if (!hqState[id].url) { showToast('Load a video first'); return; }
-      if (vid.requestFullscreen) vid.requestFullscreen();
-      else if (vid.webkitEnterFullscreen) vid.webkitEnterFullscreen();
-    }
-
-    /* 15-SECOND SPARKLE INTRO & HARD 15.0s MP3 CUTOFF */
-    let introInterval = null;
-    let introAudioEl = null;
-    let introAudioUrl = null;
-    const INTRO_DURATION = 15.0;
-
-    function initSparkles() {
-      const canvas = document.getElementById('sparkle-canvas');
-      const ctx = canvas.getContext('2d');
-      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-      resize();
-      window.addEventListener('resize', resize);
-      const stars = Array.from({ length: 75 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 2.4 + 0.8,
-        vy: -(Math.random() * 0.6 + 0.2),
-        a: Math.random(),
-        da: (Math.random() * 0.03 + 0.01) * (Math.random() < 0.5 ? 1 : -1),
-        gold: Math.random() > 0.28
-      }));
-      function draw() {
-        if (document.getElementById('splash-intro').classList.contains('hidden')) return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (const s of stars) {
-          s.y += s.vy;
-          if (s.y < -10) { s.y = canvas.height + 10; s.x = Math.random() * canvas.width; }
-          s.a += s.da;
-          if (s.a > 1 || s.a < 0.1) s.da *= -1;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = s.gold ? `rgba(255, 224, 130, ${s.a})` : `rgba(82, 214, 150, ${s.a})`;
-          ctx.fill();
-        }
-        requestAnimationFrame(draw);
-      }
-      draw();
-    }
-
-    function playBuiltInSynthChime() {
-      try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioCtx();
-        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-        notes.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.14);
-          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.14);
-          gain.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + idx * 0.14 + 0.05);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.14 + 1.6);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + idx * 0.14);
-          osc.stop(ctx.currentTime + idx * 0.14 + 1.65);
-        });
-      } catch (e) {}
-    }
-
-    async function playChime() {
-      stopIntroAudio();
-      const customAudio = await getBlob('intro_chime_mp3');
-      if (customAudio) {
-        introAudioUrl = URL.createObjectURL(customAudio);
-        introAudioEl = new Audio(introAudioUrl);
-        introAudioEl.loop = true;
-        introAudioEl.volume = 1.0;
-        introAudioEl.play().catch(() => playBuiltInSynthChime());
-      } else {
-        playBuiltInSynthChime();
-      }
-    }
-
-    function stopIntroAudio() {
-      if (introAudioEl) {
-        try { introAudioEl.pause(); introAudioEl.currentTime = 0; } catch (e) {}
-        introAudioEl = null;
-      }
-      if (introAudioUrl) {
-        URL.revokeObjectURL(introAudioUrl);
-        introAudioUrl = null;
-      }
-    }
-
-    async function uploadIntroChime(e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      await saveBlob('intro_chime_mp3', file);
-      showToast('15s Intro MP3 saved offline!');
-      playChime();
-    }
-
-    async function resetIntroChime() {
-      await deleteBlob('intro_chime_mp3');
-      stopIntroAudio();
-      showToast('Restored default royal chime');
-    }
-
-    function startIntro() {
-      const splash = document.getElementById('splash-intro');
-      splash.classList.remove('hidden');
-      initSparkles();
-      playChime();
-      const startTs = performance.now();
-      clearInterval(introInterval);
-      introInterval = setInterval(() => {
-        const elapsed = (performance.now() - startTs) / 1000;
-        const remaining = Math.max(0, INTRO_DURATION - elapsed);
-        const pct = Math.min(100, (elapsed / INTRO_DURATION) * 100);
-        document.getElementById('intro-bar').style.width = pct + '%';
-        document.getElementById('intro-timer').textContent = remaining.toFixed(1) + 's';
-
-        // Smooth fade out in final 1.2s before strict 15.0s cutoff
-        if (introAudioEl && remaining <= 1.2 && remaining > 0) {
-          introAudioEl.volume = Math.max(0, remaining / 1.2);
-        }
-        if (elapsed >= INTRO_DURATION) {
-          finishIntro();
-        }
-      }, 60);
-    }
-
-    function finishIntro() {
-      clearInterval(introInterval);
-      stopIntroAudio();
-      document.getElementById('splash-intro').classList.add('hidden');
-      const lockOnLaunch = localStorage.getItem('mmcc_cb_lock_launch') !== 'false';
-      if (lockOnLaunch) lockApp();
-    }
-
-    function replayIntro() {
-      startIntro();
-    }
-
-    /* 4-DIGIT PADLOCK */
-    let currentPinInput = '';
-    function getSavedPin() { return localStorage.getItem('mmcc_cb_pin') || '1325'; }
-
-    function lockApp() {
-      currentPinInput = '';
-      updatePinDots();
-      document.getElementById('pin-error').textContent = '';
-      document.getElementById('padlock-screen').classList.add('active');
-    }
-
-    function pressPin(digit) {
-      if (currentPinInput.length >= 4) return;
-      currentPinInput += digit;
-      updatePinDots();
-      if (currentPinInput.length === 4) {
-        if (currentPinInput === getSavedPin()) {
-          document.getElementById('padlock-screen').classList.remove('active');
-          currentPinInput = '';
-          updatePinDots();
-        } else {
-          document.getElementById('pin-error').textContent = 'Incorrect 4-Digit Code';
-          setTimeout(() => { currentPinInput = ''; updatePinDots(); }, 450);
-        }
-      }
-    }
-
-    function clearPin() { currentPinInput = ''; updatePinDots(); document.getElementById('pin-error').textContent = ''; }
-    function backPin() { currentPinInput = currentPinInput.slice(0, -1); updatePinDots(); }
-    function updatePinDots() {
-      document.querySelectorAll('#pin-dots .pin-dot').forEach((d, i) => {
-        d.classList.toggle('filled', i < currentPinInput.length);
-      });
-    }
-
-    function saveNewPin() {
-      const val = document.getElementById('custom-pin-input').value.trim();
-      if (!/^\d{4}$/.test(val)) { showToast('Enter exactly 4 numbers'); return; }
-      localStorage.setItem('mmcc_cb_pin', val);
-      document.getElementById('custom-pin-input').value = '';
-      showToast('4-Digit PIN updated!');
-    }
-
-    function toggleLaunchLock() {
-      const cur = localStorage.getItem('mmcc_cb_lock_launch') !== 'false';
-      localStorage.setItem('mmcc_cb_lock_launch', (!cur).toString());
-      updateLaunchLockBtn();
-    }
-
-    function updateLaunchLockBtn() {
-      const cur = localStorage.getItem('mmcc_cb_lock_launch') !== 'false';
-      document.getElementById('toggle-lock-launch-btn').textContent = 'Launch Lock: ' + (cur ? 'ON' : 'OFF');
-    }
-
-    /* MAIN ICON SWAPPER */
-    function applyMainIconUrl(url) {
-      ['intro-logo-img', 'lock-logo-img', 'header-logo-img', 'hero-logo-img'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.src = url;
-      });
-    }
-
-    async function swapMainIcon(e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      await saveBlob('custom_main_icon', file);
-      applyMainIconUrl(URL.createObjectURL(file));
-      showToast('Main app icon updated!');
-    }
-
-    async function resetMainIcon() {
-      await deleteBlob('custom_main_icon');
-      applyMainIconUrl('icon-512.png');
-      showToast('Restored Emerald Pyramid Icon');
-    }
-
-    /* BOUTIQUE CATALOG & BAG */
-    const DEFAULT_ITEMS = [
-      { id: 'c1', name: 'Sovereign 1325 Emerald Velvet Blazer', cat: 'Clothing', price: '$3,200', img: 'icon-512.png' },
-      { id: 'c2', name: 'Royal Crimson Silk Evening Gown', cat: 'Clothing', price: '$4,850', img: 'icon-512.png' },
-      { id: 'b1', name: 'MMEL Pyramid Clasp Alligator Weekender', cat: 'Bags', price: '$6,900', img: 'icon-512.png' },
-      { id: 'b2', name: '24K Gold-Trimmed Sovereign Mini Trunk', cat: 'Bags', price: '$4,150', img: 'icon-512.png' },
-      { id: 'a1', name: 'Eye of Horus 24K Signet Cufflinks', cat: 'Accessories', price: '$1,450', img: 'icon-512.png' },
-      { id: 'a2', name: 'Emerald & Brushed Gold Aviator Frames', cat: 'Accessories', price: '$980', img: 'icon-512.png' }
-    ];
-    let catalogItems = JSON.parse(localStorage.getItem('mmcc_cb_items') || 'null') || DEFAULT_ITEMS;
-    let activeFilter = 'ALL';
-    let bagItems = [];
-
-    async function renderCatalog() {
-      const grid = document.getElementById('catalog-grid');
-      const filtered = activeFilter === 'ALL' ? catalogItems : catalogItems.filter(i => i.cat === activeFilter);
-      grid.innerHTML = filtered.map(item => `
-        <div class="item-card">
-          <div class="item-img-wrap">
-            <img id="item-img-${item.id}" src="${item.img}" alt="${item.name}" />
-            <label class="swap-photo-btn">
-              📷 Swap Photo
-              <input type="file" accept="image/*" style="display:none" onchange="swapItemPhoto('${item.id}', event)" />
-            </label>
-          </div>
-          <div class="item-body">
-            <div>
-              <div class="item-cat">${item.cat}</div>
-              <div class="item-name">${item.name}</div>
-              <div class="item-price">${item.price}</div>
-            </div>
-            <button class="btn-gold" style="width:100%;justify-content:center;" onclick="addToBag('${item.id}')">Reserve Piece</button>
-          </div>
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `
+      <div class="item-media">
+        <img src="${imgSrc}" alt="${item.title}" />
+        <label class="swap-badge">
+          📷 Swap Photo
+          <input type="file" accept="image/*" hidden data-swap-id="${item.id}" />
+        </label>
+      </div>
+      <div class="item-body">
+        <div>
+          <div class="item-cat">${item.cat}</div>
+          <div class="item-title">${item.title}</div>
+          <div class="item-price">${item.price}</div>
         </div>
-      `).join('');
+        <button class="btn-gold" data-reserve-id="${item.id}">Reserve Piece</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+}
 
-      for (const item of filtered) {
-        const blob = await getBlob('item_photo_' + item.id);
-        if (blob) {
-          const el = document.getElementById('item-img-' + item.id);
-          if (el) el.src = URL.createObjectURL(blob);
-        }
-      }
-    }
+document.getElementById('product-grid').addEventListener('change', async (e) => {
+  const id = e.target.dataset.swapId;
+  if (!id || !e.target.files[0]) return;
+  const file = e.target.files[0];
+  await dbPut('item_img_' + id, file);
+  if (customItemUrls[id]) URL.revokeObjectURL(customItemUrls[id]);
+  customItemUrls[id] = URL.createObjectURL(file);
+  renderCatalog();
+  showToast('Piece photo updated offline');
+});
 
-    function filterCatalog(cat, btn) {
-      activeFilter = cat;
-      document.querySelectorAll('.filter-row .btn-outline').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-      renderCatalog();
-    }
+document.getElementById('product-grid').addEventListener('click', (e) => {
+  const id = e.target.dataset.reserveId;
+  if (!id) return;
+  const item = items.find(x => x.id === id);
+  if (item) {
+    bag.push(item);
+    localStorage.setItem('mmcc_cb_bag', JSON.stringify(bag));
+    renderBag();
+    showToast(`Added "${item.title}" to Bag`);
+  }
+});
 
-    async function swapItemPhoto(id, e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      await saveBlob('item_photo_' + id, file);
-      const el = document.getElementById('item-img-' + id);
-      if (el) el.src = URL.createObjectURL(file);
-      showToast('Piece photo saved offline!');
-    }
+document.getElementById('cat-bar').addEventListener('click', (e) => {
+  const pill = e.target.closest('.cat-pill');
+  if (!pill) return;
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  activeCat = pill.dataset.cat;
+  renderCatalog();
+});
 
-    async function addNewCatalogItem() {
-      const name = document.getElementById('new-item-name').value.trim();
-      const cat = document.getElementById('new-item-cat').value;
-      const price = document.getElementById('new-item-price').value.trim() || '$1,800';
-      const fileInput = document.getElementById('new-item-file');
-      if (!name) { showToast('Enter a piece name'); return; }
-      const id = 'custom_' + Date.now();
-      catalogItems.unshift({ id, name, cat, price, img: 'icon-512.png' });
-      localStorage.setItem('mmcc_cb_items', JSON.stringify(catalogItems));
-      if (fileInput.files && fileInput.files[0]) {
-        await saveBlob('item_photo_' + id, fileInput.files[0]);
-      }
-      document.getElementById('new-item-name').value = '';
-      document.getElementById('new-item-price').value = '';
-      fileInput.value = '';
-      renderCatalog();
-      switchTab('tab-atelier');
-      showToast('Added to Atelier Collection!');
-    }
+document.getElementById('btn-save-piece').addEventListener('click', async () => {
+  const title = document.getElementById('new-title').value.trim();
+  const cat = document.getElementById('new-cat').value;
+  const price = document.getElementById('new-price').value.trim() || '$3,900 • Private Edition';
+  const file = document.getElementById('new-photo').files[0];
+  if (!title) { showToast('Please enter a piece name'); return; }
+  const id = 'custom_' + Date.now();
+  if (file) {
+    await dbPut('item_img_' + id, file);
+    customItemUrls[id] = URL.createObjectURL(file);
+  }
+  items.unshift({ id, title, cat, price, img: 'icon-512.png' });
+  localStorage.setItem('mmcc_cb_items', JSON.stringify(items));
+  document.getElementById('new-title').value = '';
+  document.getElementById('new-price').value = '';
+  document.getElementById('new-photo').value = '';
+  switchTab('sec-boutique');
+  renderCatalog();
+  showToast('New piece added to Boutique');
+});
 
-    function addToBag(id) {
-      const found = catalogItems.find(i => i.id === id);
-      if (!found) return;
-      bagItems.push(found);
-      document.getElementById('bag-count').textContent = bagItems.length;
-      renderBag();
-      showToast('Added to Reservation Bag');
-    }
+function renderBag() {
+  document.getElementById('bag-count').textContent = bag.length;
+  const list = document.getElementById('bag-list');
+  if (!bag.length) {
+    list.innerHTML = '<div style="font-size:0.8rem;color:var(--text-muted);">Your Atelier Reservation Bag is currently empty.</div>';
+    return;
+  }
+  list.innerHTML = bag.map((b, i) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-gold);">
+      <div>
+        <div style="font-size:0.85rem;color:var(--gold-bright);">${b.title}</div>
+        <div style="font-size:0.74rem;color:var(--text-muted);">${b.price}</div>
+      </div>
+      <button class="btn-outline" onclick="removeBag(${i})">Remove</button>
+    </div>
+  `).join('');
+}
+window.removeBag = function(i) {
+  bag.splice(i, 1);
+  localStorage.setItem('mmcc_cb_bag', JSON.stringify(bag));
+  renderBag();
+};
+document.getElementById('btn-confirm-bag').addEventListener('click', () => {
+  if (!bag.length) { showToast('Add a piece to reserve first'); return; }
+  bag = [];
+  localStorage.setItem('mmcc_cb_bag', '[]');
+  renderBag();
+  showToast('Atelier Concierge Notified • Reservation Confirmed');
+});
 
-    function renderBag() {
-      const el = document.getElementById('bag-list');
-      if (!bagItems.length) { el.textContent = 'Your reservation bag is currently empty.'; return; }
-      el.innerHTML = bagItems.map((b, idx) => `
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gold-dim);">
-          <span>${b.name} (${b.price})</span>
-          <button class="btn-outline" onclick="bagItems.splice(${idx},1);document.getElementById('bag-count').textContent=bagItems.length;renderBag();">✕</button>
-        </div>
-      `).join('');
-    }
+/* NAVIGATION & THEME */
+function switchTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+}
+document.querySelector('.bottom-nav').addEventListener('click', (e) => {
+  const btn = e.target.closest('.nav-btn');
+  if (btn) switchTab(btn.dataset.tab);
+});
+document.getElementById('btn-open-add-piece').addEventListener('click', () => switchTab('sec-add'));
+document.getElementById('btn-theme-toggle').addEventListener('click', () => {
+  document.body.classList.toggle('theme-emerald');
+});
 
-    function checkoutBag() {
-      if (!bagItems.length) { showToast('Your bag is empty'); return; }
-      bagItems = [];
-      document.getElementById('bag-count').textContent = '0';
-      renderBag();
-      showToast('Private Atelier Fitting Requested!');
-    }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 
-    function toggleTheme() {
-      document.body.classList.toggle('theme-crimson');
-    }
-
-    function switchTab(tabId, navBtn) {
-      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (navBtn) {
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        navBtn.classList.add('active');
-      }
-    }
-
-    (async function init() {
-      await openDB();
-      const customIcon = await getBlob('custom_main_icon');
-      if (customIcon) applyMainIconUrl(URL.createObjectURL(customIcon));
-      renderHQPlayers();
-      await loadSavedHQVideos();
-      await renderCatalog();
-      updateLaunchLockBtn();
-      startIntro();
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      }
-    })();
-  </script>
+(async function init() {
+  await openDB();
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().catch(() => {});
+  }
+  const savedAudio = await dbGet('customIntroAudio');
+  if (savedAudio && savedAudio.blob) {
+    introAudioUrl = URL.createObjectURL(savedAudio.blob);
+    introAudioName = savedAudio.name;
+  }
+  const savedLogo = await dbGet('customMainLogo');
+  if (savedLogo) {
+    applyMainLogo(URL.createObjectURL(savedLogo));
+  }
+  updateAudioLabels();
+  refreshLockToggleText();
+  renderCatalog();
+  renderBag();
+  startIntroSequence();
+})();
+</script>
 </body>
 </html>

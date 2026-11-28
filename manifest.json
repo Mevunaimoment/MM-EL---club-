@@ -1,13 +1,13 @@
 {
   "name": "M'M™ Country Club — Clothing, Bags & Accessories",
-  "short_name": "M'M™ Couture",
-  "description": "Sovereign Clothing, Bags, Accessories & 3 HQ Cinema Screens",
+  "short_name": "MMCC Atelier",
+  "description": "Sovereign Couture Clothing, Bags & Gold Accessories Portal",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#041911",
-  "theme_color": "#072a1c",
+  "background_color": "#180307",
+  "theme_color": "#5c0818",
   "icons": [
     {
       "src": "icon-512.png",

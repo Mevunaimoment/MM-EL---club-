@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mmcc-clothing-bags-3hq-videos-v6-network-first';
+const CACHE_NAME = 'mmcc-clothing-bags-15s-mp3-stop-v4-network-first';
 const ASSETS = [
   './',
   './index.html',
