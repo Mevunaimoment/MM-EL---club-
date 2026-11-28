@@ -1,9 +1,25 @@
 {
-  "name": "Mevunai Moment ™ Country Club. Inc® — Atelier v10",
-  "short_name": "Mevunai Moment™",
+  "name": "M'M™ Country Club ® — Clothing, Bags & Estate Atelier",
+  "short_name": "M'M™ Atelier",
+  "description": "Sovereign Clothing, Bags & Estate Atelier with Silk Fabric Theme and 3-Page Clearance",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0d0507",
-  "theme_color": "#14070a",
-  "description": "Mevunai Moment ™ Country Club. Inc® — Clothing, Bags & Estate Atelier with 3-Page Sovereign Login & 3 HD Video Screens."
+  "orientation": "portrait",
+  "background_color": "#2a040c",
+  "theme_color": "#4a0714",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
