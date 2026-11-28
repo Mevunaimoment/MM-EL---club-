@@ -1,13 +1,13 @@
 {
   "name": "M'M™ Country Club ® — Clothing, Bags & Estate Atelier",
   "short_name": "MMCC Atelier",
-  "description": "Clothing, Bags & Estate Atelier for Mevunai Moment™ Country Club ®",
+  "description": "Sovereign Clothing, Bags, Photo Folders & Estate Atelier",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#061c13",
-  "theme_color": "#061c13",
+  "background_color": "#071912",
+  "theme_color": "#0d291e",
   "icons": [
     {
       "src": "icon-512.png",

@@ -1,8 +1,11 @@
-const CACHE_NAME = 'mmcc-clothing-bags-clean-v10-1-network-first';
+const CACHE_NAME = 'mmcc-clothing-bags-photo-folders-v8-network-first';
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './estate-wallpaper.jpg',
+  './icon-512.png',
+  './icon-192.png'
 ];
 
 self.addEventListener('install', (event) => {
