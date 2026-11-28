@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mmcc-clothing-bags-estate-wallpaper-v7-network-first';
+const CACHE_NAME = 'mmcc-clothing-bags-photo-folders-v8-network-first';
 const ASSETS = [
   './',
   './index.html',
