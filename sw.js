@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mmcc-clothing-bags-silk-3pagelogin-v10-network-first';
+const CACHE_NAME = 'mmcc-clothing-bags-clean-v10-1-network-first';
 const ASSETS = [
   './',
   './index.html',
