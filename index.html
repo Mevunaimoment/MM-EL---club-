@@ -1,1108 +1,992 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#0d291e" />
-<title>M'M™ Country Club ® — Clothing, Bags & Estate Atelier</title>
-<link rel="manifest" href="manifest.json" />
-<link rel="icon" href="icon-512.png" />
-<link rel="apple-touch-icon" href="icon-512.png" />
-<style>
-  :root {
-    --bg-primary: #071912;
-    --card-bg: rgba(11, 34, 25, 0.84);
-    --card-border: rgba(212, 175, 55, 0.42);
-    --gold: #e5c158;
-    --gold-bright: #ffe082;
-    --text-main: #f7f3e8;
-    --text-muted: #c9bfa6;
-    --accent-btn: linear-gradient(135deg, #d4af37, #f5d77f);
-    --accent-btn-text: #141108;
-  }
-  body.theme-silk {
-    --bg-primary: #21040b;
-    --card-bg: rgba(45, 7, 17, 0.85);
-    --card-border: rgba(229, 193, 88, 0.48);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
-    font-family: Georgia, 'Times New Roman', serif;
-    background-color: var(--bg-primary);
-    color: var(--text-main);
-    min-height: 100vh;
-    padding-bottom: 86px;
-    overflow-x: hidden;
-  }
-  #wallpaper-layer {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    background-image: url('estate-wallpaper.jpg');
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-  }
-  #wallpaper-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(180deg, rgba(6, 22, 16, 0.62) 0%, rgba(6, 22, 16, 0.76) 55%, rgba(6, 22, 16, 0.88) 100%);
-  }
-  body.theme-silk #wallpaper-overlay {
-    background: linear-gradient(180deg, rgba(38, 4, 12, 0.68) 0%, rgba(38, 4, 12, 0.80) 55%, rgba(28, 3, 9, 0.90) 100%);
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#072a1c" />
+  <title>M'M™ Country Club — Clothing, Bags & Accessories</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="icon-512.png" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <style>
+    :root {
+      --bg-deep: #041911;
+      --bg-card: #0a2e20;
+      --bg-card-alt: #0d3a29;
+      --gold: #e5c158;
+      --gold-bright: #ffe082;
+      --gold-dim: rgba(229, 193, 88, 0.28);
+      --crimson: #5c0818;
+      --text-main: #f9f5eb;
+      --text-muted: #c8be9f;
+      --accent: #14533a;
+    }
+    body.theme-crimson {
+      --bg-deep: #180308;
+      --bg-card: #2c0711;
+      --bg-card-alt: #3b0a17;
+      --accent: #5c0818;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
+      background: radial-gradient(circle at top, var(--bg-card) 0%, var(--bg-deep) 75%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 92px;
+      overflow-x: hidden;
+    }
 
-  /* 15s Sparkle Intro */
-  #splash-intro {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: radial-gradient(circle at center, #143d2d 0%, #05120d 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 24px;
-    transition: opacity 0.6s ease;
-  }
-  #splash-intro.hidden { opacity: 0; pointer-events: none; display: none; }
-  #sparkle-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-  .intro-crest {
-    width: 148px; height: 148px; border-radius: 28px; object-fit: cover;
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 36px rgba(229, 193, 88, 0.55);
-    margin-bottom: 18px; position: relative; z-index: 2;
-  }
-  .intro-title { color: var(--gold-bright); font-size: 22px; letter-spacing: 1px; z-index: 2; }
-  .intro-sub { color: var(--text-muted); font-size: 13px; margin-top: 6px; z-index: 2; }
-  .intro-timer-bar {
-    width: 220px; height: 5px; background: rgba(255,255,255,0.14);
-    border-radius: 99px; overflow: hidden; margin: 16px auto 8px; z-index: 2;
-  }
-  .intro-timer-fill {
-    height: 100%; width: 0%; background: var(--accent-btn); transition: width 0.2s linear;
-  }
-  .intro-controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; z-index: 2; }
+    /* 15-Second Sparkle Splash Intro */
+    #splash-intro {
+      position: fixed; inset: 0; z-index: 9999;
+      background: radial-gradient(circle at center, #0e3d2b 0%, #03120c 85%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #splash-intro.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #sparkle-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .intro-emblem-wrap {
+      position: relative; z-index: 2; width: 170px; height: 170px; border-radius: 32px;
+      padding: 4px; background: linear-gradient(135deg, #ffe082, #b8860b, #ffe082);
+      box-shadow: 0 0 45px rgba(229, 193, 88, 0.55);
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+    .intro-emblem-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 28px; display: block; }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 35px rgba(229, 193, 88, 0.45); }
+      50% { transform: scale(1.04); box-shadow: 0 0 60px rgba(255, 224, 130, 0.8); }
+    }
+    .intro-title {
+      position: relative; z-index: 2; margin-top: 18px;
+      font-size: 1.35rem; letter-spacing: 3px; color: var(--gold-bright); font-weight: 700;
+    }
+    .intro-sub {
+      position: relative; z-index: 2; margin-top: 6px;
+      font-size: 0.78rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase;
+    }
+    .intro-bar-wrap {
+      position: relative; z-index: 2; width: 240px; height: 6px;
+      background: rgba(255,255,255,0.12); border-radius: 99px; overflow: hidden; margin-top: 16px;
+      border: 1px solid var(--gold-dim);
+    }
+    .intro-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #b8860b, #ffe082); }
+    .intro-timer { position: relative; z-index: 2; font-size: 0.75rem; color: var(--gold); margin-top: 6px; }
+    .intro-actions {
+      position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px;
+    }
 
-  /* 4-Digit Padlock */
-  #padlock-overlay {
-    position: fixed; inset: 0; z-index: 9500;
-    background: rgba(5, 18, 13, 0.96);
-    backdrop-filter: blur(12px);
-    display: none; flex-direction: column; align-items: center; justify-content: center;
-    padding: 20px; text-align: center;
-  }
-  #padlock-overlay.active { display: flex; }
-  .pin-dots { display: flex; gap: 14px; margin: 18px 0; }
-  .pin-dot {
-    width: 15px; height: 15px; border-radius: 50%;
-    border: 2px solid var(--gold); background: transparent;
-  }
-  .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold); }
-  .keypad { display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; }
-  .key-btn {
-    height: 58px; border-radius: 16px; border: 1px solid var(--card-border);
-    background: rgba(15, 45, 33, 0.85); color: var(--gold-bright);
-    font-size: 21px; font-weight: bold; cursor: pointer;
-  }
-  .key-btn:active { transform: scale(0.95); background: rgba(229, 193, 88, 0.25); }
+    /* 4-Digit Sovereign Padlock */
+    #padlock-screen {
+      position: fixed; inset: 0; z-index: 9990;
+      background: radial-gradient(circle at top, #0c3525 0%, #03110b 85%);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center;
+    }
+    #padlock-screen.active { display: flex; }
+    .lock-logo {
+      width: 86px; height: 86px; border-radius: 22px; border: 2px solid var(--gold);
+      object-fit: cover; box-shadow: 0 0 25px rgba(229,193,88,0.4); margin-bottom: 12px;
+    }
+    .pin-dots { display: flex; gap: 14px; margin: 16px 0; }
+    .pin-dot {
+      width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--gold);
+      background: transparent; transition: background 0.2s;
+    }
+    .pin-dot.filled { background: var(--gold-bright); box-shadow: 0 0 10px var(--gold); }
+    .keypad {
+      display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; margin-top: 6px;
+    }
+    .key-btn {
+      height: 58px; border-radius: 16px; border: 1px solid var(--gold-dim);
+      background: rgba(255,255,255,0.06); color: var(--gold-bright);
+      font-size: 1.3rem; font-weight: 700; cursor: pointer;
+    }
+    .key-btn:active { background: var(--gold); color: #051c12; }
 
-  /* Header */
-  header {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(7, 25, 18, 0.9);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--card-border);
-    padding: 10px 14px;
-    display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  }
-  body.theme-silk header { background: rgba(36, 4, 12, 0.9); }
-  .brand-wrap { display: flex; align-items: center; gap: 10px; min-width: 0; }
-  .brand-logo {
-    width: 42px; height: 42px; border-radius: 10px; object-fit: cover;
-    border: 1.5px solid var(--gold); flex-shrink: 0;
-  }
-  .brand-text h1 { font-size: 15px; color: var(--gold-bright); line-height: 1.15; }
-  .brand-text p { font-size: 11px; color: var(--text-muted); }
-  .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    /* Header & Buttons */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(4, 25, 17, 0.92); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gold-dim);
+      padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .brand-left { display: flex; align-items: center; gap: 10px; }
+    .brand-left img {
+      width: 42px; height: 42px; border-radius: 12px; border: 1.5px solid var(--gold); object-fit: cover;
+    }
+    .brand-title { font-size: 0.95rem; font-weight: 700; color: var(--gold-bright); letter-spacing: 0.5px; }
+    .brand-sub { font-size: 0.68rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+    .header-btns { display: flex; gap: 6px; align-items: center; }
 
-  .pill-btn {
-    border: 1px solid var(--card-border);
-    background: rgba(16, 48, 35, 0.85);
-    color: var(--text-main);
-    padding: 6px 11px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-family: inherit;
-    cursor: pointer;
-    display: inline-flex; align-items: center; gap: 5px;
-  }
-  body.theme-silk .pill-btn { background: rgba(65, 11, 25, 0.85); }
-  .pill-gold {
-    background: var(--accent-btn);
-    color: var(--accent-btn-text);
-    border: none;
-    font-weight: bold;
-  }
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37, #f5d77f); color: #061f14;
+      border: none; border-radius: 10px; padding: 8px 12px; font-size: 0.78rem;
+      font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .btn-outline {
+      background: rgba(229, 193, 88, 0.1); color: var(--gold-bright);
+      border: 1px solid var(--gold-dim); border-radius: 10px; padding: 7px 10px;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .btn-outline.active {
+      background: var(--gold); color: #061f14; border-color: var(--gold-bright);
+    }
 
-  /* Main Container & Cards */
-  main { padding: 14px; max-width: 760px; margin: 0 auto; }
-  .view-section { display: none; }
-  .view-section.active { display: block; }
+    main { max-width: 960px; margin: 0 auto; padding: 16px; }
+    .page-section { display: none; }
+    .page-section.active { display: block; }
 
-  .glass-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-    padding: 15px;
-    margin-bottom: 14px;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.35);
-  }
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 10px; margin-bottom: 12px;
-  }
-  .section-title { font-size: 18px; color: var(--gold-bright); }
+    /* Hero Banner */
+    .hero-card {
+      background: linear-gradient(145deg, var(--bg-card-alt), var(--bg-card));
+      border: 1px solid var(--gold-dim); border-radius: 20px; padding: 18px;
+      display: flex; align-items: center; gap: 16px; margin-bottom: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+    .hero-card img {
+      width: 84px; height: 84px; border-radius: 18px; border: 2px solid var(--gold); object-fit: cover; flex-shrink: 0;
+    }
+    .hero-card h2 { font-size: 1.15rem; color: var(--gold-bright); margin-bottom: 4px; }
+    .hero-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
 
-  /* Album / Photo Folders Grid (Inspired by Reference Gallery View) */
-  .album-tabs {
-    display: flex; gap: 8px; margin-bottom: 14px;
-    background: rgba(0,0,0,0.28); padding: 4px; border-radius: 999px;
-    border: 1px solid rgba(229, 193, 88, 0.25);
-  }
-  .album-tab {
-    flex: 1; text-align: center; padding: 7px 10px; border-radius: 999px;
-    font-size: 12px; color: var(--text-muted); cursor: pointer; border: none; background: transparent;
-    font-family: inherit;
-  }
-  .album-tab.active {
-    background: var(--accent-btn); color: var(--accent-btn-text); font-weight: bold;
-  }
-  .albums-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .album-card {
-    background: rgba(8, 26, 19, 0.78);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.15s ease;
-  }
-  .album-card:active { transform: scale(0.98); }
-  .album-cover-wrap {
-    position: relative; width: 100%; aspect-ratio: 1 / 1; background: #0c2b1f;
-  }
-  .album-cover {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-  }
-  .album-badge {
-    position: absolute; top: 8px; right: 8px;
-    background: rgba(6, 20, 14, 0.82); color: var(--gold-bright);
-    border: 1px solid var(--card-border);
-    font-size: 11px; padding: 2px 8px; border-radius: 999px;
-  }
-  .album-meta {
-    padding: 9px 10px;
-    display: flex; align-items: center; justify-content: space-between; gap: 6px;
-  }
-  .album-name { font-size: 14px; color: var(--text-main); font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .album-count { font-size: 11px; color: var(--text-muted); }
+    /* 3 HQ Video Players Showcase */
+    .hq-cinema-section {
+      margin-bottom: 22px;
+    }
+    .section-head {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+    }
+    .section-head h3 {
+      font-size: 1rem; color: var(--gold-bright); letter-spacing: 1px; text-transform: uppercase;
+    }
+    .hq-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+    }
+    .hq-player-card {
+      background: var(--bg-card); border: 1.5px solid var(--gold-dim); border-radius: 18px;
+      overflow: hidden; box-shadow: 0 10px 26px rgba(0,0,0,0.4);
+      display: flex; flex-direction: column;
+    }
+    .hq-player-top {
+      padding: 10px 12px; background: rgba(0,0,0,0.28); border-bottom: 1px solid var(--gold-dim);
+      display: flex; align-items: center; justify-content: space-between; gap: 6px;
+    }
+    .hq-badge {
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 1px; color: #051c12;
+      background: linear-gradient(135deg, #ffe082, #d4af37); padding: 3px 8px; border-radius: 6px;
+    }
+    .hq-title { font-size: 0.82rem; font-weight: 700; color: var(--gold-bright); }
+    .hq-screen {
+      position: relative; width: 100%; aspect-ratio: 16 / 9; background: #020b07;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .hq-screen video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transform: translateZ(0);
+    }
+    .hq-placeholder {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 14px; text-align: center;
+      background: radial-gradient(circle at center, rgba(20,83,58,0.45), rgba(2,11,7,0.92));
+    }
+    .hq-placeholder img {
+      width: 52px; height: 52px; border-radius: 12px; border: 1px solid var(--gold);
+      margin-bottom: 8px; object-fit: cover;
+    }
+    .hq-placeholder span { font-size: 0.76rem; color: var(--text-muted); }
+    .hq-scrubber-row {
+      padding: 8px 12px 2px; background: rgba(0,0,0,0.25);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hq-scrubber {
+      flex: 1; accent-color: var(--gold); height: 4px; cursor: pointer;
+    }
+    .hq-time { font-size: 0.68rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+    .hq-controls {
+      padding: 10px 12px 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: space-between;
+    }
+    .hq-ctrl-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
 
-  /* Inside Open Folder */
-  .folder-photos-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px;
-  }
-  .photo-tile {
-    position: relative; border-radius: 14px; overflow: hidden;
-    border: 1px solid var(--card-border); aspect-ratio: 1 / 1; background: #092017;
-  }
-  .photo-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .photo-tile-bar {
-    position: absolute; bottom: 0; inset-x: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.85));
-    padding: 18px 8px 6px; display: flex; justify-content: space-between; align-items: center;
-  }
-  .photo-caption { font-size: 11px; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* Boutique Catalog */
+    .filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 14px; }
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    .item-card {
+      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: 16px;
+      overflow: hidden; display: flex; flex-direction: column;
+    }
+    .item-img-wrap { position: relative; width: 100%; height: 190px; background: #03130c; }
+    .item-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .swap-photo-btn {
+      position: absolute; bottom: 8px; right: 8px; background: rgba(4, 25, 17, 0.85);
+      color: var(--gold-bright); border: 1px solid var(--gold); border-radius: 8px;
+      padding: 4px 8px; font-size: 0.7rem; cursor: pointer;
+    }
+    .item-body { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .item-cat { font-size: 0.66rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+    .item-name { font-size: 0.92rem; font-weight: 700; margin: 4px 0; }
+    .item-price { font-size: 0.88rem; color: var(--gold-bright); font-weight: 700; margin-bottom: 10px; }
 
-  /* HQ Video Players */
-  .hq-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  @media (min-width: 640px) { .hq-grid { grid-template-columns: repeat(3, 1fr); } }
-  .hq-card {
-    background: rgba(6, 20, 15, 0.85); border: 1px solid var(--card-border);
-    border-radius: 14px; padding: 10px;
-  }
-  .hq-video-box {
-    position: relative; width: 100%; aspect-ratio: 16 / 9; background: #030d09;
-    border-radius: 10px; overflow: hidden; border: 1px solid rgba(229,193,88,0.28);
-    margin: 6px 0;
-  }
-  .hq-video-box video { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .hq-controls { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
-  .mini-btn {
-    padding: 4px 8px; font-size: 11px; border-radius: 8px;
-    border: 1px solid var(--card-border); background: rgba(18, 52, 38, 0.9);
-    color: var(--text-main); cursor: pointer; font-family: inherit;
-  }
+    /* Settings & Bag Cards */
+    .panel-card {
+      background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: 18px;
+      padding: 16px; margin-bottom: 14px;
+    }
+    .panel-card h3 { color: var(--gold-bright); font-size: 1rem; margin-bottom: 8px; }
+    .input-dark {
+      width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--gold-dim);
+      background: rgba(0,0,0,0.3); color: var(--text-main); font-size: 0.85rem; margin-bottom: 10px;
+    }
 
-  /* Boutique Catalog */
-  .catalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .item-card {
-    background: var(--card-bg); border: 1px solid var(--card-border);
-    border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
-  }
-  .item-img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #0b291d; }
-  .item-body { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-  .item-title { font-size: 14px; color: var(--gold-bright); margin-bottom: 4px; }
-  .item-price { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    /* Bottom Nav */
+    nav.bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(4, 25, 17, 0.96); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--gold-dim);
+      display: flex; justify-content: space-around; padding: 8px 4px;
+    }
+    .nav-btn {
+      background: none; border: none; color: var(--text-muted); font-size: 0.72rem;
+      display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 8px;
+    }
+    .nav-btn.active { color: var(--gold-bright); font-weight: 700; }
+    .nav-icon { font-size: 1.15rem; }
 
-  /* Forms & Modal */
-  .input-field {
-    width: 100%; padding: 10px 12px; border-radius: 12px;
-    border: 1px solid var(--card-border); background: rgba(5, 18, 13, 0.85);
-    color: var(--text-main); font-family: inherit; font-size: 14px; margin-bottom: 10px;
-  }
-  .modal-backdrop {
-    position: fixed; inset: 0; z-index: 9000;
-    background: rgba(0,0,0,0.82); backdrop-filter: blur(6px);
-    display: none; align-items: center; justify-content: center; padding: 16px;
-  }
-  .modal-backdrop.open { display: flex; }
-  .modal-box {
-    width: 100%; max-width: 420px; background: #0a241a;
-    border: 1px solid var(--gold); border-radius: 20px; padding: 18px;
-  }
-
-  /* Bottom Nav */
-  nav.bottom-nav {
-    position: fixed; bottom: 0; inset-x: 0; z-index: 60;
-    background: rgba(6, 20, 14, 0.96);
-    border-top: 1px solid var(--card-border);
-    display: grid; grid-template-columns: repeat(5, 1fr);
-    padding: 8px 4px 10px;
-  }
-  body.theme-silk nav.bottom-nav { background: rgba(32, 3, 10, 0.96); }
-  .nav-item {
-    background: none; border: none; color: var(--text-muted);
-    font-family: inherit; font-size: 11px;
-    display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;
-  }
-  .nav-item.active { color: var(--gold-bright); font-weight: bold; }
-  .nav-icon { font-size: 17px; }
-</style>
+    .toast {
+      position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: #051c12; padding: 8px 16px; border-radius: 99px;
+      font-size: 0.78rem; font-weight: 700; z-index: 10000; display: none; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+  </style>
 </head>
 <body>
-<div id="wallpaper-layer"></div>
-<div id="wallpaper-overlay"></div>
 
-<!-- 15s Sparkle Intro -->
-<div id="splash-intro">
-  <canvas id="sparkle-canvas"></canvas>
-  <img src="icon-512.png" alt="MMCC Crest" class="intro-crest" id="intro-crest-img" />
-  <div class="intro-title">M'M™ Country Club ®</div>
-  <div class="intro-sub">Clothing, Bags &amp; Estate Atelier • Sovereign Vault</div>
-  <div class="intro-timer-bar"><div class="intro-timer-fill" id="intro-progress"></div></div>
-  <div style="font-size:11px;color:var(--gold-bright);z-index:2;" id="intro-countdown">15.0s</div>
-  <div class="intro-controls">
-    <button class="pill-btn" onclick="playWelcomeChime()">🔔 Play Chime</button>
-    <label class="pill-btn">🎶 Swap Chime (15s Max)<input type="file" accept="audio/*" hidden onchange="uploadIntroChime(event)" /></label>
-    <button class="pill-btn pill-gold" onclick="finishIntro()">Enter Atelier ➔</button>
-  </div>
-</div>
-
-<!-- 4-Digit Padlock -->
-<div id="padlock-overlay">
-  <img src="icon-512.png" alt="Crest" style="width:76px;height:76px;border-radius:18px;border:1.5px solid var(--gold);margin-bottom:10px;" />
-  <div style="color:var(--gold-bright);font-size:18px;">Sovereign Vault Padlock</div>
-  <div style="color:var(--text-muted);font-size:12px;margin-top:4px;">Enter 4-Digit Passcode (Default: 1325)</div>
-  <div class="pin-dots" id="pin-dots">
-    <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-  </div>
-  <div class="keypad">
-    <button class="key-btn" onclick="pressPin('1')">1</button>
-    <button class="key-btn" onclick="pressPin('2')">2</button>
-    <button class="key-btn" onclick="pressPin('3')">3</button>
-    <button class="key-btn" onclick="pressPin('4')">4</button>
-    <button class="key-btn" onclick="pressPin('5')">5</button>
-    <button class="key-btn" onclick="pressPin('6')">6</button>
-    <button class="key-btn" onclick="pressPin('7')">7</button>
-    <button class="key-btn" onclick="pressPin('8')">8</button>
-    <button class="key-btn" onclick="pressPin('9')">9</button>
-    <button class="key-btn" onclick="clearPin()">C</button>
-    <button class="key-btn" onclick="pressPin('0')">0</button>
-    <button class="key-btn" onclick="backspacePin()">⌫</button>
-  </div>
-</div>
-
-<header>
-  <div class="brand-wrap">
-    <img src="icon-512.png" alt="MMCC" class="brand-logo" id="header-logo-img" />
-    <div class="brand-text">
-      <h1>M'M™ Country Club ®</h1>
-      <p>Clothing, Bags &amp; Estate Atelier</p>
+  <!-- 15-Second Sparkle Splash Intro -->
+  <div id="splash-intro">
+    <canvas id="sparkle-canvas"></canvas>
+    <div class="intro-emblem-wrap">
+      <img id="intro-logo-img" src="icon-512.png" alt="MMCC Crest" />
+    </div>
+    <div class="intro-title">M'M™ COUNTRY CLUB ®</div>
+    <div class="intro-sub">Clothing, Bags & Sovereign Accessories</div>
+    <div class="intro-bar-wrap"><div class="intro-bar-fill" id="intro-bar"></div></div>
+    <div class="intro-timer" id="intro-timer">15.0s</div>
+    <div class="intro-actions">
+      <button class="btn-outline" onclick="playChime()">🔊 Play Chime</button>
+      <label class="btn-outline" style="cursor:pointer;">
+        🎶 Swap Chime (MP3/WAV)
+        <input type="file" accept="audio/*" style="display:none" onchange="uploadIntroChime(event)" />
+      </label>
+      <button class="btn-gold" onclick="finishIntro()">Enter Atelier ➔</button>
     </div>
   </div>
-  <div class="header-actions">
-    <button class="pill-btn" onclick="startIntro()">▶ 15s Intro</button>
-    <button class="pill-btn" onclick="toggleTheme()">🎨 Silk/Emerald</button>
-    <button class="pill-btn pill-gold" onclick="openPadlock()">🔒 Lock</button>
-  </div>
-</header>
 
-<main>
-  <!-- VIEW 1: ATELIER & 3 HQ VIDEOS -->
-  <section id="view-atelier" class="view-section active">
-    <div class="glass-card">
-      <div class="section-header">
-        <div>
-          <div class="section-title">🎬 3 HQ Cinema Runway Screens</div>
-          <div style="font-size:11px;color:var(--text-muted);">Offline saved HQ reels with independent loop &amp; playback controls</div>
-        </div>
-        <label class="pill-btn">🖼️ Wallpaper<input type="file" accept="image/*" hidden onchange="swapWallpaper(event)" /></label>
+  <!-- 4-Digit Sovereign Vault Padlock -->
+  <div id="padlock-screen">
+    <img id="lock-logo-img" class="lock-logo" src="icon-512.png" alt="Lock Crest" />
+    <div style="font-size:1.05rem;font-weight:700;color:var(--gold-bright);letter-spacing:2px;">SOVEREIGN ATELIER VAULT</div>
+    <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Enter 4-Digit Passcode (Default: 1325)</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+    </div>
+    <div id="pin-error" style="color:#ff8a80;font-size:0.75rem;height:18px;margin-bottom:4px;"></div>
+    <div class="keypad">
+      <button class="key-btn" onclick="pressPin('1')">1</button>
+      <button class="key-btn" onclick="pressPin('2')">2</button>
+      <button class="key-btn" onclick="pressPin('3')">3</button>
+      <button class="key-btn" onclick="pressPin('4')">4</button>
+      <button class="key-btn" onclick="pressPin('5')">5</button>
+      <button class="key-btn" onclick="pressPin('6')">6</button>
+      <button class="key-btn" onclick="pressPin('7')">7</button>
+      <button class="key-btn" onclick="pressPin('8')">8</button>
+      <button class="key-btn" onclick="pressPin('9')">9</button>
+      <button class="key-btn" onclick="clearPin()" style="font-size:0.85rem;">CLR</button>
+      <button class="key-btn" onclick="pressPin('0')">0</button>
+      <button class="key-btn" onclick="backPin()" style="font-size:0.95rem;">⌫</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-left">
+      <img id="header-logo-img" src="icon-512.png" alt="Logo" />
+      <div>
+        <div class="brand-title">M'M™ COUNTRY CLUB ®</div>
+        <div class="brand-sub">Clothing • Bags • Accessories</div>
       </div>
-      <div class="hq-grid" id="hq-players-container"></div>
     </div>
+    <div class="header-btns">
+      <button class="btn-outline" onclick="toggleTheme()">🎨 Theme</button>
+      <button class="btn-outline" onclick="lockApp()">🔒 Lock</button>
+    </div>
+  </header>
 
-    <div class="glass-card">
-      <div class="section-header">
-        <div class="section-title">🏛️ Sovereign Atelier Collection</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="pill-btn pill-gold" onclick="filterCatalog('all')">All</button>
-          <button class="pill-btn" onclick="filterCatalog('Clothing')">Clothing</button>
-          <button class="pill-btn" onclick="filterCatalog('Bags')">Bags</button>
-          <button class="pill-btn" onclick="filterCatalog('Accessories')">Accessories</button>
+  <main>
+    <!-- TAB 1: ATELIER & 3 HQ VIDEO PLAYERS -->
+    <section id="tab-atelier" class="page-section active">
+      <div class="hero-card">
+        <img id="hero-logo-img" src="icon-512.png" alt="Atelier Emblem" />
+        <div>
+          <h2>Flagship Couture, Bags & Accessories</h2>
+          <p>Curated royal garments, bespoke leather trunks, and 24K gold hardware—paired with 3 HQ Runway & Lookbook Cinema Screens saved offline.</p>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
+            <label class="btn-outline" style="cursor:pointer;">
+              📷 Swap App Icon
+              <input type="file" accept="image/*" style="display:none" onchange="swapMainIcon(event)" />
+            </label>
+            <button class="btn-outline" onclick="replayIntro()">✨ Replay 15s Intro</button>
+          </div>
         </div>
+      </div>
+
+      <!-- 3 HQ VIDEO PLAYERS SECTION -->
+      <div class="hq-cinema-section">
+        <div class="section-head">
+          <h3>🎬 3 HQ Runway & Atelier Cinema Screens</h3>
+          <span style="font-size:0.72rem;color:var(--text-muted);">Offline IndexedDB • Individual Controls & Loop</span>
+        </div>
+        <div class="hq-grid" id="hq-players-container"></div>
+      </div>
+
+      <!-- BOUTIQUE COLLECTION -->
+      <div class="section-head">
+        <h3>👜 Sovereign Collection</h3>
+        <button class="btn-gold" onclick="switchTab('tab-add')">＋ Add Piece</button>
+      </div>
+      <div class="filter-row">
+        <button class="btn-outline active" onclick="filterCatalog('ALL', this)">All Pieces</button>
+        <button class="btn-outline" onclick="filterCatalog('Clothing', this)">Couture Clothing</button>
+        <button class="btn-outline" onclick="filterCatalog('Bags', this)">Sovereign Bags</button>
+        <button class="btn-outline" onclick="filterCatalog('Accessories', this)">Gold Accessories</button>
       </div>
       <div class="catalog-grid" id="catalog-grid"></div>
-    </div>
-  </section>
+    </section>
 
-  <!-- VIEW 2: PHOTO FOLDERS / ALBUMS (NEW GALLERY VIEW) -->
-  <section id="view-albums" class="view-section">
-    <!-- Folder Grid List -->
-    <div id="albums-overview" class="glass-card">
-      <div class="section-header">
-        <div>
-          <div class="section-title">📁 Albums &amp; Photo Folders</div>
-          <div style="font-size:11px;color:var(--text-muted);">Tap + to create a new album or folder • Saved offline</div>
+    <!-- TAB 2: ADD NEW PIECE -->
+    <section id="tab-add" class="page-section">
+      <div class="panel-card">
+        <h3>＋ Add Custom Clothing, Bag, or Accessory</h3>
+        <input id="new-item-name" class="input-dark" placeholder="Piece Name (e.g., Emerald Silk Trench)" />
+        <select id="new-item-cat" class="input-dark">
+          <option value="Clothing">Couture Clothing</option>
+          <option value="Bags">Sovereign Bags</option>
+          <option value="Accessories">Gold Accessories</option>
+        </select>
+        <input id="new-item-price" class="input-dark" placeholder="Price (e.g., $2,450)" />
+        <label class="btn-outline" style="width:100%;justify-content:center;margin-bottom:12px;cursor:pointer;">
+          📷 Select Piece Photo
+          <input type="file" id="new-item-file" accept="image/*" style="display:none" />
+        </label>
+        <button class="btn-gold" style="width:100%;justify-content:center;" onclick="addNewCatalogItem()">Save Piece to Atelier</button>
+      </div>
+    </section>
+
+    <!-- TAB 3: RESERVATION BAG -->
+    <section id="tab-bag" class="page-section">
+      <div class="panel-card">
+        <h3>🛍️ Private Atelier Reservation Bag</h3>
+        <div id="bag-list" style="font-size:0.84rem;color:var(--text-muted);margin:10px 0;">Your reservation bag is currently empty.</div>
+        <button class="btn-gold" style="width:100%;justify-content:center;" onclick="checkoutBag()">Request Private Fitting & Concierge Delivery</button>
+      </div>
+    </section>
+
+    <!-- TAB 4: VAULT & INTRO SETTINGS -->
+    <section id="tab-vault" class="page-section">
+      <div class="panel-card">
+        <h3>🔐 4-Digit Sovereign Padlock Settings</h3>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">Customize your 4-digit access PIN or toggle padlock on launch.</p>
+        <input id="custom-pin-input" class="input-dark" maxlength="4" inputmode="numeric" placeholder="Enter New 4-Digit PIN" />
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-gold" onclick="saveNewPin()">Update 4-Digit PIN</button>
+          <button class="btn-outline" id="toggle-lock-launch-btn" onclick="toggleLaunchLock()">Launch Lock: ON</button>
         </div>
-        <button class="pill-btn pill-gold" onclick="openNewFolderModal()">＋ New Folder</button>
       </div>
 
-      <div class="album-tabs">
-        <button class="album-tab active" onclick="setAlbumTab('Personal', this)">Personal</button>
-        <button class="album-tab" onclick="setAlbumTab('Shared', this)">Shared</button>
-        <button class="album-tab" onclick="setAlbumTab('Activity', this)">Activity</button>
-      </div>
-
-      <div class="albums-grid" id="albums-grid"></div>
-    </div>
-
-    <!-- Inside Selected Folder -->
-    <div id="album-detail-view" class="glass-card" style="display:none;">
-      <div class="section-header">
-        <button class="pill-btn" onclick="closeFolderView()">‹ Albums</button>
-        <div class="section-title" id="open-folder-title" style="font-size:16px;">Folder</div>
-        <label class="pill-btn pill-gold">＋ Add Photos<input type="file" accept="image/*" multiple hidden onchange="addPhotosToCurrentFolder(event)" /></label>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span style="font-size:12px;color:var(--text-muted);" id="open-folder-subtitle">0 photos</span>
-        <button class="mini-btn" style="color:#ff9b9b;" onclick="deleteCurrentFolder()">🗑 Delete Folder</button>
-      </div>
-      <div class="folder-photos-grid" id="folder-photos-grid"></div>
-    </div>
-  </section>
-
-  <!-- VIEW 3: SOVEREIGN RESERVATION BAG -->
-  <section id="view-bag" class="view-section">
-    <div class="glass-card">
-      <div class="section-header">
-        <div class="section-title">🛍️ Sovereign Reservation Bag</div>
-        <button class="pill-btn" onclick="clearBag()">Clear Bag</button>
-      </div>
-      <div id="bag-items-list" style="font-size:13px;color:var(--text-muted);">Your atelier reservation bag is currently empty.</div>
-      <div id="bag-checkout-bar" style="display:none;margin-top:14px;border-top:1px solid var(--card-border);padding-top:12px;">
-        <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-          <span>Total Sovereign Allocation</span>
-          <strong style="color:var(--gold-bright);" id="bag-total">$0</strong>
+      <div class="panel-card">
+        <h3>🎶 15-Second Intro Audio & Icon Studio</h3>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">Uploaded intro MP3/WAV tracks automatically fade and stop at 15.0 seconds.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <label class="btn-gold" style="cursor:pointer;">
+            🎶 Upload 15s Intro MP3
+            <input type="file" accept="audio/*" style="display:none" onchange="uploadIntroChime(event)" />
+          </label>
+          <button class="btn-outline" onclick="resetIntroChime()">↺ Reset Default Chime</button>
+          <button class="btn-outline" onclick="resetMainIcon()">↺ Restore Emerald Pyramid Icon</button>
         </div>
-        <button class="pill-btn pill-gold" style="width:100%;justify-content:center;padding:11px;" onclick="alert('Sovereign Atelier Concierge has received your private reservation.')">Confirm Private Atelier Order</button>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- VIEW 4: ADD PIECE -->
-  <section id="view-add" class="view-section">
-    <div class="glass-card">
-      <div class="section-title" style="margin-bottom:10px;">＋ Add Couture Piece, Bag or Accessory</div>
-      <input type="text" id="new-piece-name" class="input-field" placeholder="Piece Title (e.g., Emerald Silk Trench)" />
-      <select id="new-piece-cat" class="input-field">
-        <option value="Clothing">Clothing</option>
-        <option value="Bags">Bags</option>
-        <option value="Accessories">Accessories</option>
-      </select>
-      <input type="text" id="new-piece-price" class="input-field" placeholder="Price (e.g., $2,450)" />
-      <label class="pill-btn" style="margin-bottom:12px;">📷 Select Piece Photo<input type="file" accept="image/*" hidden onchange="previewNewPiecePhoto(event)" /></label>
-      <div id="new-piece-preview-wrap" style="margin-bottom:10px;"></div>
-      <button class="pill-btn pill-gold" style="width:100%;justify-content:center;padding:11px;" onclick="saveNewPiece()">Save Piece to Atelier</button>
-    </div>
-  </section>
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="switchTab('tab-atelier', this)"><span class="nav-icon">🏛️</span>Atelier & HQ</button>
+    <button class="nav-btn" onclick="switchTab('tab-add', this)"><span class="nav-icon">➕</span>Add Piece</button>
+    <button class="nav-btn" onclick="switchTab('tab-bag', this)"><span class="nav-icon">🛍️</span>Bag (<span id="bag-count">0</span>)</button>
+    <button class="nav-btn" onclick="switchTab('tab-vault', this)"><span class="nav-icon">🔐</span>Vault & Intro</button>
+  </nav>
 
-  <!-- VIEW 5: VAULT & THEME -->
-  <section id="view-vault" class="view-section">
-    <div class="glass-card">
-      <div class="section-title" style="margin-bottom:10px;">🔐 Vault Padlock &amp; Wallpaper Studio</div>
-      <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Update your 4-digit padlock code or swap your estate background wallpaper and main crest offline.</p>
-      <input type="password" maxlength="4" inputmode="numeric" id="custom-pin-input" class="input-field" placeholder="New 4-Digit PIN (e.g., 1325)" />
-      <button class="pill-btn pill-gold" style="margin-bottom:14px;" onclick="saveCustomPin()">Update 4-Digit PIN</button>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;">
-        <label class="pill-btn">🖼️ Change Estate Wallpaper<input type="file" accept="image/*" hidden onchange="swapWallpaper(event)" /></label>
-        <button class="pill-btn" onclick="resetWallpaper()">↺ Reset Estate Fleet Wallpaper</button>
-        <label class="pill-btn">👑 Swap Main App Icon<input type="file" accept="image/*" hidden onchange="swapMainIcon(event)" /></label>
-      </div>
-    </div>
-  </section>
-</main>
+  <div class="toast" id="toast"></div>
 
-<!-- Create New Folder Modal -->
-<div class="modal-backdrop" id="new-folder-modal">
-  <div class="modal-box">
-    <div class="section-header">
-      <div class="section-title">＋ Create New Photo Folder</div>
-      <button class="mini-btn" onclick="closeNewFolderModal()">✕</button>
-    </div>
-    <input type="text" id="folder-name-input" class="input-field" placeholder="Folder Name (e.g., Runway Looks, VIP Fleet)" />
-    <select id="folder-category-select" class="input-field">
-      <option value="Personal">Personal</option>
-      <option value="Shared">Shared</option>
-      <option value="Activity">Activity</option>
-    </select>
-    <label class="pill-btn" style="margin-bottom:12px;">📷 Optional Cover Photo<input type="file" accept="image/*" hidden onchange="handleFolderCoverUpload(event)" /></label>
-    <button class="pill-btn pill-gold" style="width:100%;justify-content:center;padding:10px;" onclick="createPhotoFolder()">Create Folder</button>
-  </div>
-</div>
+  <script>
+    const DB_NAME = 'MMCC_Clothing_Bags_HQ_DB_v6';
+    const STORE_NAME = 'media_blobs';
+    let db = null;
 
-<!-- Fullscreen Photo Lightbox -->
-<div class="modal-backdrop" id="photo-lightbox" onclick="this.classList.remove('open')">
-  <div style="max-width:92vw;max-height:88vh;text-align:center;">
-    <img id="lightbox-img" src="" style="max-width:100%;max-height:80vh;border-radius:16px;border:2px solid var(--gold);" />
-    <div id="lightbox-caption" style="color:var(--gold-bright);margin-top:8px;font-size:14px;"></div>
-  </div>
-</div>
+    function openDB() {
+      return new Promise((resolve) => {
+        if (navigator.storage && navigator.storage.persist) {
+          navigator.storage.persist().catch(() => {});
+        }
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const d = e.target.result;
+          if (!d.objectStoreNames.contains(STORE_NAME)) d.createObjectStore(STORE_NAME);
+        };
+        req.onsuccess = (e) => { db = e.target.result; resolve(db); };
+        req.onerror = () => resolve(null);
+      });
+    }
 
-<nav class="bottom-nav">
-  <button class="nav-item active" onclick="switchView('atelier', this)"><span class="nav-icon">🏛️</span><span>Atelier</span></button>
-  <button class="nav-item" onclick="switchView('albums', this)"><span class="nav-icon">📁</span><span>Folders</span></button>
-  <button class="nav-item" onclick="switchView('bag', this)"><span class="nav-icon">🛍️</span><span>Bag (<span id="bag-count">0</span>)</span></button>
-  <button class="nav-item" onclick="switchView('add', this)"><span class="nav-icon">＋</span><span>Add Piece</span></button>
-  <button class="nav-item" onclick="switchView('vault', this)"><span class="nav-icon">🔐</span><span>Vault &amp; Theme</span></button>
-</nav>
+    function saveBlob(key, blob) {
+      return new Promise((resolve) => {
+        if (!db) return resolve(false);
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).put(blob, key);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => resolve(false);
+      });
+    }
 
-<script>
-// IndexedDB Setup for Offline Photos, Videos, Wallpaper & Audio
-const DB_NAME = 'MMCC_Atelier_Folders_DB_v8';
-let db = null;
+    function getBlob(key) {
+      return new Promise((resolve) => {
+        if (!db) return resolve(null);
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const req = tx.objectStore(STORE_NAME).get(key);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      });
+    }
 
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = (e) => {
-      const d = e.target.result;
-      if (!d.objectStoreNames.contains('assets')) d.createObjectStore('assets', { keyPath: 'id' });
-      if (!d.objectStoreNames.contains('folders')) d.createObjectStore('folders', { keyPath: 'id' });
+    function deleteBlob(key) {
+      return new Promise((resolve) => {
+        if (!db) return resolve();
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).delete(key);
+        tx.oncomplete = () => resolve();
+      });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => { t.style.display = 'none'; }, 2400);
+    }
+
+    /* 3 HQ VIDEO PLAYERS SYSTEM */
+    const HQ_SLOTS = [
+      { id: 1, title: 'HQ Screen 01 · Couture Runway', subtitle: 'Load HD/4K Runway Video (.mp4 / .mov)' },
+      { id: 2, title: 'HQ Screen 02 · Sovereign Bags', subtitle: 'Load Leather Atelier Showcase Video' },
+      { id: 3, title: 'HQ Screen 03 · Gold Hardware', subtitle: 'Load 24K Accessories Campaign Reel' }
+    ];
+    const hqState = {
+      1: { loop: true, muted: true, speed: 1, url: null },
+      2: { loop: true, muted: true, speed: 1, url: null },
+      3: { loop: true, muted: true, speed: 1, url: null }
     };
-    req.onsuccess = (e) => { db = e.target.result; resolve(db); };
-    req.onerror = (e) => reject(e);
-  });
-}
 
-function dbPut(store, val) {
-  return new Promise((resolve) => {
-    if (!db) return resolve();
-    const tx = db.transaction(store, 'readwrite');
-    tx.objectStore(store).put(val);
-    tx.oncomplete = () => resolve();
-  });
-}
-
-function dbGet(store, key) {
-  return new Promise((resolve) => {
-    if (!db) return resolve(null);
-    const tx = db.transaction(store, 'readonly');
-    const req = tx.objectStore(store).get(key);
-    req.onsuccess = () => resolve(req.result || null);
-    req.onerror = () => resolve(null);
-  });
-}
-
-function dbGetAll(store) {
-  return new Promise((resolve) => {
-    if (!db) return resolve([]);
-    const tx = db.transaction(store, 'readonly');
-    const req = tx.objectStore(store).getAll();
-    req.onsuccess = () => resolve(req.result || []);
-    req.onerror = () => resolve([]);
-  });
-}
-
-function dbDelete(store, key) {
-  return new Promise((resolve) => {
-    if (!db) return resolve();
-    const tx = db.transaction(store, 'readwrite');
-    tx.objectStore(store).delete(key);
-    tx.oncomplete = () => resolve();
-  });
-}
-
-// 15s Intro & 15.0s MP3 Cutoff
-let introTimer = null;
-let introAudio = null;
-
-function playWelcomeChime() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const notes = [523.25, 659.25, 783.99, 1046.5];
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.001, ctx.currentTime + i * 0.16);
-      gain.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + i * 0.16 + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.16 + 1.1);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + i * 0.16);
-      osc.stop(ctx.currentTime + i * 0.16 + 1.15);
-    });
-  } catch (e) {}
-}
-
-async function uploadIntroChime(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  await dbPut('assets', { id: 'intro_chime', blob: file });
-  startIntro();
-}
-
-async function startIntro() {
-  clearInterval(introTimer);
-  if (introAudio) { introAudio.pause(); introAudio = null; }
-  const splash = document.getElementById('splash-intro');
-  splash.classList.remove('hidden');
-  splash.style.display = 'flex';
-  initSparkles();
-
-  const savedChime = await dbGet('assets', 'intro_chime');
-  if (savedChime && savedChime.blob) {
-    introAudio = new Audio(URL.createObjectURL(savedChime.blob));
-    introAudio.loop = true;
-    introAudio.play().catch(() => {});
-  } else {
-    playWelcomeChime();
-  }
-
-  const start = Date.now();
-  const duration = 15000;
-  introTimer = setInterval(() => {
-    const elapsed = Date.now() - start;
-    const rem = Math.max(0, (duration - elapsed) / 1000);
-    document.getElementById('intro-progress').style.width = Math.min(100, (elapsed / duration) * 100) + '%';
-    document.getElementById('intro-countdown').textContent = rem.toFixed(1) + 's';
-    if (introAudio && rem <= 1.2 && rem > 0) {
-      introAudio.volume = Math.max(0, rem / 1.2);
-    }
-    if (elapsed >= duration) {
-      finishIntro();
-    }
-  }, 100);
-}
-
-function finishIntro() {
-  clearInterval(introTimer);
-  if (introAudio) {
-    introAudio.pause();
-    introAudio.currentTime = 0;
-    introAudio = null;
-  }
-  const splash = document.getElementById('splash-intro');
-  splash.classList.add('hidden');
-}
-
-function initSparkles() {
-  const c = document.getElementById('sparkle-canvas');
-  const ctx = c.getContext('2d');
-  c.width = window.innerWidth; c.height = window.innerHeight;
-  const pts = Array.from({ length: 48 }, () => ({
-    x: Math.random() * c.width, y: Math.random() * c.height,
-    r: Math.random() * 2.5 + 0.8, vy: -(Math.random() * 0.7 + 0.25), a: Math.random()
-  }));
-  function draw() {
-    if (document.getElementById('splash-intro').classList.contains('hidden')) return;
-    ctx.clearRect(0, 0, c.width, c.height);
-    pts.forEach(p => {
-      p.y += p.vy;
-      if (p.y < 0) p.y = c.height;
-      ctx.fillStyle = `rgba(255, 224, 130, ${0.4 + Math.sin(Date.now()/300 + p.x)*0.4})`;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-// 4-Digit Padlock
-let enteredPin = '';
-function getSavedPin() { return localStorage.getItem('mmcc_atelier_pin') || '1325'; }
-function openPadlock() {
-  enteredPin = ''; updatePinDots();
-  document.getElementById('padlock-overlay').classList.add('active');
-}
-function updatePinDots() {
-  document.querySelectorAll('#pin-dots .pin-dot').forEach((d, idx) => {
-    d.classList.toggle('filled', idx < enteredPin.length);
-  });
-}
-function pressPin(num) {
-  if (enteredPin.length >= 4) return;
-  enteredPin += num; updatePinDots();
-  if (enteredPin.length === 4) {
-    if (enteredPin === getSavedPin()) {
-      setTimeout(() => document.getElementById('padlock-overlay').classList.remove('active'), 150);
-    } else {
-      setTimeout(() => { enteredPin = ''; updatePinDots(); alert('Incorrect 4-Digit Code'); }, 180);
-    }
-  }
-}
-function clearPin() { enteredPin = ''; updatePinDots(); }
-function backspacePin() { enteredPin = enteredPin.slice(0, -1); updatePinDots(); }
-function saveCustomPin() {
-  const val = document.getElementById('custom-pin-input').value.trim();
-  if (/^\d{4}$/.test(val)) {
-    localStorage.setItem('mmcc_atelier_pin', val);
-    document.getElementById('custom-pin-input').value = '';
-    alert('Sovereign 4-Digit PIN updated.');
-  } else {
-    alert('Please enter exactly 4 digits.');
-  }
-}
-
-// Navigation & Theme
-function switchView(name, btn) {
-  document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('view-' + name).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  if (name === 'albums') renderAlbumsGrid();
-}
-
-function toggleTheme() {
-  document.body.classList.toggle('theme-silk');
-}
-
-// Wallpaper & Icon Swapping
-async function swapWallpaper(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  await dbPut('assets', { id: 'custom_wallpaper', blob: file });
-  document.getElementById('wallpaper-layer').style.backgroundImage = `url('${URL.createObjectURL(file)}')`;
-}
-async function resetWallpaper() {
-  await dbDelete('assets', 'custom_wallpaper');
-  document.getElementById('wallpaper-layer').style.backgroundImage = "url('estate-wallpaper.jpg')";
-}
-async function swapMainIcon(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  await dbPut('assets', { id: 'custom_icon', blob: file });
-  const url = URL.createObjectURL(file);
-  document.getElementById('header-logo-img').src = url;
-  document.getElementById('intro-crest-img').src = url;
-}
-
-// 3 HQ Cinema Video Players
-const hqScreens = [
-  { id: 'hq1', title: 'HQ 01 · Couture Runway' },
-  { id: 'hq2', title: 'HQ 02 · Sovereign Bags' },
-  { id: 'hq3', title: 'HQ 03 · Estate & Fleet' }
-];
-
-async function renderHQPlayers() {
-  const wrap = document.getElementById('hq-players-container');
-  wrap.innerHTML = '';
-  for (const s of hqScreens) {
-    const saved = await dbGet('assets', s.id);
-    const src = saved && saved.blob ? URL.createObjectURL(saved.blob) : '';
-    const card = document.createElement('div');
-    card.className = 'hq-card';
-    card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <strong style="font-size:12px;color:var(--gold-bright);">${s.title}</strong>
-        <label class="mini-btn">🎬 Load<input type="file" accept="video/*" hidden onchange="loadHQVideo('${s.id}', event)" /></label>
-      </div>
-      <div class="hq-video-box">
-        <video id="vid-${s.id}" ${src ? `src="${src}"` : ''} loop muted playsinline></video>
-      </div>
-      <div class="hq-controls">
-        <button class="mini-btn" onclick="toggleHQPlay('${s.id}')">⏯</button>
-        <button class="mini-btn" onclick="toggleHQMute('${s.id}')">🔊</button>
-        <button class="mini-btn" id="loop-btn-${s.id}" onclick="toggleHQLoop('${s.id}')">🔁 Loop: ON</button>
-        <button class="mini-btn" onclick="document.getElementById('vid-${s.id}').requestFullscreen?.()">⛶</button>
-      </div>
-    `;
-    wrap.appendChild(card);
-    if (src) {
-      const v = document.getElementById('vid-' + s.id);
-      v.play().catch(() => {});
-    }
-  }
-}
-
-async function loadHQVideo(id, e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  await dbPut('assets', { id, blob: file });
-  renderHQPlayers();
-}
-function toggleHQPlay(id) {
-  const v = document.getElementById('vid-' + id);
-  if (!v.src) return alert('Tap Load to select a video first.');
-  v.paused ? v.play() : v.pause();
-}
-function toggleHQMute(id) {
-  const v = document.getElementById('vid-' + id);
-  v.muted = !v.muted;
-}
-function toggleHQLoop(id) {
-  const v = document.getElementById('vid-' + id);
-  v.loop = !v.loop;
-  document.getElementById('loop-btn-' + id).textContent = '🔁 Loop: ' + (v.loop ? 'ON' : 'OFF');
-}
-
-// Photo Folders & Albums System
-let activeAlbumTab = 'Personal';
-let currentOpenFolderId = null;
-let pendingFolderCover = null;
-
-const defaultFolders = [
-  { id: 'f_runway', name: 'Top Moments & Runway', category: 'Personal', coverUrl: 'estate-wallpaper.jpg', photos: [
-    { name: 'Emerald Fleet Courtyard', url: 'estate-wallpaper.jpg' },
-    { name: 'RA 109 Sovereign Crest', url: 'icon-512.png' }
-  ]},
-  { id: 'f_bags', name: 'Sovereign Bags Vault', category: 'Personal', coverUrl: 'icon-512.png', photos: [
-    { name: 'Pyramid Gold Hardware', url: 'icon-512.png' }
-  ]},
-  { id: 'f_estate', name: 'Estate & Private Jets', category: 'Personal', coverUrl: 'estate-wallpaper.jpg', photos: [
-    { name: 'MMCC Private Tarmac', url: 'estate-wallpaper.jpg' }
-  ]},
-  { id: 'f_vip', name: 'VIP Club Guests', category: 'Shared', coverUrl: 'icon-512.png', photos: [
-    { name: 'Founder Circle Emblem', url: 'icon-512.png' }
-  ]}
-];
-
-async function ensureDefaultFolders() {
-  const existing = await dbGetAll('folders');
-  if (existing.length === 0) {
-    for (const f of defaultFolders) {
-      await dbPut('folders', f);
-    }
-  }
-}
-
-function setAlbumTab(tab, btn) {
-  activeAlbumTab = tab;
-  document.querySelectorAll('.album-tab').forEach(t => t.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  renderAlbumsGrid();
-}
-
-async function renderAlbumsGrid() {
-  document.getElementById('albums-overview').style.display = 'block';
-  document.getElementById('album-detail-view').style.display = 'none';
-  const all = await dbGetAll('folders');
-  const filtered = all.filter(f => f.category === activeAlbumTab);
-  const grid = document.getElementById('albums-grid');
-  grid.innerHTML = '';
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">No folders in ${activeAlbumTab} yet. Tap <strong>＋ New Folder</strong> above to create one.</div>`;
-    return;
-  }
-
-  for (const folder of filtered) {
-    let coverSrc = folder.coverUrl || 'estate-wallpaper.jpg';
-    if (folder.coverBlob) coverSrc = URL.createObjectURL(folder.coverBlob);
-    else if (folder.photos && folder.photos.length > 0) {
-      const first = folder.photos[0];
-      coverSrc = first.blob ? URL.createObjectURL(first.blob) : first.url;
-    }
-
-    const card = document.createElement('div');
-    card.className = 'album-card';
-    card.onclick = () => openFolderView(folder.id);
-    card.innerHTML = `
-      <div class="album-cover-wrap">
-        <img src="${coverSrc}" class="album-cover" alt="${folder.name}" />
-        <span class="album-badge">${folder.photos ? folder.photos.length : 0}</span>
-      </div>
-      <div class="album-meta">
-        <div>
-          <div class="album-name">${folder.name}</div>
-          <div class="album-count">${folder.photos ? folder.photos.length : 0} items</div>
+    function renderHQPlayers() {
+      const container = document.getElementById('hq-players-container');
+      container.innerHTML = HQ_SLOTS.map(s => `
+        <div class="hq-player-card">
+          <div class="hq-player-top">
+            <span class="hq-title">${s.title}</span>
+            <span class="hq-badge">HQ 1080p/4K</span>
+          </div>
+          <div class="hq-screen" id="hq-screen-${s.id}">
+            <video id="hq-vid-${s.id}" playsinline loop muted preload="metadata" style="display:none;"></video>
+            <div class="hq-placeholder" id="hq-ph-${s.id}">
+              <img src="icon-512.png" alt="HQ Preview" />
+              <span>${s.subtitle}</span>
+            </div>
+          </div>
+          <div class="hq-scrubber-row">
+            <span class="hq-time" id="hq-cur-${s.id}">0:00</span>
+            <input type="range" class="hq-scrubber" id="hq-seek-${s.id}" min="0" max="100" value="0" oninput="seekHQ(${s.id}, this.value)" />
+            <span class="hq-time" id="hq-dur-${s.id}">0:00</span>
+          </div>
+          <div class="hq-controls">
+            <div class="hq-ctrl-group">
+              <button class="btn-gold" id="hq-play-btn-${s.id}" onclick="togglePlayHQ(${s.id})">▶ Play</button>
+              <button class="btn-outline" id="hq-mute-btn-${s.id}" onclick="toggleMuteHQ(${s.id})">🔇 Muted</button>
+              <button class="btn-outline active" id="hq-loop-btn-${s.id}" onclick="toggleLoopHQ(${s.id})">🔁 Loop: ON</button>
+              <button class="btn-outline" id="hq-spd-btn-${s.id}" onclick="cycleSpeedHQ(${s.id})">1.0x</button>
+              <button class="btn-outline" onclick="fullscreenHQ(${s.id})">⛶</button>
+            </div>
+            <label class="btn-outline" style="cursor:pointer;">
+              🎬 Load HQ Video
+              <input type="file" accept="video/*" style="display:none" onchange="uploadHQVideo(${s.id}, event)" />
+            </label>
+          </div>
         </div>
-        <span style="color:var(--gold-bright);">›</span>
-      </div>
-    `;
-    grid.appendChild(card);
-  }
-}
+      `).join('');
+    }
 
-function openNewFolderModal() {
-  pendingFolderCover = null;
-  document.getElementById('folder-name-input').value = '';
-  document.getElementById('folder-category-select').value = activeAlbumTab;
-  document.getElementById('new-folder-modal').classList.add('open');
-}
-function closeNewFolderModal() {
-  document.getElementById('new-folder-modal').classList.remove('open');
-}
-function handleFolderCoverUpload(e) {
-  if (e.target.files[0]) pendingFolderCover = e.target.files[0];
-}
-async function createPhotoFolder() {
-  const name = document.getElementById('folder-name-input').value.trim();
-  if (!name) return alert('Please enter a folder name.');
-  const category = document.getElementById('folder-category-select').value;
-  const newFolder = {
-    id: 'folder_' + Date.now(),
-    name,
-    category,
-    coverUrl: 'estate-wallpaper.jpg',
-    coverBlob: pendingFolderCover || null,
-    photos: pendingFolderCover ? [{ name: name + ' Cover', blob: pendingFolderCover }] : []
-  };
-  await dbPut('folders', newFolder);
-  closeNewFolderModal();
-  activeAlbumTab = category;
-  document.querySelectorAll('.album-tab').forEach(t => t.classList.toggle('active', t.textContent === category));
-  renderAlbumsGrid();
-}
+    function fmtTime(sec) {
+      if (!isFinite(sec) || sec < 0) return '0:00';
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
 
-async function openFolderView(folderId) {
-  currentOpenFolderId = folderId;
-  const folder = await dbGet('folders', folderId);
-  if (!folder) return;
-  document.getElementById('albums-overview').style.display = 'none';
-  document.getElementById('album-detail-view').style.display = 'block';
-  document.getElementById('open-folder-title').textContent = '📁 ' + folder.name;
-  const photos = folder.photos || [];
-  document.getElementById('open-folder-subtitle').textContent = `${photos.length} photo${photos.length === 1 ? '' : 's'} • Saved offline`;
+    async function loadSavedHQVideos() {
+      for (const s of HQ_SLOTS) {
+        const blob = await getBlob('hq_video_' + s.id);
+        if (blob) {
+          attachHQBlob(s.id, blob, false);
+        }
+      }
+    }
 
-  const grid = document.getElementById('folder-photos-grid');
-  grid.innerHTML = '';
-  if (photos.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">Folder is empty. Tap <strong>＋ Add Photos</strong> to upload images here.</div>`;
-    return;
-  }
+    function attachHQBlob(id, blob, autoPlay) {
+      const vid = document.getElementById('hq-vid-' + id);
+      const ph = document.getElementById('hq-ph-' + id);
+      if (hqState[id].url) URL.revokeObjectURL(hqState[id].url);
+      const url = URL.createObjectURL(blob);
+      hqState[id].url = url;
+      vid.src = url;
+      vid.loop = hqState[id].loop;
+      vid.muted = hqState[id].muted;
+      vid.playbackRate = hqState[id].speed;
+      vid.style.display = 'block';
+      ph.style.display = 'none';
 
-  photos.forEach((p, idx) => {
-    const src = p.blob ? URL.createObjectURL(p.blob) : p.url;
-    const tile = document.createElement('div');
-    tile.className = 'photo-tile';
-    tile.innerHTML = `
-      <img src="${src}" onclick="openLightbox('${src}', '${(p.name || 'Photo').replace(/'/g, '')}')" />
-      <div class="photo-tile-bar">
-        <span class="photo-caption">${p.name || 'Photo ' + (idx + 1)}</span>
-        <button class="mini-btn" style="padding:2px 6px;color:#ff9b9b;" onclick="removePhotoFromFolder(${idx})">✕</button>
-      </div>
-    `;
-    grid.appendChild(tile);
-  });
-}
+      vid.onloadedmetadata = () => {
+        document.getElementById('hq-dur-' + id).textContent = fmtTime(vid.duration);
+      };
+      vid.ontimeupdate = () => {
+        if (vid.duration) {
+          document.getElementById('hq-seek-' + id).value = (vid.currentTime / vid.duration) * 100;
+          document.getElementById('hq-cur-' + id).textContent = fmtTime(vid.currentTime);
+        }
+      };
+      vid.onended = () => {
+        if (!hqState[id].loop) {
+          document.getElementById('hq-play-btn-' + id).textContent = '▶ Play';
+        }
+      };
+      if (autoPlay) {
+        vid.play().then(() => {
+          document.getElementById('hq-play-btn-' + id).textContent = '⏸ Pause';
+        }).catch(() => {});
+      }
+    }
 
-function closeFolderView() {
-  currentOpenFolderId = null;
-  renderAlbumsGrid();
-}
+    async function uploadHQVideo(id, e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      await saveBlob('hq_video_' + id, file);
+      attachHQBlob(id, file, true);
+      showToast('HQ Screen 0' + id + ' saved offline!');
+    }
 
-async function addPhotosToCurrentFolder(e) {
-  const files = Array.from(e.target.files || []);
-  if (!files.length || !currentOpenFolderId) return;
-  const folder = await dbGet('folders', currentOpenFolderId);
-  if (!folder) return;
-  folder.photos = folder.photos || [];
-  for (const f of files) {
-    folder.photos.push({ name: f.name.replace(/\.[^/.]+$/, ''), blob: f });
-  }
-  await dbPut('folders', folder);
-  openFolderView(currentOpenFolderId);
-}
+    function togglePlayHQ(id) {
+      const vid = document.getElementById('hq-vid-' + id);
+      if (!hqState[id].url) { showToast('Tap "Load HQ Video" first'); return; }
+      const btn = document.getElementById('hq-play-btn-' + id);
+      if (vid.paused) {
+        vid.play().then(() => { btn.textContent = '⏸ Pause'; }).catch(() => {});
+      } else {
+        vid.pause();
+        btn.textContent = '▶ Play';
+      }
+    }
 
-async function removePhotoFromFolder(index) {
-  const folder = await dbGet('folders', currentOpenFolderId);
-  if (!folder) return;
-  folder.photos.splice(index, 1);
-  await dbPut('folders', folder);
-  openFolderView(currentOpenFolderId);
-}
+    function toggleMuteHQ(id) {
+      const vid = document.getElementById('hq-vid-' + id);
+      hqState[id].muted = !hqState[id].muted;
+      vid.muted = hqState[id].muted;
+      const btn = document.getElementById('hq-mute-btn-' + id);
+      btn.textContent = hqState[id].muted ? '🔇 Muted' : '🔊 Sound';
+      btn.classList.toggle('active', !hqState[id].muted);
+    }
 
-async function deleteCurrentFolder() {
-  if (!currentOpenFolderId) return;
-  if (!confirm('Delete this photo folder?')) return;
-  await dbDelete('folders', currentOpenFolderId);
-  closeFolderView();
-}
+    function toggleLoopHQ(id) {
+      const vid = document.getElementById('hq-vid-' + id);
+      hqState[id].loop = !hqState[id].loop;
+      vid.loop = hqState[id].loop;
+      const btn = document.getElementById('hq-loop-btn-' + id);
+      btn.textContent = hqState[id].loop ? '🔁 Loop: ON' : '🔁 Loop: OFF';
+      btn.classList.toggle('active', hqState[id].loop);
+    }
 
-function openLightbox(src, caption) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox-caption').textContent = caption;
-  document.getElementById('photo-lightbox').classList.add('open');
-}
+    function cycleSpeedHQ(id) {
+      const speeds = [1, 1.25, 1.5, 2, 0.75];
+      const next = speeds[(speeds.indexOf(hqState[id].speed) + 1) % speeds.length];
+      hqState[id].speed = next;
+      document.getElementById('hq-vid-' + id).playbackRate = next;
+      document.getElementById('hq-spd-btn-' + id).textContent = next.toFixed(2).replace('.00', '.0') + 'x';
+    }
 
-// Boutique Catalog & Bag
-let catalogItems = JSON.parse(localStorage.getItem('mmcc_catalog_v8') || 'null') || [
-  { id: 'c1', name: 'Emerald & Gold Sovereign Trench', category: 'Clothing', price: 3200, img: 'estate-wallpaper.jpg' },
-  { id: 'c2', name: 'RA 109 Pyramid Weekender Trunk', category: 'Bags', price: 4850, img: 'icon-512.png' },
-  { id: 'c3', name: '24K Horus Crest Silk Blazer', category: 'Clothing', price: 2950, img: 'estate-wallpaper.jpg' },
-  { id: 'c4', name: 'Emerald Velvet Signet Clutch', category: 'Bags', price: 2100, img: 'icon-512.png' },
-  { id: 'c5', name: 'Sovereign Gold Aviator Frames', category: 'Accessories', price: 980, img: 'icon-512.png' },
-  { id: 'c6', name: 'MMCC Gold-Crest Driving Loafers', category: 'Accessories', price: 1450, img: 'estate-wallpaper.jpg' }
-];
-let currentCatFilter = 'all';
-let bag = [];
-let pendingPieceImg = null;
+    function seekHQ(id, pct) {
+      const vid = document.getElementById('hq-vid-' + id);
+      if (vid.duration) vid.currentTime = (pct / 100) * vid.duration;
+    }
 
-function filterCatalog(cat) {
-  currentCatFilter = cat;
-  renderCatalog();
-}
+    function fullscreenHQ(id) {
+      const vid = document.getElementById('hq-vid-' + id);
+      if (!hqState[id].url) { showToast('Load a video first'); return; }
+      if (vid.requestFullscreen) vid.requestFullscreen();
+      else if (vid.webkitEnterFullscreen) vid.webkitEnterFullscreen();
+    }
 
-function renderCatalog() {
-  const grid = document.getElementById('catalog-grid');
-  grid.innerHTML = '';
-  const items = currentCatFilter === 'all' ? catalogItems : catalogItems.filter(i => i.category === currentCatFilter);
-  items.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.innerHTML = `
-      <img src="${item.img}" class="item-img" />
-      <div class="item-body">
-        <div>
-          <div class="item-title">${item.name}</div>
-          <div class="item-price">${item.category} • $${item.price.toLocaleString()}</div>
+    /* 15-SECOND SPARKLE INTRO & HARD 15.0s MP3 CUTOFF */
+    let introInterval = null;
+    let introAudioEl = null;
+    let introAudioUrl = null;
+    const INTRO_DURATION = 15.0;
+
+    function initSparkles() {
+      const canvas = document.getElementById('sparkle-canvas');
+      const ctx = canvas.getContext('2d');
+      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      resize();
+      window.addEventListener('resize', resize);
+      const stars = Array.from({ length: 75 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2.4 + 0.8,
+        vy: -(Math.random() * 0.6 + 0.2),
+        a: Math.random(),
+        da: (Math.random() * 0.03 + 0.01) * (Math.random() < 0.5 ? 1 : -1),
+        gold: Math.random() > 0.28
+      }));
+      function draw() {
+        if (document.getElementById('splash-intro').classList.contains('hidden')) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const s of stars) {
+          s.y += s.vy;
+          if (s.y < -10) { s.y = canvas.height + 10; s.x = Math.random() * canvas.width; }
+          s.a += s.da;
+          if (s.a > 1 || s.a < 0.1) s.da *= -1;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = s.gold ? `rgba(255, 224, 130, ${s.a})` : `rgba(82, 214, 150, ${s.a})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    function playBuiltInSynthChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.14);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + idx * 0.14 + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.14 + 1.6);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.14);
+          osc.stop(ctx.currentTime + idx * 0.14 + 1.65);
+        });
+      } catch (e) {}
+    }
+
+    async function playChime() {
+      stopIntroAudio();
+      const customAudio = await getBlob('intro_chime_mp3');
+      if (customAudio) {
+        introAudioUrl = URL.createObjectURL(customAudio);
+        introAudioEl = new Audio(introAudioUrl);
+        introAudioEl.loop = true;
+        introAudioEl.volume = 1.0;
+        introAudioEl.play().catch(() => playBuiltInSynthChime());
+      } else {
+        playBuiltInSynthChime();
+      }
+    }
+
+    function stopIntroAudio() {
+      if (introAudioEl) {
+        try { introAudioEl.pause(); introAudioEl.currentTime = 0; } catch (e) {}
+        introAudioEl = null;
+      }
+      if (introAudioUrl) {
+        URL.revokeObjectURL(introAudioUrl);
+        introAudioUrl = null;
+      }
+    }
+
+    async function uploadIntroChime(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      await saveBlob('intro_chime_mp3', file);
+      showToast('15s Intro MP3 saved offline!');
+      playChime();
+    }
+
+    async function resetIntroChime() {
+      await deleteBlob('intro_chime_mp3');
+      stopIntroAudio();
+      showToast('Restored default royal chime');
+    }
+
+    function startIntro() {
+      const splash = document.getElementById('splash-intro');
+      splash.classList.remove('hidden');
+      initSparkles();
+      playChime();
+      const startTs = performance.now();
+      clearInterval(introInterval);
+      introInterval = setInterval(() => {
+        const elapsed = (performance.now() - startTs) / 1000;
+        const remaining = Math.max(0, INTRO_DURATION - elapsed);
+        const pct = Math.min(100, (elapsed / INTRO_DURATION) * 100);
+        document.getElementById('intro-bar').style.width = pct + '%';
+        document.getElementById('intro-timer').textContent = remaining.toFixed(1) + 's';
+
+        // Smooth fade out in final 1.2s before strict 15.0s cutoff
+        if (introAudioEl && remaining <= 1.2 && remaining > 0) {
+          introAudioEl.volume = Math.max(0, remaining / 1.2);
+        }
+        if (elapsed >= INTRO_DURATION) {
+          finishIntro();
+        }
+      }, 60);
+    }
+
+    function finishIntro() {
+      clearInterval(introInterval);
+      stopIntroAudio();
+      document.getElementById('splash-intro').classList.add('hidden');
+      const lockOnLaunch = localStorage.getItem('mmcc_cb_lock_launch') !== 'false';
+      if (lockOnLaunch) lockApp();
+    }
+
+    function replayIntro() {
+      startIntro();
+    }
+
+    /* 4-DIGIT PADLOCK */
+    let currentPinInput = '';
+    function getSavedPin() { return localStorage.getItem('mmcc_cb_pin') || '1325'; }
+
+    function lockApp() {
+      currentPinInput = '';
+      updatePinDots();
+      document.getElementById('pin-error').textContent = '';
+      document.getElementById('padlock-screen').classList.add('active');
+    }
+
+    function pressPin(digit) {
+      if (currentPinInput.length >= 4) return;
+      currentPinInput += digit;
+      updatePinDots();
+      if (currentPinInput.length === 4) {
+        if (currentPinInput === getSavedPin()) {
+          document.getElementById('padlock-screen').classList.remove('active');
+          currentPinInput = '';
+          updatePinDots();
+        } else {
+          document.getElementById('pin-error').textContent = 'Incorrect 4-Digit Code';
+          setTimeout(() => { currentPinInput = ''; updatePinDots(); }, 450);
+        }
+      }
+    }
+
+    function clearPin() { currentPinInput = ''; updatePinDots(); document.getElementById('pin-error').textContent = ''; }
+    function backPin() { currentPinInput = currentPinInput.slice(0, -1); updatePinDots(); }
+    function updatePinDots() {
+      document.querySelectorAll('#pin-dots .pin-dot').forEach((d, i) => {
+        d.classList.toggle('filled', i < currentPinInput.length);
+      });
+    }
+
+    function saveNewPin() {
+      const val = document.getElementById('custom-pin-input').value.trim();
+      if (!/^\d{4}$/.test(val)) { showToast('Enter exactly 4 numbers'); return; }
+      localStorage.setItem('mmcc_cb_pin', val);
+      document.getElementById('custom-pin-input').value = '';
+      showToast('4-Digit PIN updated!');
+    }
+
+    function toggleLaunchLock() {
+      const cur = localStorage.getItem('mmcc_cb_lock_launch') !== 'false';
+      localStorage.setItem('mmcc_cb_lock_launch', (!cur).toString());
+      updateLaunchLockBtn();
+    }
+
+    function updateLaunchLockBtn() {
+      const cur = localStorage.getItem('mmcc_cb_lock_launch') !== 'false';
+      document.getElementById('toggle-lock-launch-btn').textContent = 'Launch Lock: ' + (cur ? 'ON' : 'OFF');
+    }
+
+    /* MAIN ICON SWAPPER */
+    function applyMainIconUrl(url) {
+      ['intro-logo-img', 'lock-logo-img', 'header-logo-img', 'hero-logo-img'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.src = url;
+      });
+    }
+
+    async function swapMainIcon(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      await saveBlob('custom_main_icon', file);
+      applyMainIconUrl(URL.createObjectURL(file));
+      showToast('Main app icon updated!');
+    }
+
+    async function resetMainIcon() {
+      await deleteBlob('custom_main_icon');
+      applyMainIconUrl('icon-512.png');
+      showToast('Restored Emerald Pyramid Icon');
+    }
+
+    /* BOUTIQUE CATALOG & BAG */
+    const DEFAULT_ITEMS = [
+      { id: 'c1', name: 'Sovereign 1325 Emerald Velvet Blazer', cat: 'Clothing', price: '$3,200', img: 'icon-512.png' },
+      { id: 'c2', name: 'Royal Crimson Silk Evening Gown', cat: 'Clothing', price: '$4,850', img: 'icon-512.png' },
+      { id: 'b1', name: 'MMEL Pyramid Clasp Alligator Weekender', cat: 'Bags', price: '$6,900', img: 'icon-512.png' },
+      { id: 'b2', name: '24K Gold-Trimmed Sovereign Mini Trunk', cat: 'Bags', price: '$4,150', img: 'icon-512.png' },
+      { id: 'a1', name: 'Eye of Horus 24K Signet Cufflinks', cat: 'Accessories', price: '$1,450', img: 'icon-512.png' },
+      { id: 'a2', name: 'Emerald & Brushed Gold Aviator Frames', cat: 'Accessories', price: '$980', img: 'icon-512.png' }
+    ];
+    let catalogItems = JSON.parse(localStorage.getItem('mmcc_cb_items') || 'null') || DEFAULT_ITEMS;
+    let activeFilter = 'ALL';
+    let bagItems = [];
+
+    async function renderCatalog() {
+      const grid = document.getElementById('catalog-grid');
+      const filtered = activeFilter === 'ALL' ? catalogItems : catalogItems.filter(i => i.cat === activeFilter);
+      grid.innerHTML = filtered.map(item => `
+        <div class="item-card">
+          <div class="item-img-wrap">
+            <img id="item-img-${item.id}" src="${item.img}" alt="${item.name}" />
+            <label class="swap-photo-btn">
+              📷 Swap Photo
+              <input type="file" accept="image/*" style="display:none" onchange="swapItemPhoto('${item.id}', event)" />
+            </label>
+          </div>
+          <div class="item-body">
+            <div>
+              <div class="item-cat">${item.cat}</div>
+              <div class="item-name">${item.name}</div>
+              <div class="item-price">${item.price}</div>
+            </div>
+            <button class="btn-gold" style="width:100%;justify-content:center;" onclick="addToBag('${item.id}')">Reserve Piece</button>
+          </div>
         </div>
-        <div style="display:flex;gap:5px;">
-          <button class="pill-btn pill-gold" style="flex:1;justify-content:center;" onclick="addToBag('${item.id}')">+ Reserve</button>
-          <label class="mini-btn">📷<input type="file" accept="image/*" hidden onchange="swapPiecePhoto('${item.id}', event)" /></label>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
+      `).join('');
 
-function swapPiecePhoto(id, e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    const target = catalogItems.find(i => i.id === id);
-    if (target) {
-      target.img = reader.result;
-      localStorage.setItem('mmcc_catalog_v8', JSON.stringify(catalogItems));
+      for (const item of filtered) {
+        const blob = await getBlob('item_photo_' + item.id);
+        if (blob) {
+          const el = document.getElementById('item-img-' + item.id);
+          if (el) el.src = URL.createObjectURL(blob);
+        }
+      }
+    }
+
+    function filterCatalog(cat, btn) {
+      activeFilter = cat;
+      document.querySelectorAll('.filter-row .btn-outline').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
       renderCatalog();
     }
-  };
-  reader.readAsDataURL(file);
-}
 
-function previewNewPiecePhoto(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    pendingPieceImg = reader.result;
-    document.getElementById('new-piece-preview-wrap').innerHTML = `<img src="${pendingPieceImg}" style="width:110px;height:110px;object-fit:cover;border-radius:12px;border:1px solid var(--gold);" />`;
-  };
-  reader.readAsDataURL(file);
-}
+    async function swapItemPhoto(id, e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      await saveBlob('item_photo_' + id, file);
+      const el = document.getElementById('item-img-' + id);
+      if (el) el.src = URL.createObjectURL(file);
+      showToast('Piece photo saved offline!');
+    }
 
-function saveNewPiece() {
-  const name = document.getElementById('new-piece-name').value.trim();
-  const category = document.getElementById('new-piece-cat').value;
-  const priceNum = parseInt(document.getElementById('new-piece-price').value.replace(/[^0-9]/g, ''), 10) || 1500;
-  if (!name) return alert('Enter a piece title.');
-  catalogItems.unshift({
-    id: 'p_' + Date.now(),
-    name, category, price: priceNum,
-    img: pendingPieceImg || 'icon-512.png'
-  });
-  localStorage.setItem('mmcc_catalog_v8', JSON.stringify(catalogItems));
-  pendingPieceImg = null;
-  document.getElementById('new-piece-name').value = '';
-  document.getElementById('new-piece-price').value = '';
-  document.getElementById('new-piece-preview-wrap').innerHTML = '';
-  renderCatalog();
-  switchView('atelier', document.querySelectorAll('.nav-item')[0]);
-}
+    async function addNewCatalogItem() {
+      const name = document.getElementById('new-item-name').value.trim();
+      const cat = document.getElementById('new-item-cat').value;
+      const price = document.getElementById('new-item-price').value.trim() || '$1,800';
+      const fileInput = document.getElementById('new-item-file');
+      if (!name) { showToast('Enter a piece name'); return; }
+      const id = 'custom_' + Date.now();
+      catalogItems.unshift({ id, name, cat, price, img: 'icon-512.png' });
+      localStorage.setItem('mmcc_cb_items', JSON.stringify(catalogItems));
+      if (fileInput.files && fileInput.files[0]) {
+        await saveBlob('item_photo_' + id, fileInput.files[0]);
+      }
+      document.getElementById('new-item-name').value = '';
+      document.getElementById('new-item-price').value = '';
+      fileInput.value = '';
+      renderCatalog();
+      switchTab('tab-atelier');
+      showToast('Added to Atelier Collection!');
+    }
 
-function addToBag(id) {
-  const item = catalogItems.find(i => i.id === id);
-  if (!item) return;
-  bag.push(item);
-  updateBagUI();
-}
-function clearBag() { bag = []; updateBagUI(); }
-function updateBagUI() {
-  document.getElementById('bag-count').textContent = bag.length;
-  const list = document.getElementById('bag-items-list');
-  const bar = document.getElementById('bag-checkout-bar');
-  if (bag.length === 0) {
-    list.textContent = 'Your atelier reservation bag is currently empty.';
-    bar.style.display = 'none';
-    return;
-  }
-  bar.style.display = 'block';
-  let total = 0;
-  list.innerHTML = bag.map((b, idx) => {
-    total += b.price;
-    return `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(229,193,88,0.18);">
-      <span style="color:var(--text-main);">${b.name}</span>
-      <span style="color:var(--gold-bright);">$${b.price.toLocaleString()}</span>
-    </div>`;
-  }).join('');
-  document.getElementById('bag-total').textContent = '$' + total.toLocaleString();
-}
+    function addToBag(id) {
+      const found = catalogItems.find(i => i.id === id);
+      if (!found) return;
+      bagItems.push(found);
+      document.getElementById('bag-count').textContent = bagItems.length;
+      renderBag();
+      showToast('Added to Reservation Bag');
+    }
 
-// Boot
-window.addEventListener('DOMContentLoaded', async () => {
-  await openDB();
-  await ensureDefaultFolders();
+    function renderBag() {
+      const el = document.getElementById('bag-list');
+      if (!bagItems.length) { el.textContent = 'Your reservation bag is currently empty.'; return; }
+      el.innerHTML = bagItems.map((b, idx) => `
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gold-dim);">
+          <span>${b.name} (${b.price})</span>
+          <button class="btn-outline" onclick="bagItems.splice(${idx},1);document.getElementById('bag-count').textContent=bagItems.length;renderBag();">✕</button>
+        </div>
+      `).join('');
+    }
 
-  const savedWall = await dbGet('assets', 'custom_wallpaper');
-  if (savedWall && savedWall.blob) {
-    document.getElementById('wallpaper-layer').style.backgroundImage = `url('${URL.createObjectURL(savedWall.blob)}')`;
-  }
-  const savedIcon = await dbGet('assets', 'custom_icon');
-  if (savedIcon && savedIcon.blob) {
-    const u = URL.createObjectURL(savedIcon.blob);
-    document.getElementById('header-logo-img').src = u;
-    document.getElementById('intro-crest-img').src = u;
-  }
+    function checkoutBag() {
+      if (!bagItems.length) { showToast('Your bag is empty'); return; }
+      bagItems = [];
+      document.getElementById('bag-count').textContent = '0';
+      renderBag();
+      showToast('Private Atelier Fitting Requested!');
+    }
 
-  renderHQPlayers();
-  renderCatalog();
-  renderAlbumsGrid();
-  startIntro();
+    function toggleTheme() {
+      document.body.classList.toggle('theme-crimson');
+    }
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  }
-});
-</script>
+    function switchTab(tabId, navBtn) {
+      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      if (navBtn) {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        navBtn.classList.add('active');
+      }
+    }
+
+    (async function init() {
+      await openDB();
+      const customIcon = await getBlob('custom_main_icon');
+      if (customIcon) applyMainIconUrl(URL.createObjectURL(customIcon));
+      renderHQPlayers();
+      await loadSavedHQVideos();
+      await renderCatalog();
+      updateLaunchLockBtn();
+      startIntro();
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      }
+    })();
+  </script>
 </body>
 </html>

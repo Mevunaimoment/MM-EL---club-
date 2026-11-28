@@ -1,13 +1,13 @@
 {
-  "name": "M'M™ Country Club ® — Clothing, Bags & Estate Atelier",
-  "short_name": "MMCC Atelier",
-  "description": "Sovereign Clothing, Bags, Photo Folders & Estate Atelier",
+  "name": "M'M™ Country Club — Clothing, Bags & Accessories",
+  "short_name": "M'M™ Couture",
+  "description": "Sovereign Clothing, Bags, Accessories & 3 HQ Cinema Screens",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#071912",
-  "theme_color": "#0d291e",
+  "background_color": "#041911",
+  "theme_color": "#072a1c",
   "icons": [
     {
       "src": "icon-512.png",
